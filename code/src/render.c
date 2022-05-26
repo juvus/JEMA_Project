@@ -53,6 +53,22 @@ static void
 draw_fill_side_flat_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, 
     Flat_Side_Flag_t side_flag, u32 color, Render_t *render);
 
+/**
+ * @brief Drawing an image in the extended mode. Method could be used for direct copy of the 
+ * loaded bitmap into the render buffer as well as for copy of the image while changing all 
+ * untransparent pixels with the specified color (is_mask flag should be true).
+ * @param x X coordinate of the bottom-left corner of the image (BL).
+ * @param y Y coordinate of the bottom-left corner of the image (BL).
+ * @param image Pointer to the image (mask) to be drawn.
+ * @param scale Scale of the image.
+ * @param is_mask Flag indicating the mask.
+ * @param mask_color A 32 bit color (ARGB) to be used along with the mask.
+ * @param render Pointer to the render structure.
+ */
+static void
+draw_bitmap_extended(u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, u32 mask_color, 
+    Render_t *render);
+
 Render_t*
 render_constructor(void)
 {
@@ -549,10 +565,11 @@ render_draw_circle(u32 x0, u32 y0, u32 radius, b32 is_filled ,u32 color, Render_
     }   
 }
 
-void
-render_draw_bitmap(u32 x, u32 y, Image_t* image, u32 scale, Render_t *render)
+static void
+draw_bitmap_extended(u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, u32 mask_color, 
+    Render_t *render)
 {
-    u32 color;  /* A 32 bit pioxel color (ARGB). */
+    u32 color;  /* An actual 32 bit pixel color (ARGB). */
     u32 x_scaled, y_scaled;  /* Pixel coordinates in the scaled image. */
     u32 i, j; /* Coordinates of the unscaled image. */
     u32 m, n; /* Coordinates inside a scaled single image pixel. */
@@ -573,6 +590,9 @@ render_draw_bitmap(u32 x, u32 y, Image_t* image, u32 scale, Render_t *render)
             /* Check the alpha channel. */
             if (get_color_alpha(color) != 0x00)
             {
+                /* Use color from loaded bitmap or from the mask color. */
+                if (is_mask) color = mask_color;
+                
                 /* Draw scaled pixel */
                 for (n = 0; n < scale; ++n)
                 {
@@ -590,43 +610,24 @@ render_draw_bitmap(u32 x, u32 y, Image_t* image, u32 scale, Render_t *render)
 }
 
 void
-render_draw_bitmap_by_mask(u32 x, u32 y, Image_t *mask, u32 color, u32 scale, 
-    Render_t *render)
+render_draw_bitmap(u32 x, u32 y, Image_t* image, u32 scale, Render_t *render)
 {
-    /* Function for rendering the colored object determined by mask */
-
-    u32 mask_color;
-    u32 x_scaled, y_scaled;
-    u32 i, j; /* Coordinates of the downloaded mask image */
-    u32 m, n; /* Coordinates inside a big pixel  */
-    u32 index;
-    u32 *pixel = (u32*)render_buffer->bitmap_memory;
-
-    x_scaled = x;
-    y_scaled = y;
-    index = 0;
-    for (i = 0; i < mask->height; ++i) {
-        for (j = 0; j < mask->width; ++j) {
-
-            /* Get the color of the pixel on the mask */
-            mask_color = convert_RGBA_to_ARGB(*(mask->data + index));
-
-            /* Skip the pixels with zero alpha (transparent) */
-            if (get_color_alpha(mask_color) != 0x00) {
-
-                /* Draw scaled pixel */
-                for (n = 0; n < scale; ++n) {
-                    for (m = 0; m < scale; ++m) {
-                        x_scaled = x + j * scale + m;
-                        y_scaled = y + i * scale + n;
-                        *(pixel + x_scaled + render_buffer->width * y_scaled) = color;                    
-                    }        
-                }
-            }
-            index++;
-        }
-    }
+    draw_bitmap_extended(x, y, image, scale, false, 0xffffff, render);
 }
+
+void
+render_draw_bitmap_by_mask(u32 x, u32 y, Image_t *mask, u32 color, u32 scale, Render_t *render)
+{
+    draw_bitmap_extended(x, y, mask, scale, true, color, render);
+}
+
+
+
+
+
+
+
+
 
 
 u32
