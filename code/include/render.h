@@ -5,7 +5,7 @@
  * @brief Declaration of objects and functions related to the software rendering.
  * @version 0.1
  * @date 2021-12-02
- * @copyright JuvuSoft (c) 2021
+ * @copyright JuvuSoft (c) 2022
  * ================================================================================ 
  */
 
@@ -31,16 +31,6 @@ struct Render_Buffer
 typedef struct Render_Buffer Render_Buffer_t;
 
 /**
- * @brief Union for packing and unpacking color double word (32 bits).
- */
-union UColor
-{
-    u32 color;  /**< 32 bit color (ARGB). */
-    u8 components[4];  /**< Array of 8 bit color components. */
-};
-typedef union UColor UColor_t;
-
-/**
  * @brief Enumerator indicating side flat triangles.
  */
 enum Flat_Side_Flag
@@ -53,14 +43,14 @@ typedef enum Flat_Side_Flag Flat_Side_Flag_t;
 /**
  * @brief Structure holding data necessary for drawing a filled triangles.
  */
-struct Triang_Data
+struct Triangle_Data
 {
     u32 LSX_array[WINDOW_WIDTH];  /**< Left Side X array. */
     u32 RSX_array[WINDOW_WIDTH];  /**< Rigth Side X array. */
     u32 LSX_i;  /**< Left Side X array index. */
     u32 RSX_i;  /**< Right Side X array index. */
 };
-typedef struct Triang_Data Triang_Data_t;
+typedef struct Triangle_Data Triangle_Data_t;
 
 /**
  * @brief Structure for the Render properties.
@@ -73,7 +63,7 @@ struct Render
     HWND window;  /**< Handle to the window. */
     HDC hdc;  /**< Handle to the drawing context. */ 
     BITMAPINFO bitmap_info;  /**< Windows specific bitmapinfo structure. */
-    Triang_Data_t *triang_data; /**< Pointer to the triangle fill data.  */ 
+    Triangle_Data_t *triangle_data; /**< Pointer to the triangle fill data. */
 };
 typedef struct Render Render_t;
 
@@ -253,46 +243,5 @@ render_draw_bitmap(u32 x, u32 y, Image_t* image, u32 scale, Render_t *render);
  */
 void 
 render_draw_bitmap_by_mask(u32 x, u32 y, Image_t *mask, u32 color, u32 scale, Render_t *render);
-
-
-
-
-
-
-/* Function to convert RGBA color to the ARGB color */
-u32 convert_RGBA_to_ARGB(u32 color);
-
-/* Function to get the alpha of the color */
-u8 get_color_alpha(u32 color);
-
-/* Function for setting the alpha channel to the color */
-void set_color_alpha(u32 *color, u8 alpha);
-
-/* Function to get the red channel of the color */
-u8 get_color_red(u32 color);
-
-/* Function for setting the red channel to the color */
-void set_color_red(u32 *color, u8 red);
-
-/* Function to get the green channel of the color */
-u8 get_color_green(u32 color);
-
-/* Function for setting the green channel to the color */
-void set_color_green(u32 *color, u8 green);
-
-/* Function to get the blue channel of the color */
-u8 get_color_blue(u32 color);
-
-/* Function for setting the blue channel to the color */
-void set_color_blue(u32 *color, u8 blue);
-
-/* Function to set the color in ARGB format */
-void set_color(u32 *color, u8 alpha, u8 red, u8 green, u8 blue);
-
-/* Function to get the transparent color (linear interpolation algorithm) */
-u32 get_alpha_blending_color(u32 color_1, u32 color_2, f32 alpha);
-
-/* Function to get the gray color */
-u32 get_gray_color(u8 value);
 
 #endif /* RENDER_H_ */

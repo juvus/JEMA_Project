@@ -3,9 +3,9 @@
  * @file render.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions related to the software rendering. 
- * @version 0.1
- * @date 2021-12-02
- * @copyright JuvuSoft (c) 2021
+ * @version 0.2
+ * @date 2022-05-26
+ * @copyright GNU General Public License (GPL) v3.0
  * ================================================================================ 
  */
 
@@ -22,6 +22,7 @@
 #include <utils.h>
 #include <image.h>
 #include <helper_functions.h>
+#include <color.h>
 
 /* Static functions */
 /**
@@ -74,19 +75,19 @@ render_constructor(void)
 {
     Render_t *render = NULL;  /* Pointer to the render. */
     Render_Buffer_t *buffer = NULL;  /* Pointer to the render buffer. */
-    Triang_Data_t *triang_data = NULL;  /* Pointer to the triangle data. */
+    Triangle_Data_t *triangle_data = NULL;  /* Pointer to the triangle data. */
 
     /* Allocate the memory for the render buffer object. */
     buffer = (Render_Buffer_t *)malloc(1 * sizeof(Render_Buffer_t));
 
     /* Allocate the memory for the triangle filling data. */
-    triang_data = (Triang_Data_t*)malloc(1 * sizeof(Triang_Data_t));
+    triangle_data = (Triangle_Data_t*)malloc(1 * sizeof(Triangle_Data_t));
 
     /* Allocate the memory for the render object. */
     render = (Render_t *)malloc(1 * sizeof(Render_t));
 
     render->buffer = buffer;
-    render->triang_data = triang_data;
+    render->triangle_data = triangle_data;
     return render;
 }
 
@@ -103,7 +104,7 @@ render_destructor(Render_t *render)
     free(render->buffer);
 
     /* Release memory allocated for the triangle data. */
-    free(render->triang_data);
+    free(render->triangle_data);
 
     /* Release memory allocated for the render object. */
     free(render);
@@ -207,8 +208,8 @@ render_draw_line(u32 x0, u32 y0, u32 x1, u32 y1, u32 color, Render_t *render)
     v0.y = y0;
     v1.x = x1;
     v1.y = y1;
-    LSX_array = render->triang_data->LSX_array;
-    pLSX_i = &(render->triang_data->LSX_i);
+    LSX_array = render->triangle_data->LSX_array;
+    pLSX_i = &(render->triangle_data->LSX_i);
 
     /* Draw line in the extended mode. */
     draw_line_extended(v0, v1, color, render, LSX_array, pLSX_i);
@@ -371,10 +372,10 @@ draw_fill_side_flat_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3,
     u32 delta;  /* Delta in the coordinate change. */  
 
     /* Initialize the local variables. */
-    LSX_array = render->triang_data->LSX_array;
-    RSX_array = render->triang_data->RSX_array;
-    pLSX_i = &(render->triang_data->LSX_i);
-    pRSX_i = &(render->triang_data->RSX_i); 
+    LSX_array = render->triangle_data->LSX_array;
+    RSX_array = render->triangle_data->RSX_array;
+    pLSX_i = &(render->triangle_data->LSX_i);
+    pRSX_i = &(render->triangle_data->RSX_i); 
 
     /* Draw the side lines of the triangle. */
     draw_line_extended(v1, v2, color, render, LSX_array, pLSX_i);
@@ -620,197 +621,3 @@ render_draw_bitmap_by_mask(u32 x, u32 y, Image_t *mask, u32 color, u32 scale, Re
 {
     draw_bitmap_extended(x, y, mask, scale, true, color, render);
 }
-
-
-
-
-
-
-
-
-
-
-u32
-convert_RGBA_to_ARGB(u32 rgba_color) //@rewrite without the structure
-{
-    /* Function to convert RGBA color to the ARGB color */
-
-    u32 argb_color;
-    u8 alpha, red, green, blue;
-    Color_bytes_t read_color;
-
-    read_color.color_word = rgba_color;
-    alpha = read_color.a;
-    red = read_color.r;
-    green = read_color.g;
-    blue = read_color.b;
-   
-    set_color(&argb_color, alpha, red, green, blue);
- 
-    return argb_color;
-}
-
-
-u32
-get_gray_color(u8 value)
-{
-    /* Function to return 32bit gray color from 8bit value */
-    u32 gray_color;
-    gray_color = ((value << 0) | (value << 8) | (value << 16));
-    return gray_color;
-}
-
-
-u8
-get_color_alpha(u32 color)
-{
-    /* Function to get the alpha of the color */
-    return (u8)((color & 0xff000000) >> 24);    
-}
-
-
-void
-set_color_alpha(u32 *color, u8 alpha)
-{
-    /* Function to set the alpha of the color
-       color - ARGB 32 bit color
-       alpha - u8 (0 - 255) value of the new alpha channel */
-
-    *color = *color | (0xff << 24); /* Set the alpha channel to 0xff */
-    *color = *color ^ (0xff << 24); /* Set the alpha channel to 0x00 */
-    *color = *color | (alpha << 24); /* Set the value of a new alpha channel */
-}
-
-
-u8
-get_color_red(u32 color)
-{
-    /* Function to get the red channel of the color */
-    return (u8)((color & 0x00ff0000) >> 16);
-}
-
-
-void
-set_color_red(u32 *color, u8 red)
-{
-    /* Function to set the red channel of the color
-       color - ARGB 32 bit color
-       red - u8 (0 - 255) value of the new red channel */
-
-    *color = *color | (0xff << 16); /* Set the R channel to 0xff */
-    *color = *color ^ (0xff << 16); /* Set the R channel to 0x00 */
-    *color = *color | (red << 16); /* Set the value of a new red channel */
-}
-
-
-u8
-get_color_green(u32 color)
-{
-    /* Function to get the green channel of the color */
-    return (u8)((color & 0x0000ff00) >> 8);
-}
-
-
-void
-set_color_green(u32 *color, u8 green)
-{
-    /* Function to set the green channel of the color
-       color - ARGB 32 bit color
-       green - u8 (0 - 255) value of the new green channel */
-
-    *color = *color | (0xff << 8); /* Set the R channel to 0xff */
-    *color = *color ^ (0xff << 8); /* Set the R channel to 0x00 */
-    *color = *color | (green << 8); /* Set the value of a new green channel */
-}
-
-
-u8
-get_color_blue(u32 color)
-{
-    /* Function to get the blue channel of the color */
-    return (u8)((color & 0x000000ff) >> 0);
-}
-
-
-void
-set_color_blue(u32 *color, u8 blue)
-{
-    /* Function to set the blue channel of the color
-       color - ARGB 32 bit color
-       blue - u8 (0 - 255) value of the new blue channel */
-
-    *color = *color | (0xff << 0); /* Set the R channel to 0xff */
-    *color = *color ^ (0xff << 0); /* Set the R channel to 0x00 */
-    *color = *color | (blue << 0); /* Set the value of a new blue channel */
-}
-
-
-void
-set_color(u32 *color, u8 alpha, u8 red, u8 green, u8 blue)
-{
-    /* Function to set the color in ARGB format */
-    set_color_alpha(color, alpha);
-    set_color_red(color, red);
-    set_color_green(color, green);
-    set_color_blue(color, blue);   
-}
-
-
-u32
-get_alpha_blending_color(u32 color_1, u32 color_2, f32 alpha)
-{
-    /* Function to get the transparent color (linear interpolation algorithm)
-       color_1 - background color
-       color_2 - object color 
-       alpha - level of the object alpha (0.0 ... 1.0). 0.0 - color_1, 1.0 - clolor_2*/
-
-    UColor_t temp_color_1;
-    UColor_t temp_color_2;
-    UColor_t return_color;
-    u8 R_1, G_1, B_1, R_2, G_2, B_2, R_out, G_out, B_out;
-    f32 delta;
-    
-    /* Determine the color components */
-    temp_color_1.color = color_1;
-    temp_color_2.color = color_2;
-    R_1 = temp_color_1.components[2];
-    G_1 = temp_color_1.components[1];
-    B_1 = temp_color_1.components[0];
-    R_2 = temp_color_2.components[2];
-    G_2 = temp_color_2.components[1];
-    B_2 = temp_color_2.components[0];
-       
-    /* Determine the output color components (after mixing) */
-    if (R_1 >= R_2) {
-        delta = (f32)(R_1 - R_2);
-        R_out = R_2 + (u8)(delta * (1.0 - alpha));
-    } else {
-        delta = (f32)(R_2 - R_1);
-        R_out = R_1 + (u8)(delta * alpha); 
-    }
-
-    if (G_1 >= G_2) {
-        delta = (f32)(G_1 - G_2);
-        G_out = G_2 + (u8)(delta * (1.0 - alpha));
-    } else {
-        delta = (f32)(G_2 - G_1);
-        G_out = G_1 + (u8)(delta * alpha); 
-    }
-
-    if (B_1 >= B_2) {
-        delta = (f32)(B_1 - B_2);
-        B_out = B_2 + (u8)(delta * (1.0 - alpha));
-    } else {
-        delta = (f32)(B_2 - B_1);
-        B_out = B_1 + (u8)(delta * alpha); 
-    }
-
-    /* Return in format ARGB */
-    return_color.components[0] = B_out;
-    return_color.components[1] = G_out;
-    return_color.components[2] = R_out;
-    return_color.components[3] = 0xff;
-
-    return return_color.color;
-}
-

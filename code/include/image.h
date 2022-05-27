@@ -31,22 +31,6 @@ struct Image
 typedef struct Image Image_t;
 
 /**
- * @brief Structure for the color representation in RGBA format. 
- */
-struct Color_bytes 
-{
-    union 
-    {
-        struct 
-        {
-            u8 r; u8 g; u8 b; u8 a;
-        };
-        u32 color_word;
-    };
-};
-typedef struct Color_bytes Color_bytes_t;
-
-/**
  * @brief Constructor of the Image class.
  * @return Image_t* Pointer to the Image structure.
  */
