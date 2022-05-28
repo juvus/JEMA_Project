@@ -63,10 +63,10 @@ color_argb_set_from_u32_rgba(Color_ARGB_t *color_argb, u32 color_rgba);
 /**
  * @brief Setting color from the u32 integer representing a color in ARGB format.
  * @param color_argb Pointer to the Color_ARGB structure.
- * @param color_argb Color in the RGBA format as u32 integer.
+ * @param color_argb_u32 Color in the RGBA format as u32 integer.
  */
 void
-color_argb_set_from_u32_argb(Color_ARGB_t *color_argb, u32 color_argb);
+color_argb_set_from_u32_argb(Color_ARGB_t *color_argb, u32 color_argb_u32);
 
 /**
  * @brief Setting color from the set of u8 integers representing color components.
