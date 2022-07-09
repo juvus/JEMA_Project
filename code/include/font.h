@@ -2,10 +2,9 @@
  * ================================================================================
  * @file font.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Declaration of the Font class methods.
+ * @brief Declaration of objects and functions necessary for the work with font.
  * @version 0.2
- * @date 2022-01-09
- * @copyright JuvuSoft (c) 2022
+ * @date 2022-07-08
  * ================================================================================
  */
 

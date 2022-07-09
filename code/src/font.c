@@ -2,7 +2,7 @@
  * ================================================================================
  * @file font.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Definition of the Font class methods.
+ * @brief Definition of functions necessary for the work with font.
  * @version 0.2
  * @date 2022-01-09
  * @copyright JuvuSoft (c) 2022

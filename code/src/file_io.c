@@ -2,10 +2,9 @@
  * ================================================================================
  * @file file_io.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Definition of the file input-output class methods.
+ * @brief Definition of functions necessary for the work with file input-output.
  * @version 0.2
- * @date 2022-01-05
- * @copyright JuvuSoft (c) 2021
+ * @date 2022-07-08
  * ================================================================================
  */
 

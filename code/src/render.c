@@ -5,7 +5,6 @@
  * @brief Definition of functions related to the software rendering. 
  * @version 0.2
  * @date 2022-05-26
- * @copyright GNU General Public License (GPL) v3.0
  * ================================================================================ 
  */
 
@@ -29,30 +28,30 @@
  * @brief Drawing a pixelized line from one point to another by using 
  * Brezenham algorithm. This version also record the X coordinates for 
  * further rasterization of filling of the triangle.
+ * @param render Pointer to the render_buffer structure.
  * @param v0 Vector for the beginning point.
  * @param v1 Vector for the ending point.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render_buffer structure.
+ * @param color Pointer to the color structure (line color).
  * @param SX_array Left/Right Side X array.
  * @param SX_i Left/Right Side X array index.
  * @return void.
  */
 static void 
-draw_line_extended(V2_u32_t v0, V2_u32_t v1, u32 color, Render_t *render, 
+draw_line_extended(Render_t *render, V2_u32_t v0, V2_u32_t v1, Color_t *color,
     u32 *SX_array, u32 *SX_i);
 
 /**
  * @brief Drawing a filled bottom/top flat triangle.
+ * @param render Pointer to the render structure.
  * @param v1 Top/Bottom most vertix of the triangle.
  * @param v2 Left most vertix of the triangle.
  * @param v3 Right most vertix of the triangle.
  * @param side_flag Flag inicating flat side.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure (triangle color).
  */
 static void 
-draw_fill_side_flat_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, 
-    Flat_Side_Flag_t side_flag, u32 color, Render_t *render);
+draw_fill_side_flat_triangle(Render_t *render, V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, 
+    Flat_Side_Flag_t side_flag, Color_t *color);
 
 /**
  * @brief Drawing an image in the extended mode. Method could be used for direct copy of the 
@@ -67,8 +66,8 @@ draw_fill_side_flat_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3,
  * @param render Pointer to the render structure.
  */
 static void
-draw_bitmap_extended(u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, u32 mask_color, 
-    Render_t *render);
+draw_bitmap_extended(Render_t *render, u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, 
+    Color_t *mask_color);
 
 Render_t*
 render_constructor(void)
@@ -153,22 +152,27 @@ render_init(Render_t *render, HWND window)
 }
 
 void
-render_clear_screen(u32 color, Render_t *render)
+render_clear_screen(Render_t *render, Color_t *color)
 {
-    u32 pitch = render->width * 4;  /* Size of a row in bytes (4 bytes for a color) */
-    u32 width = render->width;  /* Width of the bitmap field */
-    u32 height = render->height;  /* Height of the bitmap field */
-    u8 *row = (u8*)render->buffer->bitmap_memory;  /* Pointer to a byte starting new row */
-    u32 *pixel = NULL;  /* Pointer to a pixel in a bitmap */
+    u32 pitch;  /* Size of a row in bytes (4 bytes for a color) */
+    u32 width;  /* Width of the bitmap field */
+    u32 height;  /* Height of the bitmap field */
+    u8 *row;  /* Pointer to a byte starting new row */
+    u32 *pixel;  /* Pointer to a pixel in a bitmap */
     u32 x, y;  /* Coordinates of a pixel */
 
-    /* Procedure to fill the pixeld in optimized way */
+    pitch = render->width * 4;
+    width = render->width;
+    height = render->height;
+    row = (u8*)render->buffer->bitmap_memory;
+
+    /* Procedure to fill the pixeld in optimized way. */
     for (y = 0; y < height; y++)
     {
         pixel = (u32*)row;
         for (x = 0; x < width; x++)
         {
-            *(pixel) = color;
+            *(pixel) = color->color;
             ++pixel;
         }
         row += pitch;
@@ -176,26 +180,27 @@ render_clear_screen(u32 color, Render_t *render)
 }
 
 void
-render_put_pixel(u32 x, u32 y, u32 color, Render_t *render)
+render_set_pixel_color(Render_t *render, u32 x, u32 y, Color_t *color)
 {    
-    u32 *pixel = (u32*)render->buffer->bitmap_memory; /* Pointer to the pixel in the buffer. */
+    u32 *pixel; /* Pointer to the pixel in the buffer. */
     
-    /* Define color of a pixel with desired coordinates. */
-    *(pixel + x + render->width * y) = color;    
-}
-
-u32
-render_get_pixel_color(u32 x, u32 y, Render_t *render)
-{
-    u32 color;  /* A 32 bit color (ARGB). */
-    u32 *pixel = (u32*)render->buffer->bitmap_memory; /* Pointer to the pixel in the buffer. */
-    
-    color = *(pixel + x + render->width * y);
-    return color;
+    /* Set color of a pixel with desired coordinates. */
+    pixel = (u32*)render->buffer->bitmap_memory;
+    *(pixel + x + render->width * y) = color->color;    
 }
 
 void
-render_draw_line(u32 x0, u32 y0, u32 x1, u32 y1, u32 color, Render_t *render)
+render_get_pixel_color(Render_t *render, u32 x, u32 y, Color_t *color)
+{
+    u32 *pixel; /* Pointer to the pixel in the buffer. */   
+    
+    /* Get color of a pixel with desired coordinates. */
+    pixel = (u32*)render->buffer->bitmap_memory; 
+    color->color = *(pixel + x + render->width * y);
+}
+
+void
+render_draw_line(Render_t *render, u32 x0, u32 y0, u32 x1, u32 y1, Color_t *color)
 {
     /* TODO: add posibility to draw a line with the desired width. */
     V2_u32_t v0;  /* Vector for the beginning point. */
@@ -203,7 +208,6 @@ render_draw_line(u32 x0, u32 y0, u32 x1, u32 y1, u32 color, Render_t *render)
     u32 *LSX_array;  /* Left Side X array. */
     u32 *pLSX_i;  /* Left Side X array index. */
 
-    /* Initialization of the local variables. */
     v0.x = x0;
     v0.y = y0;
     v1.x = x1;
@@ -212,11 +216,11 @@ render_draw_line(u32 x0, u32 y0, u32 x1, u32 y1, u32 color, Render_t *render)
     pLSX_i = &(render->triangle_data->LSX_i);
 
     /* Draw line in the extended mode. */
-    draw_line_extended(v0, v1, color, render, LSX_array, pLSX_i);
+    draw_line_extended(render, v0, v1, color, LSX_array, pLSX_i);
 }
 
 void
-render_draw_hor_line(u32 x0, u32 y0, u32 length, u32 width, u32 color, Render_t *render)
+render_draw_hor_line(Render_t *render, u32 x0, u32 y0, u32 length, u32 width, Color_t *color)
 {
     u32 *pixel;  /* Pointer to the pixel in the buffer. */
     u32 x, y;  /* Coordinates of the pixel. */
@@ -228,13 +232,13 @@ render_draw_hor_line(u32 x0, u32 y0, u32 length, u32 width, u32 color, Render_t 
     {
         for (y = y0; y < (y0 + width); ++y)
         {
-            *(pixel + x + render->width * y) = color;
+            *(pixel + x + render->width * y) = color->color;
         }
     }
 }
 
 void
-render_draw_ver_line(u32 x0, u32 y0, u32 length, u32 width, u32 color, Render_t *render)
+render_draw_ver_line(Render_t *render, u32 x0, u32 y0, u32 length, u32 width, Color_t *color)
 {   
     u32 *pixel;  /* Pointer to the pixel in the buffer. */
     u32 x, y;  /* Coordinates of the pixel. */
@@ -246,13 +250,13 @@ render_draw_ver_line(u32 x0, u32 y0, u32 length, u32 width, u32 color, Render_t 
     {
         for (x = x0; x < (x0 + width); ++x)
         {
-            *(pixel + x + render->width * y) = color;
+            *(pixel + x + render->width * y) = color->color;
         }
     }
 }
 
 static void
-draw_line_extended(V2_u32_t v0, V2_u32_t v1, u32 color, Render_t *render,
+draw_line_extended(Render_t *render, V2_u32_t v0, V2_u32_t v1, Color_t *color,
     u32 *SX_array, u32 *SX_i)
 {
     u32 *pixel;  /* Pointer to the pixel in the buffer. */
@@ -263,7 +267,6 @@ draw_line_extended(V2_u32_t v0, V2_u32_t v1, u32 color, Render_t *render,
     s32 x, y;  /* Pixel coordinate. */ 
     s32 i;  /* Index. */ 
 
-    /* Initialization of the local variables. */
     pixel = (u32*)render->buffer->bitmap_memory;
     x_err = 0;
     y_err = 0;
@@ -320,13 +323,13 @@ draw_line_extended(V2_u32_t v0, V2_u32_t v1, u32 color, Render_t *render,
             (*SX_i)++;
         }
 
-        *(pixel + x + render->width * y) = color;
+        *(pixel + x + render->width * y) = color->color;
     }
     (*SX_i)--;
 }
 
 void
-render_draw_rect(u32 x0, u32 y0, u32 width, u32 height, u32 color, Render_t *render)
+render_draw_rect(Render_t *render, u32 x0, u32 y0, u32 width, u32 height, Color_t *color)
 {
     u32 *pixel;  /* Pointer to the pixel in the buffer. */
     u32 x, y;  /* Coordinates of the pixel. */
@@ -334,33 +337,36 @@ render_draw_rect(u32 x0, u32 y0, u32 width, u32 height, u32 color, Render_t *ren
     pixel = (u32*)render->buffer->bitmap_memory;
 
     /* Draw a rectangle. */
-    for(y = y0; y < height + y0; y++) {
-        for (x = x0; x < width + x0; x++) {
-            *(pixel + x + render->width * y) = color;
+    for(y = y0; y < height + y0; y++)
+    {
+        for (x = x0; x < width + x0; x++)
+        {
+            *(pixel + x + render->width * y) = color->color;
         }
     }
 }
 
 void
-render_draw_rect_with_brd(u32 x0, u32 y0, u32 width, u32 height, u32 brd_width, 
-    u32 color, u32 brd_color, Render_t *render)
+render_draw_rect_with_brd(Render_t *render, u32 x0, u32 y0, u32 width, u32 height, 
+    u32 brd_width, Color_t *color, Color_t *brd_color)
 {
     /* Render the inner rectangle. */
-    render_draw_rect(x0 + brd_width, y0 + brd_width, width - brd_width * 2, 
-        height - brd_width * 2, color, render);
+    render_draw_rect(render, x0 + brd_width, y0 + brd_width, width - brd_width * 2, 
+        height - brd_width * 2, color);
 
     /* Render the boarders with desired width and color. */
-    if (brd_width) {
-        render_draw_rect(x0, y0, width, brd_width, brd_color, render);
-        render_draw_rect(x0, y0 + height - brd_width, width, brd_width, brd_color, render);
-        render_draw_rect(x0, y0, brd_width, height, brd_color, render);
-        render_draw_rect(x0 + width -brd_width, y0, brd_width, height, brd_color, render);
+    if (brd_width)
+    {
+        render_draw_rect(render, x0, y0, width, brd_width, brd_color);
+        render_draw_rect(render, x0, y0 + height - brd_width, width, brd_width, brd_color);
+        render_draw_rect(render, x0, y0, brd_width, height, brd_color);
+        render_draw_rect(render, x0 + width -brd_width, y0, brd_width, height, brd_color);
     }
 }
 
 static void 
-draw_fill_side_flat_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, 
-    Flat_Side_Flag_t side_flag, u32 color, Render_t *render)
+draw_fill_side_flat_triangle(Render_t *render, V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, 
+    Flat_Side_Flag_t side_flag, Color_t *color)
 {
     u32 y;  /* Y coordinate of the horizontal line for the filling. */
     u32 i;  /* Index. */
@@ -378,8 +384,8 @@ draw_fill_side_flat_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3,
     pRSX_i = &(render->triangle_data->RSX_i); 
 
     /* Draw the side lines of the triangle. */
-    draw_line_extended(v1, v2, color, render, LSX_array, pLSX_i);
-    draw_line_extended(v1, v3, color, render, RSX_array, pRSX_i);
+    draw_line_extended(render, v1, v2, color, LSX_array, pLSX_i);
+    draw_line_extended(render, v1, v3, color, RSX_array, pRSX_i);
 
     /* Determine value for the delta varuable. */
     delta = (side_flag == SF_BOTTOM_FLAT) ? -1: 1;
@@ -390,14 +396,14 @@ draw_fill_side_flat_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3,
     for (i = 0; i <= *pLSX_i; ++i)
     {
         length = RSX_array[i] - LSX_array[i];
-        render_draw_hor_line(LSX_array[i], y, length, 1, color, render);
+        render_draw_hor_line(render, LSX_array[i], y, length, 1, color);
         y += delta;
     }
 }
 
 void 
-render_draw_fill_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, u32 color,
-    Render_t *render)
+render_draw_fill_triangle(Render_t *render, V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, 
+    Color_t *color)
 {
     f32 temp;  /* Temporary value. */
     V2_u32_t v4;  /* Additional vertix. */
@@ -412,14 +418,14 @@ render_draw_fill_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, u32 color,
     /* Case 1. Simple point. */
     if ((v1.y == v2.y) && (v2.y  == v3.y) && (v1.x == v2.x) && (v2.x == v3.x))
     {
-        render_put_pixel(v1.x, v1.y, color, render);
+        render_set_pixel_color(render, v1.x, v1.y, color);
     }
 
     /* Case 2. Horisontal or vertical line. */
     else if (((v1.y == v2.y) && (v2.y  == v3.y)) || ((v1.x == v2.x) && (v2.x == v3.x)))
     {
-        render_draw_line(v1.x, v1.y, v2.x, v2.y, color, render);
-        render_draw_line(v2.x, v2.y, v3.x, v3.y, color, render);       
+        render_draw_line(render, v1.x, v1.y, v2.x, v2.y, color);
+        render_draw_line(render, v2.x, v2.y, v3.x, v3.y, color);       
     }
 
     /* Case 3. Bottom-flat triangle. */
@@ -427,9 +433,9 @@ render_draw_fill_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, u32 color,
     {
         (v2.x < v3.x) ?
             /* v1 - top vertex, v2 - left vertex, v3 - right vertex. */
-            draw_fill_side_flat_triangle(v1, v2, v3, SF_BOTTOM_FLAT, color, render):
+            draw_fill_side_flat_triangle(render, v1, v2, v3, SF_BOTTOM_FLAT, color):
             /* v1 - top vertex, v3 - left vertex, v2 - right vertex. */
-            draw_fill_side_flat_triangle(v1, v3, v2, SF_BOTTOM_FLAT, color, render);    
+            draw_fill_side_flat_triangle(render, v1, v3, v2, SF_BOTTOM_FLAT, color);    
     }
 
     /* Case 4. Top-flat triangle. */
@@ -437,13 +443,14 @@ render_draw_fill_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, u32 color,
     {
         (v1.x < v2.x) ?
             /* v3 - bottom vertex, v1 - left vertex, v2 - right vertex. */
-            draw_fill_side_flat_triangle(v3, v1, v2, SF_TOP_FLAT, color, render):
+            draw_fill_side_flat_triangle(render, v3, v1, v2, SF_TOP_FLAT, color):
             /* v3 - bottom vertex, v2 - left vertex, v1 - right vertex. */
-            draw_fill_side_flat_triangle(v3, v2, v1, SF_TOP_FLAT, color, render);
+            draw_fill_side_flat_triangle(render, v3, v2, v1, SF_TOP_FLAT, color);
     }
 
     /* Case 5. General case, split the triangle in a top-flat and bottom-flat. */
-    else {
+    else
+    {
         temp = ((f32)v3.x - (f32)v1.x) * ((f32)v1.y - (f32)v2.y) / ((f32)v1.y - (f32)v3.y);
         v4.x = (u32)(roundf(temp + (f32)v1.x));
         v4.y = v2.y;
@@ -451,32 +458,32 @@ render_draw_fill_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, u32 color,
         /* Draw top triangle which is bottom-flat triangle. */
         (v2.x < v4.x) ? 
             /* v1 - top vertex, v2 - left vertex, v3 - right vertex. */
-            draw_fill_side_flat_triangle(v1, v2, v4, SF_BOTTOM_FLAT, color, render):
+            draw_fill_side_flat_triangle(render, v1, v2, v4, SF_BOTTOM_FLAT, color):
             /* v1 - top vertex, v4 - left vertex, v2 - right vertex. */
-            draw_fill_side_flat_triangle(v1, v4, v2, SF_BOTTOM_FLAT, color, render);
+            draw_fill_side_flat_triangle(render, v1, v4, v2, SF_BOTTOM_FLAT, color);
         
         /* Draw bottom triangle which is top-flat triangle. */
         (v2.x < v4.x) ?
             /* v3 - bottom vertex, v2 - left vertex, v4 - right vertex. */
-            draw_fill_side_flat_triangle(v3, v2, v4, SF_TOP_FLAT, color, render):
+            draw_fill_side_flat_triangle(render, v3, v2, v4, SF_TOP_FLAT, color):
             /* v3 - bottom vertex, v4 - left vertex, v2 - right vertex. */
-            draw_fill_side_flat_triangle(v3, v4, v2, SF_TOP_FLAT, color, render);
+            draw_fill_side_flat_triangle(render, v3, v4, v2, SF_TOP_FLAT, color);
     }
 
     /* Clean-up. Draw additional lines to to each vertices. */
-    render_draw_line(v1.x, v1.y, v2.x, v2.y, color, render);
-    render_draw_line(v2.x, v2.y, v1.x, v1.y, color, render);
+    render_draw_line(render, v1.x, v1.y, v2.x, v2.y, color);
+    render_draw_line(render, v2.x, v2.y, v1.x, v1.y, color);
 
-    render_draw_line(v2.x, v2.y, v3.x, v3.y, color, render);
-    render_draw_line(v3.x, v3.y, v2.x, v2.y, color, render);
+    render_draw_line(render, v2.x, v2.y, v3.x, v3.y, color);
+    render_draw_line(render, v3.x, v3.y, v2.x, v2.y, color);
 
-    render_draw_line(v1.x, v1.y, v3.x, v3.y, color, render);
-    render_draw_line(v3.x, v3.y, v1.x, v1.y, color, render);  
+    render_draw_line(render, v1.x, v1.y, v3.x, v3.y, color);
+    render_draw_line(render, v3.x, v3.y, v1.x, v1.y, color);  
 }
 
 void 
-render_draw_rotated_rect(u32 x0, u32 y0, u32 width, u32 height, f32 angle, u32 color,
-    Render_t *render)
+render_draw_rotated_rect(Render_t *render, u32 x0, u32 y0, u32 width, u32 height, f32 angle, 
+    Color_t *color)
 {   
     f32 angle_rad; /* Angle in radians. */
     f32 xc, yc; /* Coordinates of the center point of rectangle. */
@@ -515,46 +522,49 @@ render_draw_rotated_rect(u32 x0, u32 y0, u32 width, u32 height, f32 angle, u32 c
     UR_tr.y = (u32)roundf(yc + (UR_c.x * sinf(angle_rad) + UR_c.y * cosf(angle_rad)));
 
     /* Draw the rectangle (by drawing two triangles). */
-    render_draw_fill_triangle(BL_tr, BR_tr, UR_tr, color, render);
-    render_draw_fill_triangle(BL_tr, UL_tr, UR_tr, color, render);        
+    render_draw_fill_triangle(render, BL_tr, BR_tr, UR_tr, color);
+    render_draw_fill_triangle(render, BL_tr, UL_tr, UR_tr, color);        
 }
 
 void
-render_draw_circle(u32 x0, u32 y0, u32 radius, b32 is_filled ,u32 color, Render_t *render)
+render_draw_circle(Render_t *render, u32 x0, u32 y0, u32 radius, b32 is_filled,
+    Color_t *color)
 {
     s32 x;  /* Pixel x coordinate. */ 
     s32 y;  /* Pixel y coordinate. */
-    s32 gap;  /*  */
-    s32 delta;
+    s32 gap;  /* Gap parameter. */
+    s32 delta;  /* Delta parameter. */
 
-    /* Initialization of the local variables. */
     x = 0;
     y = (s32)radius;
     gap = 0;
     delta = (2 - 2 * (s32)radius);
 
-    while (y >= 0) {
+    while (y >= 0)
+    {
         /* Draw points lying on a circle */
-        render_put_pixel(x0 + (u32)x, y0 + (u32)y, color, render);
-        render_put_pixel(x0 + (u32)x, y0 - (u32)y, color, render);
-        render_put_pixel(x0 - (u32)x, y0 - (u32)y, color, render);
-        render_put_pixel(x0 - (u32)x, y0 + (u32)y, color, render);
+        render_set_pixel_color(render, x0 + (u32)x, y0 + (u32)y, color);
+        render_set_pixel_color(render, x0 + (u32)x, y0 - (u32)y, color);
+        render_set_pixel_color(render, x0 - (u32)x, y0 - (u32)y, color);
+        render_set_pixel_color(render, x0 - (u32)x, y0 + (u32)y, color);
 
         /* Fill the circle if it is necessary (with lines from top to bottom)*/
         if (is_filled)
         {    
-            render_draw_line(x0 + (u32)x, y0 + (u32)y, x0 + (u32)x, y0 - (u32)y,  color, render);
-            render_draw_line(x0 - (u32)x, y0 + (u32)y, x0 - (u32)x, y0 - (u32)y,  color, render);
+            render_draw_line(render, x0 + (u32)x, y0 + (u32)y, x0 + (u32)x, y0 - (u32)y,  color);
+            render_draw_line(render, x0 - (u32)x, y0 + (u32)y, x0 - (u32)x, y0 - (u32)y,  color);
         }
 
         gap = 2 * (delta + y) - 1;
-        if ((delta < 0) && (gap <= 0)) {
+        if ((delta < 0) && (gap <= 0))
+        {
             x++;
             delta += 2 * x + 1;
             continue;
         }
 
-        if ((delta > 0) && (gap > 0)) {
+        if ((delta > 0) && (gap > 0))
+        {
             y--;
             delta -= 2 * y + 1;
             continue;
@@ -567,10 +577,10 @@ render_draw_circle(u32 x0, u32 y0, u32 radius, b32 is_filled ,u32 color, Render_
 }
 
 static void
-draw_bitmap_extended(u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, u32 mask_color, 
-    Render_t *render)
+draw_bitmap_extended(Render_t *render, u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, 
+    Color_t *mask_color)
 {
-    u32 color;  /* An actual 32 bit pixel color (ARGB). */
+    Color_t color;  /* An actual 32 bit pixel color (ARGB). */
     u32 x_scaled, y_scaled;  /* Pixel coordinates in the scaled image. */
     u32 i, j; /* Coordinates of the unscaled image. */
     u32 m, n; /* Coordinates inside a scaled single image pixel. */
@@ -586,10 +596,10 @@ draw_bitmap_extended(u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, u32 m
         for (j = 0; j < image->width; ++j)
         {
             /* Get the color of the pixel. */
-            color = convert_RGBA_to_ARGB(*(image->data + index));
+            color_set_from_u32_rgba(&color, *(image->data + index));
 
             /* Check the alpha channel. */
-            if (get_color_alpha(color) != 0x00)
+            if (color.alpha != 0x00)
             {
                 /* Use color from loaded bitmap or from the mask color. */
                 if (is_mask) color = mask_color;
@@ -601,7 +611,7 @@ draw_bitmap_extended(u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, u32 m
                     {
                         x_scaled = x + j * scale + m;
                         y_scaled = y + i * scale + n;
-                        *(pixel + x_scaled + render->buffer->width * y_scaled) = color;                    
+                        *(pixel + x_scaled + render->buffer->width * y_scaled) = color.color;                    
                     }        
                 }
             }
@@ -611,13 +621,18 @@ draw_bitmap_extended(u32 x, u32 y, Image_t* image, u32 scale, b32 is_mask, u32 m
 }
 
 void
-render_draw_bitmap(u32 x, u32 y, Image_t* image, u32 scale, Render_t *render)
+render_draw_bitmap(Render_t *render, u32 x, u32 y, Image_t* image, u32 scale)
 {
-    draw_bitmap_extended(x, y, image, scale, false, 0xffffff, render);
+    Color_t color;  /* Color to replace the mask (will not be used). */
+
+    color.color = 0xffffff;
+    draw_bitmap_extended(render, x, y, image, scale, false, &color);
 }
 
 void
-render_draw_bitmap_by_mask(u32 x, u32 y, Image_t *mask, u32 color, u32 scale, Render_t *render)
+render_draw_bitmap_by_mask(Render_t *render, u32 x, u32 y, Image_t *mask, Color_t *color, 
+    u32 scale)
 {
-    draw_bitmap_extended(x, y, mask, scale, true, color, render);
+    draw_bitmap_extended(render, x, y, mask, scale, true, color);
 }
+

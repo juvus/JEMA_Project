@@ -5,7 +5,6 @@
  * @brief Definition of the Sound_Buffer class methods.
  * @version 0.5
  * @date 2021-12-19
- * @copyright JuvuSoft (c) 2021
  * ================================================================================ 
  */
 

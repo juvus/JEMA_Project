@@ -5,7 +5,6 @@
  * @brief Declaration of objects and functions related to the software rendering.
  * @version 0.1
  * @date 2021-12-02
- * @copyright JuvuSoft (c) 2022
  * ================================================================================ 
  */
 
@@ -18,6 +17,9 @@
 /* Program includes: */
 #include <utils.h>
 #include <image.h>
+
+/* Predefined structures: */
+typedef struct Color Color_t;
 
 /**
  * @brief Structure for the render buffer.
@@ -91,157 +93,159 @@ render_init(Render_t *render, HWND window);
 
 /**
  * @brief Clearing the full screen with a background color.
- * @param color A 32 bit color (ARGB).
  * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure.
  * @return void.
 */
 void 
-render_clear_screen(u32 color, Render_t *render);
+render_clear_screen(Render_t *render, Color_t *color);
 
 /**
  * @brief Drawing a pixel on the screen with specific color. 
+ * @param render Pointer to the render structure.
  * @param x X coordinate of the pixel.
  * @param y Y coordinate of the pixel.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure (background color).
  * @return void.
 */
 void 
-render_put_pixel(u32 x, u32 y, u32 color, Render_t *render);
+render_set_pixel_color(Render_t *render, u32 x, u32 y, Color_t * color);
 
 /**
  * @brief Getting color of a pixel with specified coordinates. 
+ * @param render Pointer to the render structure.
  * @param x X coordinate of the pixel.
  * @param y Y coordinate of the pixel.
- * @param render Pointer to the render structure.
- * @return A 32 bit color (ARGB). 
+ * @param color Structure of the color that will be updated.
+ * @return void.
  */
-u32 
-render_get_pixel_color(u32 x, u32 y, Render_t *render);
+void 
+render_get_pixel_color(Render_t *render, u32 x, u32 y, Color_t *color);
 
 /**
  * @brief Drawing a pixelized line from one point to another.
+ * @param render Pointer to the render structure.
  * @param x0 X coordinate of the beginning point of the line. 
  * @param y0 Y coordinate of the beginning point of the line.
  * @param x1 X coordinate of the ending point of the line. 
  * @param y1 Y coordinate of the ending point of the line.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure.
  * @return void.
 */
 void 
-render_draw_line(u32 x0, u32 y0, u32 x1, u32 y1, u32 color, Render_t *render);
+render_draw_line(Render_t *render, u32 x0, u32 y0, u32 x1, u32 y1, Color_t *color);
 
 /**
  * @brief Drawing a pixelized horizontal line from one point to another.
+ * @param render Pointer to the render structure.
  * @param x0 X coordinate of the beginning point of the line.
  * @param y0 Y coordinate of the beginning point of the line.
  * @param length Length of the line.
  * @param width Width of the line.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure.
  */
 void 
-render_draw_hor_line(u32 x0, u32 y0, u32 length, u32 width, u32 color, Render_t *render);
+render_draw_hor_line(Render_t *render, u32 x0, u32 y0, u32 length, u32 width, Color_t *color);
 
 /**
  * @brief Drawing a pixelized vertical line from one point to another.
+ * @param render Pointer to the render structure.
  * @param x0 X coordinate of the beginning point of the line.
  * @param y0 Y coordinate of the beginning point of the line.
  * @param length Length of the line.
  * @param width Width of the line.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure.
  */
 void 
-render_draw_ver_line(u32 x0, u32 y0, u32 length, u32 width, u32 color, Render_t *render);
+render_draw_ver_line(Render_t *render, u32 x0, u32 y0, u32 length, u32 width, Color_t *color);
 
 /**
  * @brief Drawing a simple rectangle. 
+ * @param render Pointer to the render structure.
  * @param x0 X coordinate of the bottom-left corner (BL).
  * @param y0 Y coordinate of the bottom-left corner (BL).
  * @param width Width of the rectangle along the Ox axis.
  * @param height Height of the rectangle along the Oy axis.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure.
  */
 void 
-render_draw_rect(u32 x0, u32 y0, u32 width, u32 height, u32 color, Render_t *render);
+render_draw_rect(Render_t *render, u32 x0, u32 y0, u32 width, u32 height, Color_t *color);
 
 /**
  * @brief Drawing a rectangle with specified lines boarder.
+ * @param render Pointer to the render structure.
  * @param x0 X coordinate of the bottom-left corner (BL).
  * @param y0 Y coordinate of the bottom-left corner (BL).
  * @param width Width of the rectangle along the Ox axis.
  * @param height Height of the rectangle along the Oy axis.
  * @param brd_width Width of the rectangle boarder.
- * @param color A 32 bit color (ARGB).
- * @param brd_color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure (background color).
+ * @param brd_color Pointer to the color structure (borders color).
  */
 void 
-render_draw_rect_with_brd(u32 x0, u32 y0, u32 width, u32 height, u32 brd_width, u32 color, 
-    u32 brd_color, Render_t *render);
+render_draw_rect_with_brd(Render_t *render, u32 x0, u32 y0, u32 width, u32 height, u32 brd_width, 
+    Color_t *color, Color_t *brd_color);
 
 /**
  * @brief Drawing a filled arbitrary shape triangle.
+ * @param render Pointer to the render structure.
  * @param v1 First vertix of the triangle.
  * @param v2 Second vertix of the triangle.
  * @param v3 Third vertix of the triangle.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure (background color).
  */
 void 
-render_draw_fill_triangle(V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, u32 color, Render_t *render);
+render_draw_fill_triangle(Render_t *render, V2_u32_t v1, V2_u32_t v2, V2_u32_t v3, 
+    Color_t *color);
 
 /**
  * @brief Drawing a rectangle rotated by specified angle degrees. 
+ * @param render Pointer to the render structure.
  * @param x0 X coordinate of the bottom-left corner (BL).
  * @param y0 Y coordinate of the bottom-left corner (BL).
  * @param width Width of the rectangle along the Ox axis.
  * @param height Height of the rectangle along the Oy axis.
  * @param angle Angle (in degrres) of the rotation around the rectangle center.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure (rectangle color).
  */
 void 
-render_draw_rotated_rect(u32 x0, u32 y0, u32 width, u32 height, f32 angle, u32 color, Render_t *render);
+render_draw_rotated_rect(Render_t *render, u32 x0, u32 y0, u32 width, u32 height, f32 angle, 
+    Color_t *color);
 
 /**
  * @brief Drawing a circle using Brezenhame algorithm.
+ * @param render Pointer to the render structure.
  * @param x0 X coordinate of the circle center.
  * @param y0 Y coordinate of the circle center.
  * @param radius Radius of the circle. 
  * @param is_filled Flag indicating the fill of the circle.
- * @param color A 32 bit color (ARGB).
- * @param render Pointer to the render structure.
+ * @param color Pointer to the color structure (circle color).
  */
 void 
-render_draw_circle(u32 x0, u32 y0, u32 radius, b32 is_filled ,u32 color, Render_t *render);
+render_draw_circle(Render_t *render, u32 x0, u32 y0, u32 radius, b32 is_filled, Color_t *color);
 
 /**
  * @brief Drawing the loaded png image.
+ * @param render Pointer to the render structure.
  * @param x X coordinate of the bottom-left corner of the image (BL).
  * @param y Y coordinate of the bottom-left corner of the image (BL).
  * @param image Pointer to the image to be drawn. 
  * @param scale Scale of the image.
- * @param render Pointer to the render structure.
  */
 void 
-render_draw_bitmap(u32 x, u32 y, Image_t* image, u32 scale, Render_t *render);
-
-/* Function for rendering the colored object determined by mask */
+render_draw_bitmap(Render_t *render, u32 x, u32 y, Image_t* image, u32 scale);
 
 /**
  * @brief Drawing an image using one specified color and a mask as an image object.  
+ * @param render Pointer to the render structure.
  * @param x X coordinate of the bottom-left corner of the image (BL).
  * @param y Y coordinate of the bottom-left corner of the image (BL).
  * @param mask Pointer to the image (mask) to be drawn with a color.  
- * @param color A 32 bit color (ARGB).
+ * @param color Pointer to the color structure.
  * @param scale Scale of the image.
- * @param render Pointer to the render structure.
  */
 void 
-render_draw_bitmap_by_mask(u32 x, u32 y, Image_t *mask, u32 color, u32 scale, Render_t *render);
+render_draw_bitmap_by_mask(Render_t *render, u32 x, u32 y, Image_t *mask, Color_t *color, 
+    u32 scale);
 
 #endif /* RENDER_H_ */

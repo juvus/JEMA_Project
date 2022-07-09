@@ -2,10 +2,10 @@
  * ================================================================================
  * @file file_io.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Declaration of the file input-output class methods.
+ * @brief Declaration of objects and functions necessary for the work with file
+ * input-output.
  * @version 0.2
- * @date 2022-01-05
- * @copyright JuvuSoft (c) 2021
+ * @date 2022-07-08
  * ================================================================================
  */
 
@@ -20,7 +20,7 @@
  */
 struct File 
 {
-    char *data;  /**< Pointer to the file data as a sequence of bytes. */
+    u8 *data;  /**< Pointer to the file data as a sequence of bytes. */
     u64 size;  /**< Size of the file in bytes. */
 };
 typedef struct File File_t;

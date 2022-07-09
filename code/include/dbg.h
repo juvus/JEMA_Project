@@ -6,13 +6,13 @@
  * the book "Learn C Hard Way".
  * @version 0.1
  * @date 2021-12-18
- * @copyright JuvuSoft (c) 2021
  * ================================================================================
  */
 
 #ifndef DBG_H_
 #define DBG_H_
 
+/* Standard includes: */
 #include <stdio.h>
 #include <string.h>
 

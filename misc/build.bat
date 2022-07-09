@@ -6,11 +6,13 @@ mkdir ..\build
 :: push the directory
 pushd ..\build
 
-:: build the program
-:: -Zi Add debug information
-:: -FC Show full passes of the possible errors
+:: Build the program.
+:: -Zi Add debug information.
+:: -FC Show full passes of the possible errors.
+:: -W4 4th level of warnings.
+:: -WX Treat warnings as errors.
 
-cl -FC -Zi /I ..\code\include ..\code\src\win32_platform.c ..\code\src\render.c ^
+cl -FC -Zi -W4 -WX /I ..\code\include ..\code\src\win32_platform.c ..\code\src\render.c ^
     ..\code\src\game.c ..\code\src\keyboard_input.c ..\code\src\mouse_input.c ^
     ..\code\src\sound.c ..\code\src\sound_buffer.c ..\code\src\wav_uncompressor.c ^
     ..\code\src\image.c ..\code\src\font.c ..\code\src\debug_console.c ^
