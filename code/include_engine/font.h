@@ -15,18 +15,19 @@
 #include <utils.h>
 
 /* Predefined structures: */
-typedef struct Render_Buffer Render_Buffer_t;
+typedef struct Render Render_t;
 typedef struct Image Image_t;
+typedef struct Color Colot_t;
 
 /**
  * @brief Structure to store the symbol information. 
  */
 struct Symbol_data 
 {
-    u8 symbol;  /**< ASCII representation of the symbol (for 32 - 126 codes). */
+    u8 symbol;  /**< Representation of the symbol in Win1251 encoding. */
     u8 symbol_array[42];  /**< Array to storing the symbol pixel data. */
-    u8 shift_left;  /**< How much to shift the next symbol to the left. */
-    u8 shift_bottom;  /**< How much to thift the symbol to bottom. */
+    u32 shift_left;  /**< How much to shift the next symbol to the left. */
+    u32 shift_bottom;  /**< How much to thift the symbol to bottom. */
 };
 typedef struct Symbol_data Symbol_data_t;
 
@@ -35,6 +36,10 @@ typedef struct Symbol_data Symbol_data_t;
  */
 struct Font
 {
+    u32 rows_num;  /**< Number of rows of symbols in the font image file. */
+    u32 cols_num;  /**< Number of columns of symbols in the font image file. */
+    u32 sym_width;  /**< Symbol width in pixels (6).  */
+    u32 sym_height;  /**< Symbol height in pixels (7). */
     Symbol_data_t *symbols_data;  /**< Pointer to the font symbols data. */
 };
 typedef struct Font Font_t;
@@ -54,12 +59,17 @@ void
 font_destructor(Font_t *font);
 
 /**
- * @brief Extraction of the symbols data from the font image.
+ * @brief Font initialization. Extraction of the symbols data from the font image.
  * @param font Pointer to the Font structure.
- * @param img_font Pointer to the image, containing the font. 
+ * @param rows_num Number of rows of symbols in the font image file.
+ * @param cols_num Number of columns of symbols in the font image file.
+ * @param sym_width Symbol width in pixels.
+ * @param sym_height Symbol height in pixels.
+ * @param img_font Pointer to the image, containing the font.
  */
 void 
-font_extract_symbols(Font_t *font, Image_t *img_font);
+font_init(Font_t *font, u32 rows_num, u32 cols_num, u32 sym_width, u32 sym_height, 
+    Image_t *img_font);
 
 /**
  * @brief Drawing a string using the current font.
@@ -74,6 +84,6 @@ font_extract_symbols(Font_t *font, Image_t *img_font);
  */
 void 
 font_draw_string(Font_t *font, char *str, s32 str_max_width, u32 x, u32 y, 
-    u32 size, u32 color, Render_Buffer_t *render_buffer);
+    u32 size, Color_t *color, Render_t *render);
 
 #endif // FONT_H_

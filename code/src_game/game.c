@@ -5,7 +5,6 @@
  * @brief Definition of the Game class methods.
  * @version 0.2
  * @date 2021-12-10
- * @copyright Copyright (c) 2022
  * ================================================================================
  */
 
@@ -140,7 +139,7 @@ game_simulate_tick(Game_t *game, Keyboard_Input_t *keyboard_input,
         srand(time(NULL));      
                
         /* Prepare the font to use in the game. */
-        font_extract_symbols(font, img_font);
+        font_init(font, img_font);
         
         /* Initialization of some game parameters. */
         game->game_mode = GM_NORMAL;

@@ -51,17 +51,6 @@ static DWORD WINAPI
 game_main_loop_proc(void *worker_data);
 
 /**
- * @brief Function for creation of a DIB section object.
- * This function is intended to be called only once when the WM_CREATE message
- * is processing resulting in allocation a memory for the bitmap buffer. After 
- * resizing of the window pixels of the bitmap will be streched to a new window
- * size.
- * @param window A handle to the window.
- */
-static void 
-create_DIB_section(HWND window);
-
-/**
  * @brief Function for processing the resizing a window
  * @param window Handle to the window
  */
@@ -232,49 +221,6 @@ game_main_loop_proc(void *worker_data)
         Sleep(1);
     }
     return(0);
-}
-
-/**
- * @brief Function for creation of a DIB section object.
- * This function is intended to be called only once when the WM_CREATE message
- * is processing resulting in allocation a memory for the bitmap buffer. After 
- * resizing of the window pixels of the bitmap will be streched to a new window
- * size.
- * @param window A handle to the window.
- */
-static void 
-create_DIB_section(HWND window)
-{ 
-    /* TODO: This function should be in render_init method. */
-    
-    //RECT rect;  /* Rectangle for holding the info about the graphic window. */
-    //GetClientRect(window, &rect);
-
-    /* Calculate width and height of the window (client area) and render buffer */
-    //render_buffer.width = (u32)(rect.right - rect.left);
-    //render_buffer.height = (u32)(rect.bottom - rect.top);
-    //game.width = render_buffer.width;
-    //game.height = render_buffer.height;
-
-    //if (render_buffer.bitmap_memory) 
-    //{
-    //    /* Delete the bitmap memory if it was previously allocated */
-    //    VirtualFree(render_buffer.bitmap_memory, 0, MEM_RELEASE);
-    //    render_buffer.bitmap_memory = NULL;
-    //}
-
-    /* Create the bitmap memory */
-    //SIZE_T mem_size;  /* Render buffer memory size. */
-    //mem_size = sizeof(u32) * render_buffer.width * render_buffer.height;
-    //render_buffer.bitmap_memory = VirtualAlloc(0, mem_size, MEM_COMMIT|MEM_RESERVE, PAGE_READWRITE);
-
-    /* Fill the bitmap_info structure */
-    //render_buffer.bitmap_info.bmiHeader.biSize = sizeof(render_buffer.bitmap_info.bmiHeader);
-    //render_buffer.bitmap_info.bmiHeader.biWidth = render_buffer.width;
-    //render_buffer.bitmap_info.bmiHeader.biHeight = render_buffer.height;
-    //render_buffer.bitmap_info.bmiHeader.biPlanes = 1;
-    //render_buffer.bitmap_info.bmiHeader.biBitCount = 32;
-    //render_buffer.bitmap_info.bmiHeader.biCompression = BI_RGB;
 }
 
 /**
