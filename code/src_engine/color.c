@@ -27,7 +27,7 @@ color_constructor(void)
 }
 
 void
-color_deconstructor(Color_t *color)
+color_destructor(Color_t *color)
 {
     /* Release memory allocated for the Color structure. */
     free(color);

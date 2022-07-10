@@ -11,7 +11,7 @@
 #ifndef FONT_H_
 #define FONT_H_
 
-/* Program includes: */
+/* Game engine includes: */
 #include <utils.h>
 
 /* Predefined structures: */

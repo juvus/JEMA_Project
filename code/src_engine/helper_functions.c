@@ -33,32 +33,6 @@ trim_f32(f32 value, f32 low_bnd, f32 high_bnd)
     return value;
 }
 
-f32
-rnd_f32(void)
-{
-    f32 result;
-    result = (f32)((rand() % 32767) / (f32)32767);
-    return result;
-}
-
-u32
-rnd_range_u32(u32 left_bnd, u32 right_bnd)
-{
-    assert(left_bnd <= right_bnd);
-    u32 result;
-    result = left_bnd + (rand() % (right_bnd - left_bnd));
-    return result;
-}
-
-f32
-rnd_f32_range(f32 left_bnd, f32 right_bnd)
-{
-    assert(left_bnd <= right_bnd);
-    f32 result;
-    result = left_bnd + rnd_f32() * (right_bnd - left_bnd);
-    return result;
-}
-
 b32
 check_collision(V2_f32_t *BL_mv, V2_f32_t *UR_mv, V2_f32_t *BL_st, V2_f32_t *UR_st, 
     char *collision_side)

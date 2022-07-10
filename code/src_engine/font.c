@@ -8,7 +8,7 @@
  * ================================================================================
  */
 
-/* Program includes: */
+/* Game engine includes: */
 #include <font.h>
 #include <utils.h>
 #include <image.h>
@@ -18,7 +18,7 @@
 Font_t*
 font_constructor(void)
 {
-    Font_t *font = NULL;  /* Pointer to the Font structure. */
+    Font_t *font;  /* Pointer to the Font structure. */
 
     /* Memory allocation for the font object and font symbols. */
     font = (Font_t*)malloc(1 * sizeof(Font_t));
@@ -29,8 +29,13 @@ font_constructor(void)
 void
 font_destructor(Font_t *font)
 {
+    /* Free memory allocated for the symbols data. */
     free(font->symbols_data);
+    font->symbols_data = NULL;
+    
+    /* Free memory allocated for the Font object. */
     free(font);
+    font = NULL;
 }
 
 void

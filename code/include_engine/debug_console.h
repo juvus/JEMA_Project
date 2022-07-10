@@ -12,7 +12,7 @@
 #ifndef DEBUG_CONSOLE_H_
 #define DEBUG_CONSOLE_H_
 
-/* Program includes: */
+/* Game engine includes: */
 #include <utils.h>
 
 /* Predefined structures: */

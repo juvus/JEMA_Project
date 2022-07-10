@@ -2,17 +2,16 @@
  * ================================================================================
  * @file image.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Declaration of the Image class methods.
+ * @brief Declaration of objects and functions necessary for the work with images.
  * @version 0.2
- * @date 2022-01-05
- * @copyright JuvuSoft (c) 2021
+ * @date 2022-07-10
  * ================================================================================
  */
 
 #ifndef IMAGE_H_
 #define IMAGE_H_
 
-/* Program includes: */
+/* Game engine includes: */
 #include <utils.h>
 
 /* Predefined structures: */
@@ -45,11 +44,11 @@ void
 image_destructor(Image_t *image);
 
 /**
- * @brief Uncompress png file into image data suitable for processing.
+ * @brief Initialization of the image by uncompressing a png file into image data.
  * @param image Pointer to the Image structure.
  * @param file Pointer to the File structure of loaded png file.
  */
 void
-image_uncompress_png(Image_t *image, File_t *file);
+image_init(Image_t *image, File_t *file);
 
 #endif /* IMAGE_H_ */

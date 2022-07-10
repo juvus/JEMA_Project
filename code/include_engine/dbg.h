@@ -2,8 +2,8 @@
  * ================================================================================
  * @file dbg.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Header file containing a set of useful debug macros. It was got from
- * the book "Learn C Hard Way".
+ * @brief Header file containing a set of useful debug macros. The code has been 
+ * coppied from the book "Learn C Hard Way".
  * @version 0.1
  * @date 2021-12-18
  * ================================================================================

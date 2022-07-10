@@ -11,7 +11,7 @@
 #ifndef COLOR_H_
 #define COLOR_H_
 
-/* Program includes: */
+/* Game engine includes: */
 #include <utils.h>
 
 /**
@@ -47,7 +47,7 @@ color_constructor(void);
  * @param color Pointer to the Color structure.
  */
 void
-color_deconstructor(Color_t *color);
+color_destructor(Color_t *color);
 
 /**
  * @brief Setting color from the u32 integer representing a color in RGBA format.

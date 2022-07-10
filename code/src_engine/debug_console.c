@@ -2,18 +2,18 @@
  * ================================================================================
  * @file debug_console.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Definition of the debug console methods.
+ * @brief Definition of functions necessary for the work with debug console.
  * @version 0.2
  * @date 2022-01-02
  * ================================================================================
  */
 
-/* Standard includes: */
+/* Standard library includes: */
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
 
-/* Program includes: */
+/* Game engine includes: */
 #include <debug_console.h>
 #include <utils.h>
 #include <color.h>
@@ -23,9 +23,9 @@
 DConsole_t*
 dconsole_constructor(u32 messages_num, u32 max_msg_length)
 {
-    DConsole_t *dconsole = NULL;  /* Pointer to the debug console. */
-    Message_t *messages = NULL;  /* Pointer to the console messages array. */ 
-    char *tmp_msg_str = NULL;  /* Temporary string. */
+    DConsole_t *dconsole;  /* Pointer to the debug console. */
+    Message_t *messages;  /* Pointer to the console messages array. */ 
+    char *tmp_msg_str;  /* Temporary string. */
     u32 i;  /* Temporary counter. */
     
     /* Allocation the memory for the debug console object. */

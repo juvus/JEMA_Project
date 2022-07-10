@@ -12,7 +12,7 @@
 #ifndef FILE_IO_H_
 #define FILE_IO_H_
 
-/* Program includes: */
+/* Game engine includes: */
 #include <utils.h>
 
 /**

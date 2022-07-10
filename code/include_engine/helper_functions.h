@@ -5,14 +5,13 @@
  * @brief Declaration of the different helper functions.
  * @version 0.2
  * @date 2022-01-10
- * @copyright JuvuSoft (c) 2022
  * ================================================================================
  */
 
 #ifndef HELPER_FUNCTIONS_H_
 #define HELPER_FUNCTIONS_H_
 
-/* Program includes: */
+/* Game engine includes: */
 #include <utils.h>
 
 /**
@@ -24,31 +23,6 @@
  */
 f32 
 trim_f32(f32 value, f32 low_bnd, f32 high_bnd);
-
-/**
- * @brief Generation of the random number in range [0.0, 1.0).
- * @return f32 Return random number.
- */
-f32 
-rnd_f32(void);
-
-/**
- * @brief Generation of random u32 number in the specified range.
- * @param left_bnd Left boundary of the random number. 
- * @param right_bnd Right boundary of the random number.
- * @return u32 Return random number.
- */
-u32 
-rnd_range_u32(u32 left_bnd, u32 right_bnd);
-
-/**
- * @brief Generation of random f32 number in the specified range.
- * @param left_bnd Left boundary of the random number.
- * @param right_bnd Right boundary of the random number.
- * @return f32 Return random number.
- */
-f32 
-rnd_range_f32(f32 left_bnd, f32 right_bnd);
 
 /**
  * @brief Check the fact of objects collision.
