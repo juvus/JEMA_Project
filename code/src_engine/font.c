@@ -79,8 +79,8 @@ font_init(Font_t *font, u32 rows_num, u32 cols_num, u32 sym_width, u32 sym_heigh
 
             /* Determine the pixels coordinate of the BL corner of the symbol. Aslo take 
             into account the title of the table. */
-            i_0 = img_font->height - (sym_height + 1) * (win1251_code / cols_num) - \
-                sym_height - (sym_height + 1);
+            i_0 = img_font->height - (sym_height + 1) * (win1251_code / cols_num) \
+                - sym_height - (sym_height + 1);
             j_0 = (sym_width + 1) * (win1251_code % cols_num) + (sym_width + 1);
 
             /* Copying the symbol from font_img to font_symbols. */

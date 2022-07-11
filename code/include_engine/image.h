@@ -46,7 +46,7 @@ image_destructor(Image_t *image);
 /**
  * @brief Initialization of the image by uncompressing a png file into image data.
  * @param image Pointer to the Image structure.
- * @param file Pointer to the File structure of loaded png file.
+ * @param file Pointer to the File structure of the loaded png file.
  */
 void
 image_init(Image_t *image, File_t *file);

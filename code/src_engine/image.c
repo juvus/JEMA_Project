@@ -21,7 +21,7 @@
 Image_t*
 image_constructor(void)
 {
-    Image_t *image = NULL;
+    Image_t *image;  /* Pointer to the Image structure. */
 
     /* Allocation the memory for the image object. */
     image = (Image_t*)malloc(1 * sizeof(Image_t));

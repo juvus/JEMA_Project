@@ -23,7 +23,7 @@
 #include <helper_functions.h>
 #include <color.h>
 
-/* Static functions */
+/* Static functions. */
 /**
  * @brief Drawing a pixelized line from one point to another by using 
  * Brezenham algorithm. This version also record the X coordinates for 
@@ -602,7 +602,7 @@ draw_bitmap_extended(Render_t *render, u32 x, u32 y, Image_t* image, u32 scale, 
             if (color.alpha != 0x00)
             {
                 /* Use color from loaded bitmap or from the mask color. */
-                if (is_mask) color = mask_color;
+                if (is_mask) color.color = mask_color;
                 
                 /* Draw scaled pixel */
                 for (n = 0; n < scale; ++n)

@@ -65,7 +65,7 @@ font_destructor(Font_t *font);
  * @param cols_num Number of columns of symbols in the font image file.
  * @param sym_width Symbol width in pixels.
  * @param sym_height Symbol height in pixels.
- * @param img_font Pointer to the image, containing the font.
+ * @param img_font Pointer to the image containing the font.
  */
 void 
 font_init(Font_t *font, u32 rows_num, u32 cols_num, u32 sym_width, u32 sym_height, 
@@ -80,7 +80,7 @@ font_init(Font_t *font, u32 rows_num, u32 cols_num, u32 sym_width, u32 sym_heigh
  * @param y BL corner y coordinate of the string.
  * @param size Size of the string (font size).
  * @param color Color of the string.
- * @param render_buffer Pointer to the Render_buffer structure.
+ * @param render Pointer to the Render structure.
  */
 void 
 font_draw_string(Font_t *font, char *str, s32 str_max_width, u32 x, u32 y, 
