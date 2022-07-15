@@ -11,10 +11,10 @@
 #ifndef RENDER_H_
 #define RENDER_H_
 
-/* Standard includes: */
+/* Standard library includes: */
 #include <windows.h>
 
-/* Program includes: */
+/* Game engine includes: */
 #include <utils.h>
 #include <image.h>
 

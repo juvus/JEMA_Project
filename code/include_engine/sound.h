@@ -70,6 +70,7 @@ sound_destructor(Sound_t *sound);
  * @param file Pointer to the File structure of loaded wav file.
  */
 void
+/* TODO: sound_init */
 sound_uncompress_wav(Sound_t *sound, File_t *file);
 
 /**

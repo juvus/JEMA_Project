@@ -47,7 +47,4 @@ check_collision(V2_f32_t *BL_mv, V2_f32_t *UR_mv, V2_f32_t *BL_st, V2_f32_t *UR_
 void 
 swap_V2_u32(V2_u32_t *vertix_1, V2_u32_t *vertix_2);
 
-
-
-
 #endif //HELPER_FUNCTIONS_H_

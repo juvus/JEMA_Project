@@ -58,4 +58,3 @@ b32
 file_write_to_disc(File_t *file, char *file_path);
 
 #endif // FILE_IO_H_
-

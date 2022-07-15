@@ -2,6 +2,10 @@
 /* Header file for the game audio_buffer class                                    */
 /*================================================================================*/
 
+/* TODO: Sound_buffer => Audio */
+
+
+
 #ifndef SOUND_BUFFER_H_
 #define SOUND_BUFFER_H_
 

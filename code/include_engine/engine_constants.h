@@ -23,10 +23,10 @@ const u32 FONT_SYM_WIDTH = 6;  /* Symbol width in pixels. */
 const u32 FONT_SYM_HEIGHT = 7;  /* Symbol height in pixels. */
 
 /* Debug console constants. */
-const u32 DCONSOLE_MESSAGES = 10;  /* Amount of the debuf messages in debug console */
-const u32 DCONSOLE_BKG_COLOR = 0xffffff;  /* Background color of the debug console */
-const u32 DCONSOLE_BRD_COLOR = 0xb4b4b4;  /* Console boarders color */
-const u32 DCONSOLE_MARGINS = 10;  /* Top, left, bottom and right margins */
-const u32 DCONSOLE_MAX_MSG_LENGTH = 100;  /* Maximum message length */
+const u32 DCONSOLE_MESSAGES = 10;  /* Amount of the debuf messages in debug console. */
+const u32 DCONSOLE_BKG_COLOR = 0xffffff;  /* Background color of the debug console. */
+const u32 DCONSOLE_BRD_COLOR = 0xb4b4b4;  /* Console boarders color. */
+const u32 DCONSOLE_MARGINS = 10;  /* Top, left, bottom and right margins. */
+const u32 DCONSOLE_MAX_MSG_LENGTH = 100;  /* Maximum message length. */
 
 #endif //GANE_ENGINE_CONSTANTS_H_

@@ -10,13 +10,13 @@
 
 #define _USE_MATH_DEFINES
 
-/* Standard includes: */
+/* Standard library includes: */
 #include <windows.h>
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 
-/* Program includes: */
+/* Game engine includes: */
 #include <render.h>
 #include <utils.h>
 #include <image.h>

@@ -134,10 +134,7 @@ game_simulate_tick(Game_t *game, Keyboard_Input_t *keyboard_input,
 
     /* State for the game initialization procedure. */
     case GST_INITIALIZATION:
-    {   
-        /* Seed the random numbers. */
-        srand(time(NULL));      
-               
+    {          
         /* Prepare the font to use in the game. */
         font_init(font, img_font);
         
@@ -168,7 +165,7 @@ game_simulate_tick(Game_t *game, Keyboard_Input_t *keyboard_input,
         box_x = 100;
         box_y = 100;
 
-
+        /* NOTE: random randomize here. */
 
 
 
