@@ -17,9 +17,11 @@
 
 /**
  * @brief Randomization of the random number generator.
+ * @param rnd_flag Randomization flag for the seed.
+ * @param seed Value of the seed (ignored when rnd_flag = true).
  */
 void
-random_randomize(void);
+random_randomize(b32 rnd_flag, u32 seed);
 
 /**
  * @brief Generation of the random number in range [0.0, 1.0].

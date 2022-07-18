@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <time.h>
+
 #include <string.h>
 
 /* Program includes: */
@@ -72,7 +72,7 @@ u32 box_y;
 void 
 game_simulate_tick(Game_t *game, Keyboard_Input_t *keyboard_input, 
     Mouse_Input_t *mouse_input, Render_Buffer_t *render_buffer, 
-    Sound_buffer_t *sound_buffer)
+    Audio_buffer_t *sound_buffer)
 {   
     //game.dtime = 0.001; //for testing
 

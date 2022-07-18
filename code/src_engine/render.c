@@ -72,9 +72,9 @@ draw_bitmap_extended(Render_t *render, u32 x, u32 y, Image_t* image, u32 scale, 
 Render_t*
 render_constructor(void)
 {
-    Render_t *render = NULL;  /* Pointer to the render. */
-    Render_Buffer_t *buffer = NULL;  /* Pointer to the render buffer. */
-    Triangle_Data_t *triangle_data = NULL;  /* Pointer to the triangle data. */
+    Render_t *render;  /* Pointer to the Render structure. */
+    Render_Buffer_t *buffer;  /* Pointer to the render buffer. */
+    Triangle_Data_t *triangle_data;  /* Pointer to the triangle data. */
 
     /* Allocate the memory for the render buffer object. */
     buffer = (Render_Buffer_t *)malloc(1 * sizeof(Render_Buffer_t));

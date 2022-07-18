@@ -27,7 +27,7 @@ static Game_t game = {0};  /* Game object. */
 static Render_t *render;  /* Render for the whole window bitmap. */
 static Keyboard_Input_t keyboard_input = {0};  /* Structure storing the keyboard input. */
 static Mouse_Input_t mouse_input = {0};  /* Structure storing the mouse input. */
-static Sound_buffer_t sound_buffer;  /* Buffer for the audio stream. */
+static Audio_buffer_t sound_buffer;  /* Buffer for the audio stream. */
 static HWND window;  /* Handle to the window. */
 
 /* Static functions declaration */

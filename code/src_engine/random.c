@@ -21,10 +21,11 @@
 #include <utils.h>
 
 void
-random_randomize(void)
+random_randomize(b32 rnd_flag, u32 seed)
 {
     /* Seed the random numbers. */
-    srand((unsigned int)time(NULL));      
+    if (rnd_flag) srand((unsigned int)time(NULL));    
+    if (!rnd_flag) srand((unsigned int)seed);
 }
 
 f32
@@ -42,7 +43,8 @@ random_range_u32(u32 low_bnd, u32 high_bnd)
     f32 tmp_f32;  /* Temporary f32 number. */
     u32 result;  /* Returning random u32 number in range [low_bnd, hi_bnd]. */
     
-    /* Getting the random number from the uniform distribution. */
+    /* Getting the random number. Different offset are required to achieve the 
+    uniformity of the dustribution. */
     assert(low_bnd <= high_bnd);
     tmp_f32 = random_range_f32((f32)low_bnd + 0.5f, (f32)high_bnd + 1.5f);
     tmp_f32 = roundf(tmp_f32);

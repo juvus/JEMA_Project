@@ -19,7 +19,7 @@
 typedef struct Keyboard_Input Keyboard_Input_t;
 typedef struct Mouse_Input Mouse_Input_t;
 typedef struct Render_Buffer Render_Buffer_t;
-typedef struct Sound_buffer Sound_buffer_t;
+typedef struct Audio_buffer Audio_buffer_t;
 
 /**
  * @brief Enumerator for different states of the game. 
@@ -74,7 +74,7 @@ typedef struct Game Game_t;
 void 
 game_simulate_tick(Game_t *game, Keyboard_Input_t *keyboard_input, 
     Mouse_Input_t *mouse_input, Render_Buffer_t *render_buffer,
-    Sound_buffer_t *sound_buffer);
+    Audio_buffer_t *sound_buffer);
 
 /**
  * @brief Calculation of the game delta time.
