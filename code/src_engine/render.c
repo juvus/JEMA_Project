@@ -182,9 +182,9 @@ render_clear_screen(Render_t *render, Color_t *color)
     u32 *pixel;  /* Pointer to a pixel in a bitmap */
     u32 x, y;  /* Coordinates of a pixel */
 
-    pitch = render->width * 4;
-    width = render->width;
-    height = render->height;
+    pitch = render->buffer->width * 4;
+    width = render->buffer->width;
+    height = render->buffer->height;
     row = (u8*)render->buffer->bitmap_memory;
 
     /* Procedure to fill the pixeld in optimized way. */
@@ -207,7 +207,7 @@ render_set_pixel_color(Render_t *render, u32 x, u32 y, Color_t *color)
     
     /* Set color of a pixel with desired coordinates. */
     pixel = (u32*)render->buffer->bitmap_memory;
-    *(pixel + x + render->width * y) = color->color;    
+    *(pixel + x + render->buffer->width * y) = color->color;
 }
 
 void
@@ -217,7 +217,7 @@ render_get_pixel_color(Render_t *render, u32 x, u32 y, Color_t *color)
     
     /* Get color of a pixel with desired coordinates. */
     pixel = (u32*)render->buffer->bitmap_memory; 
-    color->color = *(pixel + x + render->width * y);
+    color->color = *(pixel + x + render->buffer->width * y);
 }
 
 void
@@ -253,7 +253,7 @@ render_draw_hor_line(Render_t *render, u32 x0, u32 y0, u32 length, u32 width, Co
     {
         for (y = y0; y < (y0 + width); ++y)
         {
-            *(pixel + x + render->width * y) = color->color;
+            *(pixel + x + render->buffer->width * y) = color->color;
         }
     }
 }
@@ -271,7 +271,7 @@ render_draw_ver_line(Render_t *render, u32 x0, u32 y0, u32 length, u32 width, Co
     {
         for (x = x0; x < (x0 + width); ++x)
         {
-            *(pixel + x + render->width * y) = color->color;
+            *(pixel + x + render->buffer->width * y) = color->color;
         }
     }
 }
@@ -344,7 +344,7 @@ draw_line_extended(Render_t *render, V2_u32_t v0, V2_u32_t v1, Color_t *color,
             (*SX_i)++;
         }
 
-        *(pixel + x + render->width * y) = color->color;
+        *(pixel + x + render->buffer->width * y) = color->color;
     }
     (*SX_i)--;
 }
@@ -362,7 +362,7 @@ render_draw_rect(Render_t *render, u32 x0, u32 y0, u32 width, u32 height, Color_
     {
         for (x = x0; x < width + x0; x++)
         {
-            *(pixel + x + render->width * y) = color->color;
+            *(pixel + x + render->buffer->width * y) = color->color;
         }
     }
 }

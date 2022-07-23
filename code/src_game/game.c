@@ -57,7 +57,6 @@ game_constructor(void)
 
     /* Allocate the memory for the audio object. */
     game = (Game_t *)malloc(1 * sizeof(Game_t));
-
     return game;
 }
 
