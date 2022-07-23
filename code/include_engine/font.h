@@ -17,7 +17,7 @@
 /* Predefined structures: */
 typedef struct Render Render_t;
 typedef struct Image Image_t;
-typedef struct Color Colot_t;
+typedef struct Color Color_t;
 
 /**
  * @brief Structure to store the symbol information. 
@@ -36,10 +36,10 @@ typedef struct Symbol_data Symbol_data_t;
  */
 struct Font
 {
-    u32 rows_num;  /**< Number of rows of symbols in the font image file. */
-    u32 cols_num;  /**< Number of columns of symbols in the font image file. */
-    u32 sym_width;  /**< Symbol width in pixels (6).  */
-    u32 sym_height;  /**< Symbol height in pixels (7). */
+    s32 rows_num;  /**< Number of rows of symbols in the font image file. */
+    s32 cols_num;  /**< Number of columns of symbols in the font image file. */
+    s32 sym_width;  /**< Symbol width in pixels (6).  */
+    s32 sym_height;  /**< Symbol height in pixels (7). */
     Symbol_data_t *symbols_data;  /**< Pointer to the font symbols data. */
 };
 typedef struct Font Font_t;
@@ -68,7 +68,7 @@ font_destructor(Font_t *font);
  * @param img_font Pointer to the image containing the font.
  */
 void 
-font_init(Font_t *font, u32 rows_num, u32 cols_num, u32 sym_width, u32 sym_height, 
+font_init(Font_t *font, s32 rows_num, s32 cols_num, s32 sym_width, s32 sym_height, 
     Image_t *img_font);
 
 /**

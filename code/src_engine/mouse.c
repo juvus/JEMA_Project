@@ -33,7 +33,7 @@ mouse_destructor(Mouse_t *mouse)
 }
 
 void
-mouse_input_prepare_input(Mouse_t *mouse, Render_t *render)
+mouse_prepare_input(Mouse_t *mouse, Render_t *render)
 {
     mouse->cursor.x = mouse->raw_cursor.x;
     mouse->cursor.y = render->height - mouse->raw_cursor.y;

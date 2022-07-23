@@ -69,6 +69,10 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
         dbg_error("%s", "Windows class was not registered correctly!");
     }
 
+    game = game_constructor();
+    game_init(game, GST_MEMORY_ALLOCATION, GM_NORMAL);
+    game->is_running = true;
+
     /* Create a window and return a window handle. */
     HWND window;
     DWORD dwStyle = WS_VISIBLE | WS_OVERLAPPEDWINDOW;
@@ -83,12 +87,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
 
     /* Preparations for a message processing loop. */
     MSG message;
-    BOOL message_result;
-
-    game = game_constructor();
-    game_init(game, GST_MEMORY_ALLOCATION, GM_NORMAL);
-    game->is_running = true;
-
+    
     /* Starting a message processing loop. */
     while (game->is_running)
     {

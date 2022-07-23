@@ -16,9 +16,9 @@
 
 /* Game engine includes: */
 #include <utils.h>
-#include <image.h>
 
 /* Predefined structures: */
+typedef struct Image Image_t;
 typedef struct Color Color_t;
 typedef struct Game Game_t;
 

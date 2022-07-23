@@ -71,8 +71,8 @@ keyboard_process_key(Keyboard_t *keyboard, u32 vk_code, Key_Type_t key)
     b32 was_down = keyboard->temp_key_was_down;
     b32 is_down = keyboard->temp_key_is_down;
     
-    b32 is_pressed;  /* Flag showing if key is pressed right now or not. */
-    b32 process_flag;  /* Flag showing if the imput from key requires processing. */
+    b32 is_pressed = false;  /* Flag showing if key is pressed right now or not. */
+    b32 process_flag = false;  /* Flag showing if the imput from key requires processing. */
     
     if (temp_vk_code == vk_code)
     {    

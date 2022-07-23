@@ -18,6 +18,7 @@
 #include <game_worker.h>
 #include <keyboard.h>
 #include <mouse.h>
+#include <render.h>
 #include <utils.h>
 
 Game_Worker_t*
@@ -50,7 +51,7 @@ game_worker_init(Game_Worker_t *game_worker, Game_t *game, Keyboard_t *keyboard,
 }
 
 DWORD WINAPI 
-audio_worker_proc(void *game_worker)
+game_worker_proc(void *game_worker)
 {
     Game_t *game;  /* Pointer to the Game structure. */
     Keyboard_t *keyboard;  /* Pointer to the Keyboard structure. */

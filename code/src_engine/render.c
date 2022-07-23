@@ -617,13 +617,13 @@ draw_bitmap_extended(Render_t *render, u32 x, u32 y, Image_t* image, u32 scale, 
         for (j = 0; j < image->width; ++j)
         {
             /* Get the color of the pixel. */
-            color_set_from_u32_rgba(&color, *(image->data + index));
+            color_set_from_image_color_data(&color, *(image->data + index));
 
             /* Check the alpha channel. */
             if (color.alpha != 0x00)
             {
                 /* Use color from loaded bitmap or from the mask color. */
-                if (is_mask) color.color = mask_color;
+                if (is_mask) color.color = mask_color->color;
                 
                 /* Draw scaled pixel */
                 for (n = 0; n < scale; ++n)

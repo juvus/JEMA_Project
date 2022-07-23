@@ -26,10 +26,10 @@ struct Color
         u8 components[4];  /**< Array of 8 bit color components. */
         struct
         {
-            u8 alpha;  /**< Alpha channel of the color. */
-            u8 red;  /**< Red component of the color. */
-            u8 green;  /**< Green component of the color. */
             u8 blue;  /**< Blue component of the color. */
+            u8 green;  /**< Green component of the color. */
+            u8 red;  /**< Red component of the color. */
+            u8 alpha;  /**< Alpha channel of the color. */
         };
     };
 };
@@ -50,12 +50,12 @@ void
 color_destructor(Color_t *color);
 
 /**
- * @brief Setting color from the u32 integer representing a color in RGBA format.
+ * @brief Setting color from the u32 image color data.
  * @param color Pointer to the Color structure.
- * @param color_rgba_u32 Color in the RGBA format as u32 integer.
+ * @param image_color_data Color of the pixel taken from the loaded image.
  */
 void
-color_set_from_u32_rgba(Color_t *color, u32 color_rgba_u32);
+color_set_from_image_color_data(Color_t *color, u32 image_color_data);
 
 /**
  * @brief Setting color from the set of u8 integers representing color components.

@@ -39,15 +39,15 @@ font_destructor(Font_t *font)
 }
 
 void
-font_init(Font_t *font, u32 rows_num, u32 cols_num, u32 sym_width, u32 sym_height, 
+font_init(Font_t *font, s32 rows_num, s32 cols_num, s32 sym_width, s32 sym_height, 
     Image_t *img_font)
 {
     Symbol_data_t *symbols_data;  /* Pointer to the symbols data array. */
     Color_t color;  /* Color of the symbols pixels in font image. */
-    u32 win1251_code;  /* Current Win1251 code of the reading symbol. */
-    u32 i_0, j_0;  /* Pixel coordinates of the BL corner of the symbol. */
-    u32 i, j;  /* Coordinates of the pixels in downloaded image. */
-    u32 sym_i, sym_j;  /* Coordinates of symbols in the symbols table in font_img. */
+    s32 win1251_code;  /* Current Win1251 code of the reading symbol. */
+    s32 i_0, j_0;  /* Pixel coordinates of the BL corner of the symbol. */
+    s32 i, j;  /* Coordinates of the pixels in downloaded image. */
+    s32 sym_i, sym_j;  /* Coordinates of symbols in the symbols table in font_img. */
     u32 index;  /* Index of the point in font_img pixel array. */
     u32 p;  /* Index of the symbol_array in font_symbols. */
     u32 width_max;  /* Maximum width of the current symbol. */
@@ -96,7 +96,7 @@ font_init(Font_t *font, u32 rows_num, u32 cols_num, u32 sym_width, u32 sym_heigh
                 {
                     /* Define the color of the pixel in the font image. */
                     index = i * img_font->width + j;
-                    color_set_from_u32_rgba(&color, *(img_font->data + index));
+                    color_set_from_image_color_data(&color, *(img_font->data + index));
 
                     if (color.color == black_color)
                     {

@@ -10,7 +10,6 @@
 
 /* Standard library includes: */
 #include <string.h>
-#include <assert.h>
 #include <stdlib.h>
 
 /* Game engine includes: */
@@ -19,12 +18,12 @@
 #include <color.h>
 #include <render.h>
 #include <font.h>
+#include <dbg.h>
 
 DConsole_t*
 dconsole_constructor(u32 messages_num, u32 max_msg_length)
 {
     DConsole_t *dconsole;  /* Pointer to the debug console. */
-    Message_t *messages;  /* Pointer to the console messages array. */ 
     char *tmp_msg_str;  /* Temporary string. */
     u32 i;  /* Temporary counter. */
     
@@ -33,7 +32,7 @@ dconsole_constructor(u32 messages_num, u32 max_msg_length)
     
     /* Allocate the memory for the array of messages. */
     dconsole->messages_num = messages_num;
-    messages = (Message_t *)calloc(messages_num, sizeof(Message_t));
+    dconsole->messages = (Message_t *)calloc(messages_num, sizeof(Message_t));
 
     /* Allocate the memory for message strings. */
     dconsole->max_msg_length = max_msg_length;
@@ -90,7 +89,10 @@ dconsole_add_message(DConsole_t *dconsole, char *msg_str, Color_t *color)
     u32 index;  /* Temporary index of the message string. */
 
     /* Length of the message string should be with correct size. */
-    assert(strlen(msg_str) <= dconsole->max_msg_length);
+    if (strlen(msg_str) > dconsole->max_msg_length)
+    {
+        dbg_error("%s", "Overflow maximum message length.");
+    }
 
     index = dconsole->message_index;
     dconsole->messages[index].color = color;

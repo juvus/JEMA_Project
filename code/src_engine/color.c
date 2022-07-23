@@ -34,13 +34,13 @@ color_destructor(Color_t *color)
 }
 
 void
-color_set_from_u32_rgba(Color_t *color, u32 color_rgba_u32)
+color_set_from_image_color_data(Color_t *color, u32 image_color_data)
 {
     /* Get components from the rgba color and set to Color structure. */
-    color->red = (u8)((color_rgba_u32 & 0xff000000) >> 24);  /* Color red component. */
-    color->green = (u8)((color_rgba_u32 & 0x00ff0000) >> 16);  /* Color green component. */
-    color->blue = (u8)((color_rgba_u32 & 0x0000ff00) >> 8);  /* Color blue component. */
-    color->alpha = (u8)((color_rgba_u32 & 0x000000ff) >> 0);  /* Color alpha component. */
+    color->alpha = (u8)((image_color_data & 0xff000000) >> 24);  /* Color alpha component. */
+    color->blue = (u8)((image_color_data & 0x00ff0000) >> 16);  /* Color blue component. */
+    color->green = (u8)((image_color_data & 0x0000ff00) >> 8);  /* Color green component. */
+    color->red = (u8)((image_color_data & 0x000000ff) >> 0);  /* Color red component. */
 }
 
 void

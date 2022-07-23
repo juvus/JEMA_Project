@@ -114,7 +114,7 @@ dconsole_clear_console(DConsole_t *dconsole, Render_t *render);
  * @param render Pointer to the Render structure.
  */
 void 
-dconsole_hide(DConsole_t *dconsole, Render_Buffer_t *render);
+dconsole_hide(DConsole_t *dconsole, Render_t *render);
 
 /**
  * @brief Render the debug console with all messages in the game window. 

@@ -5,7 +5,6 @@
  * @brief Definition of the different helper functions.
  * @version 0.2
  * @date 2022-01-10
- * @copyright JuvuSoft (c) 2022
  * ================================================================================
  */
 
@@ -42,6 +41,7 @@ check_collision(V2_f32_t *BL_mv, V2_f32_t *UR_mv, V2_f32_t *BL_st, V2_f32_t *UR_
     f32 height_mv = UR_mv->y - BL_mv->y;
     f32 width_st = UR_st->x - BL_st->x;
     f32 height_st = UR_st->y - BL_st->y;
+    f32 M_PI_f32 = (f32)M_PI;
 
     /* Additional parameters. */
     b32 is_collision = false;
@@ -76,18 +76,18 @@ check_collision(V2_f32_t *BL_mv, V2_f32_t *UR_mv, V2_f32_t *BL_st, V2_f32_t *UR_
 
         if (alpha > 0) 
             if (xc_mv < xc_st) 
-                alpha = alpha + M_PI;
+                alpha = alpha + M_PI_f32;
         else 
             if (xc_mv > xc_st) 
-                alpha = alpha + 2.0f * M_PI;
+                alpha = alpha + 2.0f * M_PI_f32;
             else 
-                alpha = alpha + M_PI;
+                alpha = alpha + M_PI_f32;
 
         /* Calculate the critical values of angles. */
         UR_angle = atanf((height_st + height_mv) / (width_st + width_mv));
-        DR_angle = 2 * M_PI - UR_angle;
-        UL_angle = M_PI - UR_angle;
-        DL_angle = UR_angle + M_PI;
+        DR_angle = 2 * M_PI_f32 - UR_angle;
+        UL_angle = M_PI_f32 - UR_angle;
+        DL_angle = UR_angle + M_PI_f32;
 
         /* alpha >= DR_angle and alpha < UR_angle. */
         if (alpha >= DR_angle) 

@@ -81,6 +81,7 @@ game_init(Game_t *game, Game_State_t game_state, Game_Mode_t game_mode)
 void 
 game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t *render)
 {   
+    UNUSED(mouse);
     //game.dtime = 0.001f;  // For testing purposes.
 
     /* Processing of the game states. */
@@ -106,7 +107,7 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
     case GST_LOAD_RESOURCES:
     {
         /* Loading different resource data for IMAGES. */
-        file_load_to_memory(gres->files[GF_FONT_PNG], "..\\data\\font.png");
+        file_load_to_memory(gres->files[GF_FONT_PNG], "..\\data\\font_Win1251.png");
         image_init(gres->images[GI_FONT], gres->files[GF_FONT_PNG]);
         file_destructor(gres->files[GF_FONT_PNG]);
 
@@ -127,21 +128,21 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
     case GST_INITIALIZATION:
     {          
         /* Initialization of the game colors. */
-        gres->colors[GC_WHITE]->color = 0x00ffffff;
-        gres->colors[GC_BLACK]->color = 0x00000000;
-        gres->colors[GC_RED]->color = 0x00ff0000;
-        gres->colors[GC_GREEN]->color = 0x0000ff00;
-        gres->colors[GC_BLUE]->color = 0x000000ff;
+        gres->colors[GC_WHITE]->color = 0xffffffff;
+        gres->colors[GC_BLACK]->color = 0xff000000;
+        gres->colors[GC_RED]->color = 0xffff0000;
+        gres->colors[GC_GREEN]->color = 0xff00ff00;
+        gres->colors[GC_BLUE]->color = 0xff0000ff;
         gres->colors[GC_DCONSOLE_BKG]->color = DCONSOLE_BKG_COLOR;
         gres->colors[GC_DCONSOLE_BRD]->color = DCONSOLE_BRD_COLOR;
         gres->colors[GC_BKG_COLOR]->color = BKG_COLOR;
         
         /* Prepare the font to use in the game. */
-        font_init(font, FONT_ROWS_NUM, FONT_COLS_NUM, FONT_SYM_WIDTH, FONT_SYM_HEIGHT,
-            gres->images[GI_FONT]);
+        font_init(font, (s32)FONT_ROWS_NUM, (s32)FONT_COLS_NUM, (s32)FONT_SYM_WIDTH, 
+            (s32)FONT_SYM_HEIGHT, gres->images[GI_FONT]);
         
         /* Initialization of the debuf console. */
-        dconsole_init(dconsole, 100, 50, 100, gres->colors[GC_DCONSOLE_BKG], 
+        dconsole_init(dconsole, 100, 50, 200, gres->colors[GC_DCONSOLE_BKG], 
             gres->colors[GC_DCONSOLE_BRD], DCONSOLE_MARGINS, gres->colors[GC_BKG_COLOR],
             font);
         dconsole_clear_messages(dconsole);
@@ -168,8 +169,8 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
         random_randomize(true, 0);
 
         /* Initialization of the game logic related variables. */
-        box_x = 100;
-        box_y = 100;
+        box_x = 300;
+        box_y = 300;
 
         /* Jump to the next game stage. */
         game->game_state = GST_INIT_RENDER;
@@ -180,7 +181,7 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
     {
         /* Initial render of the game elements. */
         render_clear_screen(render, gres->colors[GC_BKG_COLOR]);
-        render_draw_rect(render, box_x, box_y, 200, 200, gres->colors[GC_WHITE]);
+        render_draw_rect(render, box_x, box_y, 100, 100, gres->colors[GC_WHITE]);
         render_draw_bitmap(render, 500, 500, gres->images[GI_SMILE_FACE], 3);
         
         /* Start to play the gaem music music. */
@@ -197,11 +198,11 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
         /* Clear all previous debug console messages. */
         dconsole_clear_messages(dconsole);
         
-        if (keyboard_is_key_pressed_discretely(keyboard, KEY_UP))
+        if (keyboard_is_key_pressed_discretely(keyboard, KEY_RIGHT))
         {
-            render_draw_rect(render, box_x, box_y, 200, 200, gres->colors[GC_BKG_COLOR]);
-            box_x += 50;
-            render_draw_rect(render, box_x, box_y, 200, 200, gres->colors[GC_WHITE]);
+            render_draw_rect(render, box_x, box_y, 100, 100, gres->colors[GC_BKG_COLOR]);
+            box_x += 5;
+            render_draw_rect(render, box_x, box_y, 100, 100, gres->colors[GC_WHITE]);
         }
         
         dconsole_add_message(dconsole, "Test red string!", gres->colors[GC_RED]);

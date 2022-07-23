@@ -104,7 +104,7 @@ audio_init(Audio_t *audio, HWND window)
     bytes_per_sample = channels_num * sizeof(s16);
     bits_per_sample_for_channel = 8 * bytes_per_sample / channels_num; /* 16 bits. */
     buffer_time = 1;  /* Seconds. */
-    temp_array_time = 0.1;  /* Seconds. */
+    temp_array_time = 0.1f;  /* Seconds. */
     size = buffer_time * samples_per_second * bytes_per_sample;
 
     /* Load dll library. */
@@ -144,7 +144,7 @@ audio_init(Audio_t *audio, HWND window)
             wave_format.wFormatTag = WAVE_FORMAT_PCM;
             wave_format.nChannels = (WORD)channels_num;
             wave_format.nSamplesPerSec = samples_per_second;
-            wave_format.wBitsPerSample = bits_per_sample_for_channel;
+            wave_format.wBitsPerSample = (WORD)bits_per_sample_for_channel;
             wave_format.nBlockAlign = wave_format.nChannels * wave_format.wBitsPerSample / 8;            
             wave_format.nAvgBytesPerSec = wave_format.nSamplesPerSec * wave_format.nBlockAlign;
 

@@ -63,7 +63,7 @@ file_load_to_memory(File_t *file, char *file_path)
     file->data = VirtualAlloc(0, file->size, MEM_COMMIT|MEM_RESERVE, PAGE_READWRITE);
     
     /* Read the file to the memory. */
-    if ((ReadFile(file_handle, file->data, file->size, &bytes_read, 0))
+    if ((ReadFile(file_handle, file->data, (DWORD)file->size, &bytes_read, 0))
         && (file->size == (u64)bytes_read))
     {
         /* Successful file reading. */
@@ -80,5 +80,8 @@ b32
 file_write_to_disc(File_t *file, char *file_path)
 {
     /* TODO: Make definition of this method later on. */
-    return true;
+   UNUSED(file);
+   UNUSED(file_path);
+   
+   return true;
 }

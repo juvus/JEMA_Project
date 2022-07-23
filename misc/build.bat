@@ -11,12 +11,34 @@ pushd ..\build
 :: -FC Show full passes of the possible errors.
 :: -W4 4th level of warnings.
 :: -WX Treat warnings as errors.
+:: /wd Disable warnings.
+::      C4201 - Unnamed structures and enumerators.
+::      C4189 - Unused local variable.
 
-cl -FC -Zi -W4 -WX /I ..\code\include ..\code\src\win32_platform.c ..\code\src\render.c ^
-    ..\code\src\game.c ..\code\src\keyboard_input.c ..\code\src\mouse_input.c ^
-    ..\code\src\sound.c ..\code\src\sound_buffer.c ..\code\src\wav_uncompressor.c ^
-    ..\code\src\image.c ..\code\src\font.c ..\code\src\debug_console.c ^
-    ..\code\src\file_io.c ..\code\src\helper_functions.c user32.lib gdi32.lib
+cl -FC -Zi -W4 -WX ^
+    /Fe: Game ^
+    /wd4201 /wd4189 ^
+    /I ..\code\include_engine ^
+    /I ..\code\include_game ^
+    ..\code\src_engine\audio_worker.c ^
+    ..\code\src_engine\audio.c ^
+    ..\code\src_engine\color.c ^
+    ..\code\src_engine\debug_console.c ^
+    ..\code\src_engine\file_io.c ^
+    ..\code\src_engine\font.c ^
+    ..\code\src_engine\helper_functions.c ^
+    ..\code\src_engine\image.c ^
+    ..\code\src_engine\keyboard.c ^
+    ..\code\src_engine\mouse.c ^
+    ..\code\src_engine\random.c ^
+    ..\code\src_engine\render.c ^
+    ..\code\src_engine\sound.c ^
+    ..\code\src_engine\wav_uncompressor.c ^
+    ..\code\src_engine\win32_platform.c ^
+    ..\code\src_game\game_resourses.c ^
+    ..\code\src_game\game_worker.c ^
+    ..\code\src_game\game.c ^
+    user32.lib gdi32.lib
 
 :: pop the directory 
 popd

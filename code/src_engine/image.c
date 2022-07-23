@@ -53,7 +53,7 @@ image_init(Image_t *image, File_t *file)
     int img_height;  /* Height of the uncompressed image. */
     int img_channels;  /* Number of channels of the uncompressed image. */
 
-    file_data = file->data;
+    file_data = (char *)file->data;
     file_size = (int)file->size;
 
     /* Uncompress data from loaded png file to the image. */

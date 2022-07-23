@@ -65,10 +65,11 @@ void
 wav_uncompressor_uncompress(Sound_t *sound, File_t* file)
 {       
     Wav_header_t *header = (Wav_header_t*)file->data;
-    Wav_format_t *format;
+    Wav_format_t *format = NULL;
     assert(header->riff_id == Wav_chunk_id_riff);
     assert(header->wave_id == Wav_chunk_id_wave);
     
+
     s16* sample_data = 0;
     Riff_iterator_t iterator = {0};
     
