@@ -12,14 +12,20 @@
 #ifndef GAME_H_
 #define GAME_H_
 
-/* Program includes: */
+/* Standard library includes. */
+#include <windows.h>
+
+/* Game engine includes. */
 #include <utils.h>
 
-/* Predefined structures */
-typedef struct Keyboard_Input Keyboard_Input_t;
-typedef struct Mouse_Input Mouse_Input_t;
-typedef struct Render_Buffer Render_Buffer_t;
-typedef struct Audio_buffer Audio_buffer_t;
+/* Predefined structures. */
+typedef struct Keyboard Keyboard_t;
+typedef struct Mouse Mouse_t;
+typedef struct Render Render_t;
+typedef struct Audio Audio_t;
+typedef struct Audio_Worker_Data Audio_Worker_Data_t;
+typedef struct Font Font_t;
+typedef struct DConsole DConsole_t;
 
 /**
  * @brief Enumerator for different states of the game. 
@@ -32,7 +38,7 @@ enum Game_State
     GST_INIT_RENDER,  /**< State for the initial render procedure. */
     GST_PROCESS_GAME_TICK,  /**< State for processing game ticks. */
     GST_FINALIZATION,  /**< State for finalization procedure. */
-    GST_MEMORY_FREE   /**< State for free the allocated dynamic memory. */
+    GST_RELEASE_MEMORY   /**< State for free the allocated dynamic memory. */
 };
 typedef enum Game_State Game_State_t;
 
@@ -64,17 +70,35 @@ struct Game
 typedef struct Game Game_t; 
 
 /**
+ * @brief Constructor of the Game class.
+ * @return Game_t* Pointer to the Game structure. 
+ */
+Game_t*
+game_constructor(void);
+
+/**
+ * @brief Destructor of the Game object.
+ * @param game Pointer to the Game structure.
+ */
+void
+game_destructor(Game_t *game);
+
+/**
+ * @brief Initialization of the Game object.
+ * @param game Pointer to the Game structure.
+ */
+void
+game_init(Game_t *game, Game_State_t game_state, Game_Mode_t game_mode);
+
+/**
  * @brief Simulation of a single game tick.
  * @param game Pointer to the Game structure.
- * @param keyboard_input Pointer to the Keyboard_Input structure.
- * @param mouse_input  Pointer to the Mouse_Input structure. 
- * @param render_buffer Pointer to the Render_Buffer structure.
- * @param sound_buffer Pointer to the Sound_Buffer structure.
+ * @param keyboard Pointer to the Keyboard structure.
+ * @param mouse  Pointer to the Mouse structure. 
+ * @param render Pointer to the Render structure.
  */
-void 
-game_simulate_tick(Game_t *game, Keyboard_Input_t *keyboard_input, 
-    Mouse_Input_t *mouse_input, Render_Buffer_t *render_buffer,
-    Audio_buffer_t *sound_buffer);
+void
+game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t *render);
 
 /**
  * @brief Calculation of the game delta time.

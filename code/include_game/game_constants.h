@@ -15,6 +15,6 @@
 #include <utils.h>
 
 /* Colors. */
-const u32 BKG_COLOR = 0xadcfff;
+const u32 BKG_COLOR = 0x00adcfff;
 
 #endif //GANE_CONSTANTS_H_

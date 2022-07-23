@@ -12,10 +12,10 @@
 #ifndef SOUND_H_
 #define SOUND_H_
 
-/* Program includes: */
+/* Game engine includes. */
 #include <utils.h>
 
-/* Predefined structures: */
+/* Predefined structures. */
 typedef struct File File_t;
 
 /**
@@ -65,13 +65,13 @@ void
 sound_destructor(Sound_t *sound);
 
 /**
- * @brief Uncompress wav file into Sound data suitable for processing.
+ * @brief Initioalization of the sound. Uncompression of the wav file into Sound data
+ * suitable for further processing.
  * @param sound Pointer to the Sound structure.
  * @param file Pointer to the File structure of loaded wav file.
  */
 void
-/* TODO: sound_init */
-sound_uncompress_wav(Sound_t *sound, File_t *file);
+sound_init(Sound_t *sound, File_t *file);
 
 /**
  * @brief Preparation of the empty sound.

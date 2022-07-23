@@ -5,7 +5,6 @@
  * @brief Definition of the Wav_uncompressor class methods.
  * @version 0.2
  * @date 2022-01-09
- * @copyright Copyright (c) 2022
  * ================================================================================ 
  */
 

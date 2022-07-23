@@ -9,21 +9,22 @@
  * ================================================================================
  */
 
-/* Standard includes: */
+/* Standard library includes. */
 #include <stdlib.h>
 #include <math.h>
 
-/* Program includes: */
+/* Game engine includes. */
+#include <utils.h>
 #include <sound.h>
 #include <file_io.h>
 #include <utils.h>
-#include <sound_buffer.h>
+#include <audio.h>
 #include <wav_uncompressor.h>
 
 Sound_t*
 sound_constructor(void)
 {
-    Sound_t *sound = NULL;
+    Sound_t *sound;  /* Pointer to the Sound structure. */
 
     /* Allocation the memory for the image object. */
     sound = (Sound_t*)malloc(1 * sizeof(Sound_t));
@@ -40,7 +41,7 @@ sound_destructor(Sound_t *sound)
 void
 sound_prepare_empty_sound(Sound_t *sound)
 {
-    /* Parameters of empty sound [0.1 sec - 4410 samples]: */
+    /* Parameters of empty sound [0.1 sec - 4410 samples]. */
     sound->sample_count = 4410; /* [samples] */
     sound->channels_num = 2; /* [channels] */ 
     sound->samples_data_size = 17640; /* [bytes] */
@@ -57,7 +58,7 @@ sound_prepare_empty_sound(Sound_t *sound)
 }
 
 void
-sound_uncompress_wav(Sound_t *sound, File_t *file)
+sound_init(Sound_t *sound, File_t *file)
 {
     wav_uncompressor_uncompress(sound, file);
 }

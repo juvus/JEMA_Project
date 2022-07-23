@@ -2,9 +2,10 @@
  * ================================================================================
  * @file render.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Definition of functions related to the software rendering. 
+ * @brief Definition of functions necessary for the work with the software 
+ * rendering. 
  * @version 0.2
- * @date 2022-05-26
+ * @date 2022-07-19
  * ================================================================================ 
  */
 
@@ -18,6 +19,7 @@
 
 /* Game engine includes: */
 #include <render.h>
+#include <game.h>
 #include <utils.h>
 #include <image.h>
 #include <helper_functions.h>
@@ -149,6 +151,25 @@ render_init(Render_t *render, HWND window)
     render->bitmap_info.bmiHeader.biPlanes = 1;
     render->bitmap_info.bmiHeader.biBitCount = 32;
     render->bitmap_info.bmiHeader.biCompression = BI_RGB;
+}
+
+void 
+render_resize_window(Render_t *render)
+{    
+    RECT rect;  /* Rectangle for holding the info about the graphic window. */
+
+    GetClientRect(render->window, &rect);
+    render->width = (u32)(rect.right - rect.left);
+    render->height = (u32)(rect.bottom - rect.top);
+}
+
+void 
+render_update_window(Render_t *render)
+{
+    /* Render the calculated bitmap */
+    StretchDIBits(render->hdc, 0, 0, (int)render->width, (int)render->height, 0, 0,
+    (int)render->buffer->width, (int)render->buffer->height, render->buffer->bitmap_memory,
+    &render->bitmap_info, DIB_RGB_COLORS, SRCCOPY);
 }
 
 void

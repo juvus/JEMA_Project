@@ -236,7 +236,7 @@ audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num)
         &(audio->current_write_cursor));
  
 
-    if (sound_buffer->current_write_cursor >= sound_buffer->border_cursor)
+    if (audio->current_write_cursor >= audio->border_cursor)
     {       
         /* Need to load a new batch of sound samples into the buffer. */
         /* Special case. */
@@ -376,17 +376,13 @@ apply_sound_pan(s16 *sound, u32 sample_count, Sound_Pan_t pan)
     u32 i;  /* Sample index in the sound array. */
     u32 j;  /* s16 element (16 bit) index in the sound array. */ 
     
-
-
-
-    
-    /* Determine the offset (0 for the left channel, 1 for the right channel) */
+    /* Determine the offset (0 for the left channel, 1 for the right channel). */
     offset = (pan == S_PAN_LEFT) ? 1 : 0;
     
     for (i = 0; i < sample_count; i++)
     {
-        /* Calculation of the s16 element index in the array */
-        j = i * 2 + offset;  /* s16 element index of the channel in array */
+        /* Calculation of the s16 element index in the array. */
+        j = i * 2 + offset;  /* s16 element index of the channel in array. */
         sound[j] = 0x0000;
     }
 }
@@ -394,28 +390,32 @@ apply_sound_pan(s16 *sound, u32 sample_count, Sound_Pan_t pan)
 static void 
 apply_sound_volume(s16 *sound, u32 sample_count, f32 volume)
 {
-    /* Function to apply the volume for the sound */
+    u32 i;  /* Sample index in the sound array. */
+    u32 j;  /* s16 element (16 bit) index in the sound array. */
+    u32 offset;  /* Offset of the word index in the array (0 for channel 1; 1 for channel 2). */
+    s32 temp;  /* Temporary s32 variable to hold the sum of two s16 values. */
 
-    u32 i;  /* Sample index in the sound array */
-    u32 j;  /* s16 element (16 bit) index in the sound array */
-    u32 offset;  /* Offset of the word index in the array (0 for channel 1; 1 for channel 2) */
-    s32 temp;  /* Temporary s32 variable to hold the sum of two s16 values */
-
-    for (i = 0; i < sample_count; i++) {
-        for (offset = 0; offset < 2; offset++) {
-            
-            /* Calculation of the s16 element index in the array */
-            j = i * 2 + offset;  /* s16 element index of the channel in array */        
+    for (i = 0; i < sample_count; i++)
+    {
+        for (offset = 0; offset < 2; offset++)
+        {    
+            /* Calculation of the s16 element index in the array. */
+            j = i * 2 + offset;  /* s16 element index of the channel in array. */        
             temp = (s32)(round(sound[j] * volume));  
 
-            if ((temp <= 32767) && (temp >= -32768)) {
-                /* No overflow and underflow cases (most probable) */
+            if ((temp <= 32767) && (temp >= -32768))
+            {
+                /* No overflow and underflow cases (most probable). */
                 sound[j] = (s16)temp;
-            } else if (temp > 32767) {
-                /* Overflow case */
+            }
+            else if (temp > 32767)
+            {
+                /* Overflow case. */
                 sound[j] = 32767;
-            } else {
-                /* Underflow case */
+            } 
+            else
+            {
+                /* Underflow case. */
                 sound[j] = -32768;
             }
         }
@@ -425,28 +425,32 @@ apply_sound_volume(s16 *sound, u32 sample_count, f32 volume)
 static void
 mix_temp_array_to_mix_array(s16 *mix_array, s16 *sound, u32 sample_count)
 {
-    /* Function to mix sound into buffer mix array. Realization of a mixer */
+    u32 i;  /* Sample index in the sound array. */
+    u32 j;  /* s16 element (16 bit) index in the sound array. */ 
+    u32 offset;  /* Offset of the word index in the array (0 for channel 1; 1 for channel 2). */
+    s32 temp;  /* Temporary s32 variable to hold the sum of two s16 values. */
 
-    u32 i;  /* Sample index in the sound array */
-    u32 j;  /* s16 element (16 bit) index in the sound array */ 
-    u32 offset;  /* Offset of the word index in the array (0 for channel 1; 1 for channel 2) */
-    s32 temp;  /* Temporary s32 variable to hold the sum of two s16 values */
-
-    for (i = 0; i < sample_count; i++) {
-        for (offset = 0; offset < 2; offset++) {
-            
-            /* Calculation of the s16 element index in the array */
-            j = i * 2 + offset;  /* s16 element index of the channel in array */        
+    for (i = 0; i < sample_count; i++)
+    {
+        for (offset = 0; offset < 2; offset++)
+        {    
+            /* Calculation of the s16 element index in the array. */
+            j = i * 2 + offset;  /* s16 element index of the channel in array. */        
             temp = (s32)mix_array[j] + (s32)sound[j];
 
-            if ((temp <= 32767) && (temp >= -32768)) {
-                /* No overflow and underflow cases (most probable) */
+            if ((temp <= 32767) && (temp >= -32768))
+            {
+                /* No overflow and underflow cases (most probable). */
                 mix_array[j] = (s16)temp;
-            } else if (temp > 32767) {
-                /* Overflow case */
+            }
+            else if (temp > 32767)
+            {
+                /* Overflow case. */
                 mix_array[j] = 32767;
-            } else {
-                /* Underflow case */
+            }
+            else
+            {
+                /* Underflow case. */
                 mix_array[j] = -32768;
             }
         }

@@ -11,7 +11,7 @@
 #ifndef HELPER_FUNCTIONS_H_
 #define HELPER_FUNCTIONS_H_
 
-/* Game engine includes: */
+/* Game engine includes. */
 #include <utils.h>
 
 /**

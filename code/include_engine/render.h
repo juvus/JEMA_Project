@@ -20,6 +20,7 @@
 
 /* Predefined structures: */
 typedef struct Color Color_t;
+typedef struct Game Game_t;
 
 /**
  * @brief Structure for the render buffer.
@@ -90,6 +91,21 @@ render_destructor(Render_t *render);
  */
 void
 render_init(Render_t *render, HWND window);
+
+/**
+ * @brief Processing the resizing of the game window.
+ * @param render Poiner to the Render structure.
+ * @param game Pointer to the Game structure.
+ */
+void 
+render_resize_window(Render_t *render);
+
+/**
+ * @brief Updating the window by stretching DI bits 
+ * @param render Poiner to the Render structure.
+ */
+void 
+render_update_window(Render_t *render);
 
 /**
  * @brief Clearing the full screen with a background color.
