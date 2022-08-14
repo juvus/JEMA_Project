@@ -14,12 +14,12 @@
 #include <windows.h>
 
 /* Game engine includes: */
-#include <game.h>
-#include <game_worker.h>
-#include <keyboard.h>
-#include <mouse.h>
-#include <render.h>
-#include <utils.h>
+#include "game.h"
+#include "game_worker.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "render.h"
+#include "utils.h"
 
 Game_Worker_t*
 game_worker_constructor(void)

@@ -18,26 +18,26 @@
 #include <string.h>
 
 /* Game engine includes. */
-#include <render.h>
-#include <utils.h>
-#include <keyboard.h>
-#include <mouse.h>
-#include <file_io.h>
-#include <image.h>
-#include <color.h>
-#include <font.h>
-#include <dbg.h>
-#include <debug_console.h>
-#include <sound.h>
-#include <audio.h>
-#include <audio_worker.h>
-#include <engine_constants.h>
-#include <random.h>
+#include "render.h"
+#include "utils.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "file_io.h"
+#include "image.h"
+#include "color.h"
+#include "font.h"
+#include "dbg.h"
+#include "debug_console.h"
+#include "sound.h"
+#include "audio.h"
+#include "audio_worker.h"
+#include "engine_constants.h"
+#include "random.h"
 
 /* Game includes. */
-#include <game.h>
-#include <game_constants.h>
-#include <game_resourses.h>
+#include "game.h"
+#include "game_constants.h"
+#include "game_resourses.h"
 
 /* Objects of the game system. */
 static Audio_t *audio;  /* Game audio. */

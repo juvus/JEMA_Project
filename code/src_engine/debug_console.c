@@ -13,12 +13,12 @@
 #include <stdlib.h>
 
 /* Game engine includes: */
-#include <debug_console.h>
-#include <utils.h>
-#include <color.h>
-#include <render.h>
-#include <font.h>
-#include <dbg.h>
+#include "debug_console.h"
+#include "utils.h"
+#include "color.h"
+#include "render.h"
+#include "font.h"
+#include "dbg.h"
 
 DConsole_t*
 dconsole_constructor(u32 messages_num, u32 max_msg_length)

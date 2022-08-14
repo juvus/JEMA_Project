@@ -13,13 +13,13 @@
 #include <windows.h>
 
 /* Game engine includes. */
-#include <utils.h>
-#include <game.h>
-#include <game_worker.h>
-#include <render.h>
-#include <keyboard.h>
-#include <mouse.h>
-#include <dbg.h>
+#include "utils.h"
+#include "game.h"
+#include "game_worker.h"
+#include "render.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "dbg.h"
 
 /* Static variables: */
 static Game_t *game;  /* Pointer to the Game structure. */

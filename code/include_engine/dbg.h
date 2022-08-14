@@ -13,9 +13,9 @@
 #define DBG_H_
 
 /* Standard library includes: */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
 
 /* Definition of useful debug macros. */
 /* Debug macro. Prints the debug information. */

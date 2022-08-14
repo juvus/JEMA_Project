@@ -12,7 +12,7 @@
 #define GAME_ENGINE_CONSTANTS_H_
 
 /* Game engine includes. */
-#include <utils.h>
+#include "utils.h"
 
 /* Font constants. */
 const u32 FONT_ROWS_NUM = 16;  /* Amount of symbol rows in font image. */

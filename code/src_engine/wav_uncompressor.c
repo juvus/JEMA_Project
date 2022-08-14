@@ -12,10 +12,10 @@
 #include <assert.h>
 
 /* Program includes: */
-#include <wav_uncompressor.h>
-#include <sound.h>
-#include <file_io.h>
-#include <utils.h>
+#include "wav_uncompressor.h"
+#include "sound.h"
+#include "file_io.h"
+#include "utils.h"
 
 static inline Riff_iterator_t
 parse_chunk_at(void *at, void* stop)

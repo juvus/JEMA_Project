@@ -9,14 +9,14 @@
  */
 
 /* Game engine includes: */
-#include <image.h>
-#include <file_io.h>
-#include <utils.h>
+#include "image.h"
+#include "file_io.h"
+#include "utils.h"
 #define STB_IMAGE_IMPLEMENTATION  /* Necessary definition for the stb_image.h. */
 #define STBI_ONLY_PNG  /* Use only PNG images. */
 #define STBI_NO_STDIO  /* Don't use stdio.h. */
 #define STBI_NO_FAILURE_STRINGS  /* Generate no error messages. */
-#include <stb_image.h>  /* single file library stb_image.h. */
+#include "stb_image.h"  /* single file library stb_image.h. */
 
 Image_t*
 image_constructor(void)

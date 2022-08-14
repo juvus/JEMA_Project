@@ -14,12 +14,12 @@
 #include <math.h>
 
 /* Game engine includes. */
-#include <utils.h>
-#include <sound.h>
-#include <file_io.h>
-#include <utils.h>
-#include <audio.h>
-#include <wav_uncompressor.h>
+#include "utils.h"
+#include "sound.h"
+#include "file_io.h"
+#include "utils.h"
+#include "audio.h"
+#include "wav_uncompressor.h"
 
 Sound_t*
 sound_constructor(void)

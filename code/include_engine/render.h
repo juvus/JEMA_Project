@@ -15,7 +15,7 @@
 #include <windows.h>
 
 /* Game engine includes: */
-#include <utils.h>
+#include "utils.h"
 
 /* Predefined structures: */
 typedef struct Image Image_t;

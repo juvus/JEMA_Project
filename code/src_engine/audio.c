@@ -17,10 +17,10 @@
 #include <math.h>
 
 /* Game engine includes: */
-#include <audio.h>
-#include <utils.h>
-#include <sound.h>
-#include <dbg.h>
+#include "audio.h"
+#include "utils.h"
+#include "sound.h"
+#include "dbg.h"
 
 /* Static functions. */
 /**

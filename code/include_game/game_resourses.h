@@ -12,7 +12,7 @@
 #define GAME_RESOURSES_H_
 
 /* Game engine includes. */
-#include <utils.h>
+#include "utils.h"
 
 /* Predefined structures. */
 typedef struct File File_t;

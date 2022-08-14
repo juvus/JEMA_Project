@@ -12,12 +12,12 @@
 #include <stdlib.h>
 
 /* Game engine includes. */
-#include <game_resourses.h>
-#include <file_io.h>
-#include <image.h>
-#include <sound.h>
-#include <color.h>
-#include <utils.h>
+#include "game_resourses.h"
+#include "file_io.h"
+#include "image.h"
+#include "sound.h"
+#include "color.h"
+#include "utils.h"
 
 Game_Resourses_t*
 game_resourses_constructor(void)

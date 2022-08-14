@@ -10,9 +10,9 @@
  */
 
 /* Game engine includes: */
-#include <mouse.h>
-#include <render.h>
-#include <utils.h>
+#include "mouse.h"
+#include "render.h"
+#include "utils.h"
 
 Mouse_t*
 mouse_constructor(void)

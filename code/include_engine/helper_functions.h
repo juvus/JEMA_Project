@@ -12,7 +12,7 @@
 #define HELPER_FUNCTIONS_H_
 
 /* Game engine includes. */
-#include <utils.h>
+#include "utils.h"
 
 /**
  * @brief Trim the f32 value to the low and hight bound.

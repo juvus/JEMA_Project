@@ -17,8 +17,8 @@
 #include <assert.h>
 
 /* Program includes: */
-#include <random.h>
-#include <utils.h>
+#include "random.h"
+#include "utils.h"
 
 void
 random_randomize(b32 rnd_flag, u32 seed)

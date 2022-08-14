@@ -14,10 +14,10 @@
 #include <windows.h>
 
 /* Game engine includes: */
-#include <audio.h>
-#include <audio_worker.h>
-#include <sound.h>
-#include <utils.h>
+#include "audio.h"
+#include "audio_worker.h"
+#include "sound.h"
+#include "utils.h"
 
 Audio_Worker_t*
 audio_worker_constructor(void)

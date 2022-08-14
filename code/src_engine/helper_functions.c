@@ -16,7 +16,7 @@
 #include <assert.h>
 
 /* Program includes: */
-#include <utils.h>
+#include "utils.h"
 
 f32
 trim_f32(f32 value, f32 low_bnd, f32 high_bnd)

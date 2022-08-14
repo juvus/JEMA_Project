@@ -18,12 +18,12 @@
 #include <stdlib.h>
 
 /* Game engine includes: */
-#include <render.h>
-#include <game.h>
-#include <utils.h>
-#include <image.h>
-#include <helper_functions.h>
-#include <color.h>
+#include "render.h"
+#include "game.h"
+#include "utils.h"
+#include "image.h"
+#include "helper_functions.h"
+#include "color.h"
 
 /* Static functions. */
 /**
@@ -78,13 +78,9 @@ render_constructor(void)
     Render_Buffer_t *buffer;  /* Pointer to the render buffer. */
     Triangle_Data_t *triangle_data;  /* Pointer to the triangle data. */
 
-    /* Allocate the memory for the render buffer object. */
+    /* Allocate the memory. */
     buffer = (Render_Buffer_t *)malloc(1 * sizeof(Render_Buffer_t));
-
-    /* Allocate the memory for the triangle filling data. */
     triangle_data = (Triangle_Data_t*)malloc(1 * sizeof(Triangle_Data_t));
-
-    /* Allocate the memory for the render object. */
     render = (Render_t *)malloc(1 * sizeof(Render_t));
 
     render->buffer = buffer;
@@ -95,19 +91,11 @@ render_constructor(void)
 void
 render_destructor(Render_t *render)
 {
-    /* Release memory allocated for the bitmap memory. */
+    /* Release memory allocated for the different objects. */
     VirtualFree(render->buffer->bitmap_memory, 0, MEM_RELEASE);
-    
-    /* Release drawing content. */
     ReleaseDC(render->window, render->hdc);
-
-    /* Release memory allocated for the render buffer object. */
     free(render->buffer);
-
-    /* Release memory allocated for the triangle data. */
     free(render->triangle_data);
-
-    /* Release memory allocated for the render object. */
     free(render);
 }
 
@@ -280,6 +268,13 @@ static void
 draw_line_extended(Render_t *render, V2_u32_t v0, V2_u32_t v1, Color_t *color,
     u32 *SX_array, u32 *SX_i)
 {
+    /* TODO: Изменить алгоритм так, чтобы он рисовал линии только в 1 или 4-й четверти
+    т.е линия нарисованная с одной точки до друго будет одинаковая. Если линия рисуется не
+    слева направо, то просто поменять координаты местами и нарисовать слева направо.
+    Таким образом не будет глитчей, когда линия будет рисоваться задом наперёд. И 
+    линии будут полностью совпадать. */
+    
+    
     u32 *pixel;  /* Pointer to the pixel in the buffer. */
     s32 x_err, y_err;  /* Errors using in the algorithm. */
     s32 dx, dy;  /* Length of the line projection on the X and Y axis. */

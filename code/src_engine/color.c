@@ -13,8 +13,8 @@
 /* Standard includes: */
 
 /* Program includes: */
-#include <color.h>
-#include <utils.h>
+#include "color.h"
+#include "utils.h"
 
 Color_t*
 color_constructor(void)

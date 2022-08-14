@@ -13,7 +13,7 @@
 #define RANDOM_H_
 
 /* Game engine includes: */
-#include <utils.h>
+#include "utils.h"
 
 /**
  * @brief Randomization of the random number generator.

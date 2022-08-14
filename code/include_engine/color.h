@@ -12,7 +12,7 @@
 #define COLOR_H_
 
 /* Game engine includes: */
-#include <utils.h>
+#include "utils.h"
 
 /**
  * @brief Structure for the color different representation in ARGB format. This is

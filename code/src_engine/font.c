@@ -9,11 +9,11 @@
  */
 
 /* Game engine includes: */
-#include <font.h>
-#include <utils.h>
-#include <image.h>
-#include <color.h>
-#include <render.h>
+#include "font.h"
+#include "utils.h"
+#include "image.h"
+#include "color.h"
+#include "render.h"
 
 Font_t*
 font_constructor(void)
