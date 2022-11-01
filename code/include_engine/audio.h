@@ -49,21 +49,21 @@ typedef struct Audio Audio_t;
 typedef HRESULT direct_sound_create_t(LPGUID lpGuid, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter); 
 
 /**
- * @brief Constructor of the Audio class.
+ * @brief Class constructor.
  * @return Audio_t* Pointer to the Render structure. 
  */
 Audio_t*
 audio_constructor(void);
 
 /**
- * @brief Destructor of the Audio object.
+ * @brief Class destructor.
  * @param audio Pointer to the Audio structure.
  */
 void
 audio_destructor(Audio_t *audio);
 
 /**
- * @brief Initialization of the audio object.
+ * @brief Object initialization.
  * @param audio Pointer to the Audio structure.
  * @param window Handle to the game window.
  */

@@ -30,14 +30,14 @@ struct Image
 typedef struct Image Image_t;
 
 /**
- * @brief Constructor of the Image class.
+ * @brief Class constructor.
  * @return Image_t* Pointer to the Image structure.
  */
 Image_t*
 image_constructor(void);
 
 /**
- * @brief Destructor of the Image class.
+ * @brief Class destructor.
  * @param image Pointer to the Image structure.
  */
 void

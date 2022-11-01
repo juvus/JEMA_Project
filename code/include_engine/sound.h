@@ -51,14 +51,14 @@ struct Sound
 typedef struct Sound Sound_t;
 
 /**
- * @brief Constructor of the Sound class.
+ * @brief Class constructor.
  * @return Sound_t* Pointer to the Sound structure.
  */
 Sound_t*
 sound_constructor(void);
 
 /**
- * @brief Destructor of the Sound class.
+ * @brief Class destructor.
  * @param sound Pointer to the Sound structure.
  */
 void

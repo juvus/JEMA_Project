@@ -29,14 +29,14 @@ struct Mouse
 typedef struct Mouse Mouse_t;
 
 /**
- * @brief Constructor of the Mouse class.
+ * @brief Class constructor.
  * @return Mouse_t* Pointer to the Mouse structure.
  */
 Mouse_t*
 mouse_constructor(void);
 
 /**
- * @brief Destructor of the Mouse class.
+ * @brief Class destructor.
  * @param mouse Pointer to the Mouse structure.
  */
 void

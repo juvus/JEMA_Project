@@ -45,21 +45,21 @@ struct Font
 typedef struct Font Font_t;
 
 /**
- * @brief Constructor of the Font class.
+ * @brief Class constructor.
  * @return Font_t* Pointer to the Font structure.
  */
 Font_t*
 font_constructor(void);
 
 /**
- * @brief Destructor of the Font class.
+ * @brief Class destructor.
  * @param font Pointer to the Font structure.
  */
 void
 font_destructor(Font_t *font);
 
 /**
- * @brief Font initialization. Extraction of the symbols data from the font image.
+ * @brief Object initialization. Extraction of the symbols data from the font image.
  * @param font Pointer to the Font structure.
  * @param rows_num Number of rows of symbols in the font image file.
  * @param cols_num Number of columns of symbols in the font image file.

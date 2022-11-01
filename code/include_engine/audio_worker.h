@@ -34,21 +34,21 @@ struct Audio_Worker
 typedef struct Audio_Worker Audio_Worker_t;
 
 /**
- * @brief Constructor of the Audio_Worker class.
+ * @brief Class constructor.
  * @return Audio_Worker_t* Pointer to the Audio_Worker structure. 
  */
 Audio_Worker_t*
 audio_worker_constructor(void);
 
 /**
- * @brief Destructor of the Audio_Worker object.
+ * @brief Class destructor.
  * @param audio_worker Pointer to the Audio_Worker structure.
  */
 void
 audio_worker_destructor(Audio_Worker_t *audio_worker);
 
 /**
- * @brief Initialization of the Audio_Worker object.
+ * @brief Object initialization.
  * @param audio_worker Pointer to the Audio_Worker structure.
  */
 void

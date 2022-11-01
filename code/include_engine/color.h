@@ -36,14 +36,14 @@ struct Color
 typedef struct Color Color_t;
 
 /**
- * @brief Constructor of the Color class.
+ * @brief Class constructor.
  * @return Color_t* Pointer to the Color structure.
  */
 Color_t*
 color_constructor(void);
 
 /**
- * @brief Deconstructor of the Color class.
+ * @brief Class destructor.
  * @param color Pointer to the Color structure.
  */
 void

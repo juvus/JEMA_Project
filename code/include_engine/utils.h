@@ -2,7 +2,8 @@
  * ================================================================================
  * @file utils.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Header file with different common deffinitions.
+ * @brief Header file with different common deffinitions. This header file could be
+ * included many times. 
  * @version 0.1
  * @date 2022-07-23
  * ================================================================================ 
@@ -14,6 +15,7 @@
 /* Standard library includes. */
 #include <stdint.h>
 #include <windows.h>
+#include <float.h>
 
 /* Window constants */
 #define WINDOW_WIDTH 1280  /* Width of the whole windows window. */
@@ -35,73 +37,11 @@ typedef double f64;  /* 64 bits floating point number. [2.3E-308, 1.7E+308]. 16 
 #define true 1  /* Boolean true. */
 #define false 0  /* Boolean false. */
 
+/* Floating point constants. */
+#define MIN_F32_EPSILON FLT_EPSILON  /* Least significant digit in f32 (float). */
+
+
 // Macro to suppress "unused function parameter".
 #define UNUSED(x) (void)(x)
-
-/* Vector of 2 f32 elements. */
-struct V2_f32
-{
-    union
-    {
-        struct
-        {
-            f32 x;  /**< Vector x coordinate. */
-            f32 y;  /**< Vector y coordinate. */
-        };
-        f32 crd_arr[2];  /**< Coordinates array. */
-    };
-};
-typedef struct V2_f32 V2_f32_t;
-
-/* Vector of 2 u32 elements. */
-struct V2_u32
-{
-    union
-    {
-        struct
-        {
-            u32 x;  /**< Vector x coordinate. */
-            u32 y;  /**< Vector y coordinate. */
-        };
-        u32 crd_arr[2];  /**< Coordinates array. */
-    };
-};
-typedef struct V2_u32 V2_u32_t;
-
-/* Vector of 2 s32 elements. */
-struct V2_s32
-{
-    union
-    {
-        struct
-        {
-            s32 x;  /**< Vector x coordinate. */
-            s32 y;  /**< Vector y coordinate. */
-        };
-        s32 crd_arr[2];
-    };
-};
-typedef struct V2_s32 V2_s32_t;
-
-/* Addition of two vectors of V2_f32 type. */
-inline V2_f32_t 
-add_V2_f32(V2_f32_t a, V2_f32_t b)
-{
-    V2_f32_t result;
-    
-    result.x = a.x + b.x;
-    result.y = a.y + b.y;
-    return result;
-}
-
-/* Element-wise multiplication of vector V2_f32 with number */
-inline V2_f32_t
-mul_V2_f32(V2_f32_t a, f32 num) {
-    V2_f32_t result;
-
-    result.x = a.x * num;
-    result.y = a.y * num;
-    return result;
-}
 
 #endif // UTILS_H_

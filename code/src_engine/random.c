@@ -10,7 +10,7 @@
 
 #define _USE_MATH_DEFINES
 
-/* Standard includes: */
+/* Standard library includes: */
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>

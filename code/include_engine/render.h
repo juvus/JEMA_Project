@@ -71,21 +71,21 @@ struct Render
 typedef struct Render Render_t;
 
 /**
- * @brief Constructor of the Render class.
+ * @brief Class constructor.
  * @return Render_t* Pointer to the Render structure. 
  */
 Render_t*
 render_constructor(void);
 
 /**
- * @brief Destructor of the Render object.
+ * @brief Class destructor.
  * @param render Pointer to the Render structure.
  */
 void
 render_destructor(Render_t *render);
 
 /**
- * @brief Initialization of the Render object.
+ * @brief Object initialization.
  * @param render Poiner to the Render structure.
  * @param window Handle to the game window.
  */

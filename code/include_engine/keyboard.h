@@ -55,14 +55,14 @@ struct Keyboard
 typedef struct Keyboard Keyboard_t;
 
 /**
- * @brief Constructor of the Keyboard class.
+ * @brief Class constructor.
  * @return Keyboard_t* Pointer to the Keyboard structure.
  */
 Keyboard_t*
 keyboard_constructor(void);
 
 /**
- * @brief Destructor of the Keyboard class.
+ * @brief Class destructor.
  * @param keyboard Pointer to the Keyboard structure.
  */
 void

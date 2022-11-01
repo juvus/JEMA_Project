@@ -26,14 +26,14 @@ struct File
 typedef struct File File_t;
 
 /**
- * @brief Constructor of the File class.
+ * @brief Class constructor.
  * @return File_t* Pointer to the File structure.
  */
 File_t*
 file_constructor(void);
 
 /**
- * @brief Destructor of the File class.
+ * @brief Class destructor.
  * @param file Pointer to the File structure.
  */
 void

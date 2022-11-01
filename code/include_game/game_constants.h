@@ -12,7 +12,7 @@
 #define GAME_CONSTANTS_H_
 
 /* Program includes: */
-#include <utils.h>
+#include "utils.h"
 
 /* Colors. */
 const u32 BKG_COLOR = 0xffadcfff;

@@ -53,7 +53,7 @@ struct DConsole
 typedef struct DConsole DConsole_t;
 
 /**
- * @brief Constructor of the DConsole class.
+ * @brief Class constructor.
  * @param messages_num Amount of the debug messages in debug console.
  * @param max_msg_length Maximum length of the message.
  * @return DConsole_t* Pointer to the DConsole structure. 
@@ -62,14 +62,14 @@ DConsole_t*
 dconsole_constructor(u32 messages_num, u32 max_msg_length);
 
 /**
- * @brief Destructor of the DConsole object.
+ * @brief Class destructor.
  * @param dconsole Pointer to the DConsole structure.
  */
 void
 dconsole_destructor(DConsole_t *dconsole);
 
 /**
- * @brief Initialization of the debug console.
+ * @brief Object initialization.
  * @param dconsole Pointer to the DConsole structure.
  * @param x X coordinate of the BL corner of the console. 
  * @param y Y coordinate of the BL corner of the console.

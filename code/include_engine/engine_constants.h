@@ -28,3 +28,4 @@ const u32 DCONSOLE_MARGINS = 10;  /* Top, left, bottom and right margins. */
 const u32 DCONSOLE_MAX_MSG_LENGTH = 200;  /* Maximum message length. */
 
 #endif //GANE_ENGINE_CONSTANTS_H_
+
