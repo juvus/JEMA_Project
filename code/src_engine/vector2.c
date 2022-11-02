@@ -3,8 +3,7 @@
  * @file vector2.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for the work with 2D column vectors 
- * that have its coordinates of f32 floating point type. Set of functions and it's 
- * definitions were mostly copied from the box2d library (https://box2d.org/).
+ * with 2 coordinates of f32 (32 bits) floating point type.
  * @version 0.2
  * @date 2022-07-15
  * ================================================================================
@@ -144,6 +143,3 @@ vec2_normalize(Vec2_t* vec2)
     vec2_multiply_scalar(vec2, inverse_length);
     return length;
 }
-
-
-

@@ -3,9 +3,8 @@
  * @file vector2.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of structures and functions necessary for the work with 2D
- * column vectors that have its coordinates of f32 (32 bits) floating point type.
- * Set of functions and it's definitions were mostly copied from the box2d 
- * library (https://box2d.org/).
+ * column vectors with 2 coordinates of f32 (32 bits) floating point type. Set of 
+ * functions were mostly copied from the box2d library (https://box2d.org/).
  * @version 0.1
  * @date 2022-10-29
  * ================================================================================ 
@@ -18,7 +17,7 @@
 #include "utils.h"
 
 /**
- * @brief Structure to store the 2D vector with f32 type of its coordinates.
+ * @brief Structure to store the 2D vector with 2 coordinates of f32 type.
  */
 struct Vec2
 {
