@@ -17,6 +17,7 @@
 /* Game engine includes: */
 #include "vector2.h"
 #include "utils.h"
+#include "engine_math.h"
 
 Vec2_t*
 vec2_constructor(void)
@@ -37,6 +38,19 @@ vec2_destructor(Vec2_t *vec2)
     vec2 = NULL;
 }
 
+void
+vec2_init_by_f32(Vec2_t* vec2, f32 x, f32 y)
+{
+    vec2->x = x;
+    vec2->y = y;    
+}
+
+void
+vec2_init_by_vec2(Vec2_t* vec2, const Vec2_t* vec2_src)
+{
+    *vec2 = *vec2_src;
+}
+
 b32
 vec2_is_valid(Vec2_t *vec2)
 {
@@ -46,66 +60,43 @@ vec2_is_valid(Vec2_t *vec2)
     return result;
 }
 
-void
-vec2_set_coords(Vec2_t* vec2, f32 x, f32 y)
+b32
+vec2_is_nearly_zero(Vec2_t *vec2)
 {
-    vec2->x = x;
-    vec2->y = y;    
+    b32 result;  /* Result of the check. */
+
+    result = (is_nearly_equal(vec2->x, 0.0f)) && (is_nearly_equal(vec2->y, 0.0f));
+    return result;
 }
 
 void
 vec2_set_zero(Vec2_t* vec2)
 {
-    vec2_set_coords(vec2, 0.0f, 0.0f);
-}
-
-void
-vec2_set_copy(Vec2_t* vec2_dest, const Vec2_t* vec2_src)
-{
-    vec2_set_coords(vec2_dest, vec2_src->x, vec2_src->y);
-}
-
-Vec2_t
-vec2_get_copy(const Vec2_t* vec2)
-{
-    Vec2_t result;  /* Resulting vector. */
-
-    vec2_set_coords(&result, vec2->x, vec2->y);
-    return result;
+    vec2_init_by_f32(vec2, 0.0f, 0.0f);
 }
 
 void
 vec2_negate(Vec2_t* vec2)
 {
-    vec2_set_coords(vec2, -(vec2->x), -(vec2->y));
-}
-
-Vec2_t
-vec2_get_negative(const Vec2_t* vec2)
-{
-    Vec2_t result;  /* Resulting vector. */
-
-    vec2_set_copy(&result, vec2);
-    vec2_negate(&result);
-    return result;
+    vec2_init_by_f32(vec2, -(vec2->x), -(vec2->y));
 }
 
 void
 vec2_add_vec2(Vec2_t* vec2_a, const Vec2_t* vec2_b)
 {
-    vec2_set_coords(vec2_a, (vec2_a->x + vec2_b->x), (vec2_a->y + vec2_b->y));
+    vec2_init_by_f32(vec2_a, (vec2_a->x + vec2_b->x), (vec2_a->y + vec2_b->y));
 }
 
 void
 vec2_substract_vec2(Vec2_t* vec2_a, const Vec2_t* vec2_b)
 {
-    vec2_set_coords(vec2_a, (vec2_a->x - vec2_b->x), (vec2_a->y - vec2_b->y));
+    vec2_init_by_f32(vec2_a, (vec2_a->x - vec2_b->x), (vec2_a->y - vec2_b->y));
 }
 
 void
 vec2_multiply_scalar(Vec2_t* vec2, f32 scalar)
 {
-    vec2_set_coords(vec2, (vec2->x * scalar), (vec2->y * scalar));
+    vec2_init_by_f32(vec2, (vec2->x * scalar), (vec2->y * scalar));
 }
 
 f32
@@ -134,7 +125,8 @@ vec2_normalize(Vec2_t* vec2)
     f32 inverse_length;  /* Inverse vector length. */
 
     length = vec2_get_length(vec2);
-    if (length < MIN_F32_EPSILON)
+    
+    if (is_nearly_equal(length, 0.0f))
     {
         return 0.0f;
     }

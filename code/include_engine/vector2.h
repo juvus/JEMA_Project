@@ -21,21 +21,14 @@
  */
 struct Vec2
 {
-    union
-    {
-        struct
-        {
-            f32 x;  /**< Vector x coordinate. */
-            f32 y;  /**< Vector y coordinate. */
-        };
-        f32 crd_arr[2];  /**< Vector coordinate from from an indexed element. */
-    };
+    f32 x;  /**< Vector x coordinate. */
+    f32 y;  /**< Vector y coordinate. */
 };
 typedef struct Vec2 Vec2_t;
 
 /**
  * @brief Class constructor.
- * @return Vect2_t* Pointer to the Vec2 structure.
+ * @return Vec2_t* Pointer to the Vec2 structure.
  */
 Vec2_t*
 vec2_constructor(void);
@@ -48,7 +41,24 @@ void
 vec2_destructor(Vec2_t* vec2);
 
 /**
- * @brief Determination if a vector contain finite coordinates.
+ * @brief Initialization of the vector by coordinate values.
+ * @param vec2 Pointer to the Vec2 structure.
+ * @param x Vector x coordinate.
+ * @param y Vector y coordinate.
+ */
+void
+vec2_init_by_f32(Vec2_t* vec2, f32 x, f32 y);
+
+/**
+ * @brief Initialization of the vector by data from the source vector.
+ * @param vec2 Pointer to Vec2 structure (destination).
+ * @param vec2_src Pointer to Vec2 structure (source).
+ */
+void
+vec2_init_by_vec2(Vec2_t* vec2, const Vec2_t* vec2_src);
+
+/**
+ * @brief Determination if vector contain finite coordinates.
  * @param vec2 Pointer to the Vec2 structure.
  * @return b32 True - valid vector. False - not valid vector.
  */
@@ -56,13 +66,12 @@ b32
 vec2_is_valid(Vec2_t *vec2);
 
 /**
- * @brief Set vector coordinates to some specified values.
+ * @brief Determination if vector is a nearly zero vector.
  * @param vec2 Pointer to the Vec2 structure.
- * @param x Vector x coordinate.
- * @param y Vector y coordinate.
+ * @return b32 Result of the check.
  */
-void
-vec2_set_coords(Vec2_t* vec2, f32 x, f32 y);
+b32
+vec2_is_nearly_zero(Vec2_t *vec2);
 
 /**
  * @brief Set vector coordinates to zero.
@@ -72,35 +81,11 @@ void
 vec2_set_zero(Vec2_t* vec2);
 
 /**
- * @brief Copy the data from source vecto to the destination vector.
- * @param vec2_dest Pointer to destination vector.
- * @param vec2_src Pointer to source vector.
- */
-void
-vec2_set_copy(Vec2_t* vec2_dest, const Vec2_t* vec2_src);
-
-/**
- * @brief Get copy of the vector.
- * @param vec2 Pointer to the Vec2 structure.
- * @return Vec2_t Returning Vec2 structure with copied data.
- */
-Vec2_t
-vec2_get_copy(const Vec2_t* vec2);
-
-/**
  * @brief Negate the vector coordinates.
  * @param vec2 Pointer to the Vec2 structure.
  */
 void
 vec2_negate(Vec2_t* vec2);
-
-/**
- * @brief Get vector with nehated coordinates.
- * @param vec2 Pointer to the Vec2 structure.
- * @return Vec2_t Returning Vec2 structure with negated coordinates.
- */
-Vec2_t
-vec2_get_negative(const Vec2_t* vec2);
 
 /**
  * @brief Summation with another vector. 

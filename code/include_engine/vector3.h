@@ -21,16 +21,9 @@
  */
 struct Vec3
 {
-    union
-    {
-        struct
-        {
-            f32 x;  /**< Vector x coordinate. */
-            f32 y;  /**< Vector y coordinate. */
-            f32 z;  /**< Vector z coordinate. */
-        };
-        f32 crd_arr[3];  /**< Vector coordinate from from an indexed element. */
-    };
+    f32 x;  /**< Vector x coordinate. */
+    f32 y;  /**< Vector y coordinate. */
+    f32 z;  /**< Vector z coordinate. */
 };
 typedef struct Vec3 Vec3_t;
 
@@ -39,7 +32,7 @@ typedef struct Vec3 Vec3_t;
  * @return Vect3_t* Pointer to the Vec3 structure.
  */
 Vec3_t*
-vec2_constructor(void);
+vec3_constructor(void);
 
 /**
  * @brief Class descructor.
@@ -47,6 +40,24 @@ vec2_constructor(void);
  */
 void
 vec3_destructor(Vec3_t* vec3);
+
+/**
+ * @brief Initialization of the vector by coordinate values.
+ * @param vec3 Pointer to the Vec3 structure.
+ * @param x Vector x coordinate.
+ * @param y Vector y coordinate.
+ * @param z Vector z coordinate.
+ */
+void
+vec3_init_by_f32(Vec3_t* vec3, f32 x, f32 y, f32 z);
+
+/**
+ * @brief Initialization of the vector by data from the source vector.
+ * @param vec3 Pointer to Vec3 structure (destination).
+ * @param vec3_src Pointer to Vec3 structure (source).
+ */
+void
+vec3_init_by_vec3(Vec3_t* vec3, const Vec3_t* vec3_src);
 
 /**
  * @brief Determination if a vector contain finite coordinates.
@@ -57,14 +68,12 @@ b32
 vec3_is_valid(Vec3_t *vec3);
 
 /**
- * @brief Set vector coordinates to some specified values.
- * @param vec3 Pointer to the Vec3 structure.
- * @param x Vector x coordinate.
- * @param y Vector y coordinate.
- * @param z Vector z coordinate.
+ * @brief Determination if vector is a nearly zero vector.
+ * @param vec2 Pointer to the Vec2 structure.
+ * @return b32 Result of the check.
  */
-void
-vec3_set_coords(Vec3_t* vec3, f32 x, f32 y, f32 z);
+b32
+vec3_is_nearly_zero(Vec3_t *vec3);
 
 /**
  * @brief Set vector coordinates to zero.
@@ -74,35 +83,11 @@ void
 vec3_set_zero(Vec3_t* vec3);
 
 /**
- * @brief Copy the data from source vecto to the destination vector.
- * @param vec3_dest Pointer to destination vector.
- * @param vec3_src Pointer to source vector.
- */
-void
-vec3_set_copy(Vec3_t* vec3_dest, const Vec3_t* vec3_src);
-
-/**
- * @brief Get copy of the vector.
- * @param vec3 Pointer to the Vec3 structure.
- * @return Vec3_t Returning Vec3 structure with copied data.
- */
-Vec3_t
-vec3_get_copy(const Vec3_t* vec3);
-
-/**
  * @brief Negate the vector coordinates.
  * @param vec3 Pointer to the Vec3 structure.
  */
 void
 vec3_negate(Vec3_t* vec3);
-
-/**
- * @brief Get vector with nehated coordinates.
- * @param vec3 Pointer to the Vec3 structure.
- * @return Vec3_t Returning Vec3 structure with negated coordinates.
- */
-Vec3_t
-vec3_get_negative(const Vec3_t* vec3);
 
 /**
  * @brief Summation with another vector. 

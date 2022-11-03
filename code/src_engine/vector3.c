@@ -25,7 +25,6 @@ vec3_constructor(void)
 
     /* Memory allocation for the object. */
     vec3 = (Vec3_t*)malloc(1 * sizeof(Vec3_t));
-     
     return vec3;
 }
 
@@ -37,6 +36,20 @@ vec3_destructor(Vec3_t *vec3)
     vec3 = NULL;
 }
 
+void
+vec3_init_by_f32(Vec3_t* vec3, f32 x, f32 y, f32 z)
+{
+    vec3->x = x;
+    vec3->y = y;
+    vec3->z = z;
+}
+
+void
+vec3_init_by_vec3(Vec3_t* vec3, const Vec3_t* vec3_src)
+{
+    *vec3 = *vec3_src;
+}
+
 b32
 vec3_is_valid(Vec3_t *vec3)
 {
@@ -46,69 +59,46 @@ vec3_is_valid(Vec3_t *vec3)
     return result;
 }
 
-void
-vec3_set_coords(Vec3_t* vec3, f32 x, f32 y, f32 z)
+b32
+vec3_is_nearly_zero(Vec3_t *vec3)
 {
-    vec3->x = x;
-    vec3->y = y;
-    vec3->z = z;    
+    b32 result;  /* Result of the check. */
+
+    result = (is_nearly_equal(vec3->x, 0.0f)) && (is_nearly_equal(vec3->y, 0.0f)) &&
+        (is_nearly_equal(vec3->z, 0.0f));
+    return result;
 }
 
 void
 vec3_set_zero(Vec3_t* vec3)
 {
-    vec3_set_coords(vec3, 0.0f, 0.0f, 0.0f);
-}
-
-void
-vec3_set_copy(Vec3_t* vec3_dest, const Vec3_t* vec3_src)
-{
-    vec2_set_coords(vec3_dest, vec3_src->x, vec3_src->y, vec3_src->z);
-}
-
-Vec3_t
-vec3_get_copy(const Vec3_t* vec3)
-{
-    Vec3_t result;  /* Resulting vector. */
-
-    vec3_set_coords(&result, vec3->x, vec3->y, vec3->z);
-    return result;
+    vec3_init_by_f32(vec3, 0.0f, 0.0f, 0.0f);
 }
 
 void
 vec3_negate(Vec3_t* vec3)
 {
-    vec3_set_coords(vec3, -(vec3->x), -(vec3->y), -(vec3->z));
-}
-
-Vec3_t
-vec3_get_negative(const Vec3_t* vec3)
-{
-    Vec3_t result;  /* Resulting vector. */
-
-    vec3_set_copy(&result, vec3);
-    vec2_negate(&result);
-    return result;
+    vec3_init_by_f32(vec3, -(vec3->x), -(vec3->y), -(vec3->z));
 }
 
 void
 vec3_add_vec3(Vec3_t* vec3_a, const Vec3_t* vec3_b)
 {
-    vec3_set_coords(vec3_a, (vec3_a->x + vec3_b->x), (vec3_a->y + vec3_b->y),
+    vec3_init_by_f32(vec3_a, (vec3_a->x + vec3_b->x), (vec3_a->y + vec3_b->y),
         (vec3_a->z + vec3_b->z));
 }
 
 void
 vec3_substract_vec3(Vec3_t* vec3_a, const Vec3_t* vec3_b)
 {
-    vec3_set_coords(vec3_a, (vec3_a->x - vec3_b->x), (vec3_a->y - vec3_b->y),
+    vec3_init_by_f32(vec3_a, (vec3_a->x - vec3_b->x), (vec3_a->y - vec3_b->y),
         (vec3_a->z - vec3_b->z));
 }
 
 void
 vec3_multiply_scalar(Vec3_t* vec3, f32 scalar)
 {
-    vec3_set_coords(vec3, (vec3->x * scalar), (vec3->y * scalar), 
+    vec3_init_by_f32(vec3, (vec3->x * scalar), (vec3->y * scalar), 
         (vec3->z * scalar));
 }
 
@@ -138,7 +128,7 @@ vec3_normalize(Vec3_t* vec3)
     f32 inverse_length;  /* Inverse vector length. */
 
     length = vec3_get_length(vec3);
-    if (length < MIN_F32_EPSILON)
+    if (is_nearly_equal(length, 0.0f))
     {
         return 0.0f;
     }
