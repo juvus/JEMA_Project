@@ -3,8 +3,7 @@
  * @file matrix22.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of structures and functions necessary for the work with 
- * 2-by-2 matrix with elements of f32 (32 bits) floating point type. Set of 
- * functions were mostly copied from the box2d library (https://box2d.org/).
+ * 2-by-2 matrix with elements of f32 (32 bits) floating point type.
  * @version 0.1
  * @date 2022-11-02
  * ================================================================================ 
@@ -59,11 +58,11 @@ mat22_init_by_f32(Mat22_t* mat22, f32 a11, f32 a21, f32 a12, f32 a22);
 /**
  * @brief Initialization of the matrix by column vectors.
  * @param mat22 Pointer to the Mat22 structure.
- * @param col_1 Pointer to the Vec2 structure (first column).
- * @param col_2 Pointer to the Vec2 structure (second column).
+ * @param col1 Pointer to the Vec2 structure (first column).
+ * @param col2 Pointer to the Vec2 structure (second column).
  */
 void
-mat22_init_by_vec2(Mat22_t* mat22, const Vec2_t *col_1, const Vec2_t *col_2);
+mat22_init_by_vec2(Mat22_t* mat22, const Vec2_t *col1, const Vec2_t *col2);
 
 /**
  * @brief Initialization of the matrix by data from the source matrix.
@@ -79,7 +78,7 @@ mat22_init_by_mat22(Mat22_t* mat22, const Mat22_t* mat22_src);
  * @return b32 True - valid matrix. False - not valid matrix.
  */
 b32
-mat22_is_valid(Mat22_t *mat22);
+mat22_is_valid(const Mat22_t *mat22);
 
 /**
  * @brief Determination if matrix is a nearly zero matrix.
@@ -87,7 +86,7 @@ mat22_is_valid(Mat22_t *mat22);
  * @return b32 Result of the check.
  */
 b32
-mat22_is_nearly_zero(Mat22_t *mat22);
+mat22_is_nearly_zero(const Mat22_t *mat22);
 
 /**
  * @brief Set all matrix elements to zeros.
@@ -104,11 +103,20 @@ void
 mat22_set_identity(Mat22_t *mat22);
 
 /**
- * @brief Make invesion of the matrix.
+ * @brief Multiply the matrix by a scalar.
  * @param mat22 Pointer to Mat22 structure.
+ * @param scalar Arbitrary scalar.
  */
 void
-mat22_make_inverse(Mat22_t *mat22);
+mat22_multiply_scalar(Mat22_t* mat22, f32 scalar);
+
+/**
+ * @brief Calculation of the 2-by-2 matrix determinant.
+ * @param mat22 Pointer to Mat22 structure.
+ * @return f32 Matrix determinant value. 
+ */
+f32
+mat22_calc_determinant(const Mat22_t *mat22);
 
 /**
  * @brief Make transposition of the matrix.
@@ -117,17 +125,19 @@ mat22_make_inverse(Mat22_t *mat22);
 void
 mat22_make_transpose(Mat22_t *mat22);
 
+/**
+ * @brief Make cofactor matrix from the given matrix.
+ * @param mat22 Pointer to Mat22 structure.
+ */
+void
+mat22_make_cofactor(Mat22_t *mat22);
 
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * @brief Make invesion of the matrix.
+ * @param mat22 Pointer to Mat22 structure.
+ * @return b32 Flag showing if the invesion was successful or not. 
+ */
+b32
+mat22_make_inverse(Mat22_t *mat22);
 
 #endif // MATRIX22_H_
