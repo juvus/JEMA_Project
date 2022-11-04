@@ -118,7 +118,7 @@ vec2_get_length(Vec2_t* vec2)
     return result;
 }
 
-f32
+b32
 vec2_normalize(Vec2_t* vec2)
 {
     f32 length;  /* Vector length. */
@@ -128,10 +128,14 @@ vec2_normalize(Vec2_t* vec2)
     
     if (is_nearly_equal(length, 0.0f))
     {
-        return 0.0f;
+        /* It is not possible to normalize the vector. */
+        return false;
     }
-
-    inverse_length = 1.0f / length;
-    vec2_multiply_scalar(vec2, inverse_length);
-    return length;
+    else
+    {
+        /* Normalization could be successfully performed. */
+        inverse_length = 1.0f / length;
+        vec2_multiply_scalar(vec2, inverse_length);
+        return true;
+    }
 }

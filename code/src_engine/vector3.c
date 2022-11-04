@@ -98,7 +98,7 @@ vec3_substract_vec3(Vec3_t* vec3_a, const Vec3_t* vec3_b)
 void
 vec3_multiply_scalar(Vec3_t* vec3, f32 scalar)
 {
-    vec3_init_by_f32(vec3, (vec3->x * scalar), (vec3->y * scalar), 
+    vec3_init_by_f32(vec3, (vec3->x * scalar), (vec3->y * scalar),
         (vec3->z * scalar));
 }
 
@@ -121,19 +121,24 @@ vec3_get_length(Vec3_t* vec3)
     return result;
 }
 
-f32
+b32
 vec3_normalize(Vec3_t* vec3)
 {
     f32 length;  /* Vector length. */
     f32 inverse_length;  /* Inverse vector length. */
 
     length = vec3_get_length(vec3);
+    
     if (is_nearly_equal(length, 0.0f))
     {
-        return 0.0f;
+        /* It is not possible to normalize the vector. */
+        return false;
     }
-
-    inverse_length = 1.0f / length;
-    vec3_multiply_scalar(vec3, inverse_length);
-    return length;
+    else
+    {
+        /* Normalization could be successfully performed. */
+        inverse_length = 1.0f / length;
+        vec3_multiply_scalar(vec3, inverse_length);
+        return true;
+    }
 }

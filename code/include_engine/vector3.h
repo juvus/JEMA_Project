@@ -3,8 +3,7 @@
  * @file vector3.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of structures and functions necessary for the work with 2D
- * column vectors with 3 coordinates of f32 (32 bits) floating point type. Set of 
- * functions were mostly copied from the box2d library (https://box2d.org/).
+ * column vectors with 3 coordinates of f32 (32 bits) floating point type.
  * @version 0.1
  * @date 2022-10-29
  * ================================================================================ 
@@ -132,10 +131,9 @@ vec3_get_length(Vec3_t* vec3);
 /**
  * @brief Convert the vector into a unit vector and returns its length.
  * @param vec3 Pointer to the Vec3 structure.
- * @return f32 length (the norm) of the vector. It will return 0.0f if the 
- * normalization was not successful.
+ * @return b32 Flag showing if the normalization was successful or not.
  */
-f32
+b32
 vec3_normalize(Vec3_t* vec3);
 
 #endif // VECTOR2_H_

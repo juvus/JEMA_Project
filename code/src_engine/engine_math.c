@@ -1,6 +1,6 @@
 /**
  * ================================================================================
- * @file vector2.c
+ * @file engine_math.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for performing different calculations.
  * @version 0.2

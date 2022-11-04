@@ -3,8 +3,7 @@
  * @file vector2.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of structures and functions necessary for the work with 2D
- * column vectors with 2 coordinates of f32 (32 bits) floating point type. Set of 
- * functions were mostly copied from the box2d library (https://box2d.org/).
+ * column vectors with 2 coordinates of f32 (32 bits) floating point type.
  * @version 0.1
  * @date 2022-10-29
  * ================================================================================ 
@@ -130,10 +129,9 @@ vec2_get_length(Vec2_t* vec2);
 /**
  * @brief Convert the vector into a unit vector and returns its length.
  * @param vec2 Pointer to the Vec2 structure.
- * @return f32 length (the norm) of the vector. It will return 0.0f if the 
- * normalization was not successful.
+ * @return b32 Flag showing if the normalization was successful or not. 
  */
-f32
+b32
 vec2_normalize(Vec2_t* vec2);
 
 #endif // VECTOR2_H_
