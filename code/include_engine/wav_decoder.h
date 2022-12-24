@@ -1,16 +1,17 @@
 /**
  * ================================================================================
- * @file include_engine/wav_uncompressor.h
+ * @file include_engine/wav_decoder.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Declaration of the Wav_uncompressor class methods.
+ * @brief Declaration of objects and functions necessary for decoding the audio
+ * files encoded with WAV format.
  * file spec: .wav PCM 16-bits per sample, 1 or 2 channels (interleaved rlrlrlr)
  * @version 0.2
  * @date 2022-12-21
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_WAV_UNCOMPRESSOR_H_
-#define JGE_ENGINE_WAV_UNCOMPRESSOR_H_
+#ifndef JEMA_ENGINE_WAV_DECODER_H_
+#define JEMA_ENGINE_WAV_DECODER_H_
 
 #include "include_engine/utils.h"
 
@@ -92,6 +93,6 @@ typedef struct RiffIterator_ RiffIterator;
  * @param sound Pointer to the Sound structure.
  * @param file Pointer to the File structure.
  */
-void WavUncompressor_Uncompress(Sound *sound, MemObject *wav_mem_object);
+void WavDecoder_Decode(Sound *sound, MemObject *wav_mem_object);
 
-#endif  /* JGE_ENGINE_WAV_UNCOMPRESSOR_H_ */
+#endif  /* JEMA_ENGINE_WAV_DECODER_H_ */

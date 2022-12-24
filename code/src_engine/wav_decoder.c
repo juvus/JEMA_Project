@@ -1,14 +1,16 @@
 /**
  * ================================================================================
- * @file src_engine/wav_uncompressor.c
+ * @file src_engine/wav_decoder.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Definition of the Wav_uncompressor class methods.
+ * @brief Definition of functions necessary for decoding the audio files encoded 
+ * with WAV format.
+ * file spec: .wav PCM 16-bits per sample, 1 or 2 channels (interleaved rlrlrlr)
  * @version 0.2
  * @date 2022-12-21
  * ================================================================================ 
  */
 
-#include "include_engine/wav_uncompressor.h"
+#include "include_engine/wav_decoder.h"
 
 #include "include_engine/dbg.h"
 #include "include_engine/memory_object.h"
@@ -60,7 +62,7 @@ GetChunkDataSize(RiffIterator iterator)
 }
 
 void
-WavUncompressor_Uncompress(Sound *sound, MemObject* wav_mem_object)
+WavDecoder_Decode(Sound *sound, MemObject* wav_mem_object)
 {       
     WavHeader *header = (WavHeader *)wav_mem_object->data;
     WavFormat *format = NULL;
