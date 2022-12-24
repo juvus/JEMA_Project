@@ -1,31 +1,28 @@
 /**
  * ================================================================================
- * @file audio.h
+ * @file include_engine/audio.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of objects and functions necessary for the work with audio
  * system of the game.
  * @version 0.2
- * @date 2022-07-16
+ * @date 2022-11-27
  * ================================================================================
  */
 
-#ifndef AUDIO_H_
-#define AUDIO_H_
+#ifndef JGE_ENGINE_AUDIO_H_
+#define JGE_ENGINE_AUDIO_H_
 
-/* Standard library includes: */
 #include <windows.h>
 #include <dsound.h>
 
-/* Game engine includes: */
-#include "utils.h"
+#include "include_engine/utils.h"
 
-/* Predefined structures: */
-typedef struct Sound Sound_t;
+typedef struct Sound_ Sound;
 
 /**
  * @brief Structure for the Audio object.
  */
-struct Audio 
+struct Audio_ 
 {
     LPDIRECTSOUNDBUFFER primary_buffer;  /**< Primary buffer. */
     LPDIRECTSOUNDBUFFER buffer;  /**< Secondary buffer: Uncompressed wav data ready to play. */
@@ -43,24 +40,24 @@ struct Audio
     s16 *temp_array;  /**< Temparory array for help sound mixing routine (0.1 sec). */
     s16 *mix_array;  /**< Array of mix of all played sound ready to upload to the buffer. */
 };
-typedef struct Audio Audio_t; 
+typedef struct Audio_ Audio;
 
 /* Declare pointer to the function from dll. */
 typedef HRESULT direct_sound_create_t(LPGUID lpGuid, LPDIRECTSOUND* ppDS, LPUNKNOWN pUnkOuter); 
 
 /**
- * @brief Class constructor.
- * @return Audio_t* Pointer to the Render structure. 
+ * @brief Object constructor.
+ * @return Audio* Pointer to the Audio structure. 
  */
-Audio_t*
-audio_constructor(void);
+Audio*
+Audio_Constructor(void);
 
 /**
- * @brief Class destructor.
+ * @brief Object destructor.
  * @param audio Pointer to the Audio structure.
  */
 void
-audio_destructor(Audio_t *audio);
+Audio_Destructor(Audio *audio);
 
 /**
  * @brief Object initialization.
@@ -68,21 +65,21 @@ audio_destructor(Audio_t *audio);
  * @param window Handle to the game window.
  */
 void
-audio_init(Audio_t *audio, HWND window);
+Audio_Init(Audio *audio, HWND window);
 
 /**
  * @brief Cleaning the audio buffer.
  * @param audio Pointer to the Audio structure.
  */
 void
-audio_clean_buffer(Audio_t *audio);
+Audio_CleanBuffer(Audio *audio);
 
 /**
  * @brief Play the game sounds.
  * @param audio Pointer to the Audio structure.
  */
 void
-audio_play_sounds(Audio_t *audio);
+Audio_PlaySounds(Audio *audio);
 
 /**
  * @brief Updating the sounds data in the audio buffer.
@@ -91,6 +88,6 @@ audio_play_sounds(Audio_t *audio);
  * @param sound_num Amount of sound structures in the array.
  */
 void
-audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num);
+Audio_UpdateBuffer(Audio *audio, Sound *sounds[], u32 sound_num);
 
-#endif //AUDIO_H_
+#endif  /* JGE_ENGINE_AUDIO_H_ */

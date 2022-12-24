@@ -1,64 +1,65 @@
 /**
  * ================================================================================
- * @file audio_worker.h
+ * @file include_engine/audio_worker.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Declaration of objects and functions necessary for the work with audio
- *  worker. Worker procedure is executes in a separate thread.
- * @version 0.1
- * @date 2022-07-19
+ * @brief Juvus Engine of Multimedia Applications (JEMA) project. Declaration of 
+ * objects and functions necessary for the work with audio worker. Worker procedure
+ * is executing in a separate thread.
+ * @version 0.2
+ * @date 2022-11-27
  * ================================================================================
  */
 
-#ifndef AUDIO_WORKER_H_
-#define AUDIO_WORKER_H_
+#ifndef JEMA_ENGINE_AUDIO_WORKER_H_
+#define JEMA_ENGINE_AUDIO_WORKER_H_
 
-/* Standard library includes. */
 #include <windows.h>
+#include "include_engine/utils.h"
 
-/* Game engine includes. */
-#include "utils.h"
-
-/* Predefined structures: */
-typedef struct Audio Audio_t;
-typedef struct Sound Sound_t;
+typedef struct Audio_ Audio;
+typedef struct Sound_ Sound;
 
 /**
  * @brief Structure with data, that need to be pased to the thread (multithreading).
  */
-struct Audio_Worker
+struct AudioWorker_
 {
-    Audio_t *audio;  /**< Pointer to the Audio structure. */
-    Sound_t **sounds;  /**< Pointer to the array of pointers to Sound structures. */
+    Audio *audio;  /**< Pointer to the Audio structure. */
+    Sound **sounds;  /**< Pointer to the array of pointers to Sound structures. */
     u32 sound_num;  /**< Amount of sound structures in the array. */
 };
-typedef struct Audio_Worker Audio_Worker_t;
+typedef struct AudioWorker_ AudioWorker;
 
 /**
- * @brief Class constructor.
- * @return Audio_Worker_t* Pointer to the Audio_Worker structure. 
+ * @brief Object constructor.
+ * @return AudioWorker* Pointer to the AudioWorker structure. 
  */
-Audio_Worker_t*
-audio_worker_constructor(void);
+AudioWorker*
+AudioWorker_Constructor(void);
 
 /**
- * @brief Class destructor.
- * @param audio_worker Pointer to the Audio_Worker structure.
+ * @brief Object destructor.
+ * @param audio_worker Pointer to the AudioWorker structure.
  */
 void
-audio_worker_destructor(Audio_Worker_t *audio_worker);
+AudioWorker_Destructor(AudioWorker *audio_worker);
 
 /**
  * @brief Object initialization.
- * @param audio_worker Pointer to the Audio_Worker structure.
+ * @param audio_worker Pointer to the AudioWorker structure.
+ * @param audio Pointer to the Audio structure.
+ * @param sounds Array of pointers to Sound structures.
+ * @param sound_num Number of passed sound objects.
  */
 void
-audio_worker_init(Audio_Worker_t *audio_worker, Audio_t *audio, Sound_t **sounds,
+AudioWorker_Init(AudioWorker *audio_worker, Audio *audio, Sound *sounds[], 
     u32 sound_num);
 
 /**
- * @brief Audio worker procedure to be executed in the separate thread. 
+ * @brief Audio worker procedure to be executed in the separated thread.
+ * @param audio_worker Pointer to the data sent to the thread.
  */
 DWORD WINAPI 
-audio_worker_proc(void *audio_worker);
+AudioWorker_ThreadProc(void *audio_worker);
 
-#endif //AUDIO_WORKER_H_
+#endif  /* JEMA_ENGINE_AUDIO_WORKER_H_ */

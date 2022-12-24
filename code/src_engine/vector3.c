@@ -1,43 +1,48 @@
 /**
  * ================================================================================
- * @file vector3.c
+ * @file src_engine/vector3.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for the work with 2D column vectors 
  * with 3 coordinates of f32 (32 bits) floating point type.
- * @version 0.1
- * @date 2022-07-15
+ * @version 0.2
+ * @date 2022-12-22
  * ================================================================================
  */
 
 #define _USE_MATH_DEFINES
 
-/* Standard library includes: */
+#include "include_engine/vector3.h"
+
 #include <math.h>
 
-/* Game engine includes: */
-#include "vector3.h"
-#include "utils.h"
+#include "include_engine/dbg.h"
+#include "include_engine/math_functions.h"
+#include "include_engine/utils.h"
 
-Vec3_t*
-vec3_constructor(void)
+Vec3*
+Vec3_Constructor(void)
 {
-    Vec3_t *vec3;  /* Pointer to the Vec3 structure. */
-
-    /* Memory allocation for the object. */
-    vec3 = (Vec3_t*)malloc(1 * sizeof(Vec3_t));
+    Vec3 *vec3 = (Vec3 *)malloc(1 * sizeof(Vec3));
+    if (vec3 == NULL)
+    {
+        dbg_error("%s", "Memory allocation error!");
+    }
     return vec3;
 }
 
 void
-vec3_destructor(Vec3_t *vec3)
+Vec3_Destructor(Vec3 *vec3)
 {
-    /* Free memory allocated for the object. */
+    if (vec3 == NULL)
+    {
+        dbg_error("%s", "Attempt to delete an empty object!");
+    }
     free(vec3);
     vec3 = NULL;
 }
 
 void
-vec3_init_by_f32(Vec3_t* vec3, f32 x, f32 y, f32 z)
+Vec3_InitByF32(Vec3 *vec3, f32 x, f32 y, f32 z)
 {
     vec3->x = x;
     vec3->y = y;
@@ -45,91 +50,86 @@ vec3_init_by_f32(Vec3_t* vec3, f32 x, f32 y, f32 z)
 }
 
 void
-vec3_init_by_vec3(Vec3_t* vec3, const Vec3_t* vec3_src)
+Vec3_InitByVec3(Vec3 *vec3, const Vec3 *vec3_src)
 {
     *vec3 = *vec3_src;
 }
 
 b32
-vec3_is_valid(Vec3_t *vec3)
+Vec3_IsValid(Vec3 *vec3)
 {
-    b32 result;  /* Result of the validation check. */
-
-    result = isfinite(vec3->x) && isfinite(vec3->y) && isfinite(vec3->z);
+    b32 result = isfinite(vec3->x) && isfinite(vec3->y) && isfinite(vec3->z); 
     return result;
 }
 
 b32
-vec3_is_nearly_zero(Vec3_t *vec3)
+Vec3_IsNearlyZero(Vec3 *vec3)
 {
-    b32 result;  /* Result of the check. */
-
-    result = (is_nearly_equal(vec3->x, 0.0f)) && (is_nearly_equal(vec3->y, 0.0f)) &&
-        (is_nearly_equal(vec3->z, 0.0f));
+    b32 result = Math_IsNearlyEqual(vec3->x, 0.0f) && Math_IsNearlyEqual(vec3->y, 0.0f) &&
+        Math_IsNearlyEqual(vec3->z, 0.0f); 
     return result;
 }
 
 void
-vec3_set_zero(Vec3_t* vec3)
+Vec3_SetZero(Vec3 *vec3)
 {
-    vec3_init_by_f32(vec3, 0.0f, 0.0f, 0.0f);
+    vec3->x = 0.0f;
+    vec3->y = 0.0f;
+    vec3->z = 0.0f;
 }
 
 void
-vec3_negate(Vec3_t* vec3)
+Vec3_Negate(Vec3 *vec3)
 {
-    vec3_init_by_f32(vec3, -(vec3->x), -(vec3->y), -(vec3->z));
+    vec3->x *= -1.0;
+    vec3->y *= -1.0;
+    vec3->z *= -1.0;
 }
 
 void
-vec3_add_vec3(Vec3_t* vec3_a, const Vec3_t* vec3_b)
+Vec3_AddVec3(Vec3 *vec3, const Vec3 *vec3_add)
 {
-    vec3_init_by_f32(vec3_a, (vec3_a->x + vec3_b->x), (vec3_a->y + vec3_b->y),
-        (vec3_a->z + vec3_b->z));
+    vec3->x += vec3_add->x;
+    vec3->y += vec3_add->y;
+    vec3->z += vec3_add->z;
 }
 
 void
-vec3_substract_vec3(Vec3_t* vec3_a, const Vec3_t* vec3_b)
+Vec3_SubstractVec3(Vec3 *vec3, const Vec3 *vec3_sub)
 {
-    vec3_init_by_f32(vec3_a, (vec3_a->x - vec3_b->x), (vec3_a->y - vec3_b->y),
-        (vec3_a->z - vec3_b->z));
+    vec3->x -= vec3_sub->x;
+    vec3->y -= vec3_sub->y;
+    vec3->z -= vec3_sub->z;
 }
 
 void
-vec3_multiply_scalar(Vec3_t* vec3, f32 scalar)
+Vec3_MultiplyScalar(Vec3 *vec3, f32 scalar)
 {
-    vec3_init_by_f32(vec3, (vec3->x * scalar), (vec3->y * scalar),
-        (vec3->z * scalar));
+    vec3->x *= scalar;
+    vec3->y *= scalar;
+    vec3->z *= scalar;
 }
 
 f32
-vec3_get_length_squared(Vec3_t* vec3)
+Vec3_GetLengthSquared(Vec3 *vec3)
 {
-    f32 result;  /* Result of the calculations. */
-    
-    result = vec3->x * vec3->x + vec3->y * vec3->y + vec3->z * vec3->z;
+    f32 result = vec3->x * vec3->x + vec3->y * vec3->y + vec3->z * vec3->z;
     return result;
 }
 
 f32
-vec3_get_length(Vec3_t* vec3)
-{
-    f32 result;  /* Result of the calculations. */
-    
-    result = vec3_get_length_squared(vec3);
+Vec3_GetLength(Vec3 *vec3)
+{    
+    f32 result = Vec3_GetLengthSquared(vec3);
     result = sqrtf(result);
     return result;
 }
 
 b32
-vec3_normalize(Vec3_t* vec3)
+Vec3_Normalize(Vec3 *vec3)
 {
-    f32 length;  /* Vector length. */
-    f32 inverse_length;  /* Inverse vector length. */
-
-    length = vec3_get_length(vec3);
-    
-    if (is_nearly_equal(length, 0.0f))
+    f32 length = Vec3_GetLength(vec3);   
+    if (Math_IsNearlyEqual(length, 0.0f))
     {
         /* It is not possible to normalize the vector. */
         return false;
@@ -137,8 +137,8 @@ vec3_normalize(Vec3_t* vec3)
     else
     {
         /* Normalization could be successfully performed. */
-        inverse_length = 1.0f / length;
-        vec3_multiply_scalar(vec3, inverse_length);
+        f32 inverse_length = 1.0f / length;
+        Vec3_MultiplyScalar(vec3, inverse_length);
         return true;
     }
 }

@@ -1,28 +1,27 @@
 /**
  * ================================================================================
- * @file color.h
+ * @file include_engine/color.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of objects and functions necessary for the work with color.
- * @version 0.1
- * @date 2022-07-05
+ * @version 0.2
+ * @date 2022-11-29
  * ================================================================================
  */
 
-#ifndef COLOR_H_
-#define COLOR_H_
+#ifndef JGE_ENGINE_COLOR_H_
+#define JGE_ENGINE_COLOR_H_
 
-/* Game engine includes: */
-#include "utils.h"
+#include "include_engine/utils.h"
 
 /**
  * @brief Structure for the color different representation in ARGB format. This is
  * main color format used in the entire engine.
  */
-struct Color
+struct Color_
 {
     union
     {
-        u32 color; /**< 32 bit color (ARGB). */
+        u32 color;  /**< 32 bit color (ARGB). */
         u8 components[4];  /**< Array of 8 bit color components. */
         struct
         {
@@ -33,21 +32,21 @@ struct Color
         };
     };
 };
-typedef struct Color Color_t;
+typedef struct Color_ Color;
 
 /**
- * @brief Class constructor.
- * @return Color_t* Pointer to the Color structure.
+ * @brief Object constructor.
+ * @return Color* Pointer to the Color structure.
  */
-Color_t*
-color_constructor(void);
+Color*
+Color_Constructor(void);
 
 /**
- * @brief Class destructor.
+ * @brief Object destructor.
  * @param color Pointer to the Color structure.
  */
 void
-color_destructor(Color_t *color);
+Color_Destructor(Color *color);
 
 /**
  * @brief Setting color from the u32 image color data.
@@ -55,7 +54,7 @@ color_destructor(Color_t *color);
  * @param image_color_data Color of the pixel taken from the loaded image.
  */
 void
-color_set_from_image_color_data(Color_t *color, u32 image_color_data);
+Color_SetFromImageColorData(Color *color, u32 image_color_data);
 
 /**
  * @brief Setting color from the set of u8 integers representing color components.
@@ -66,7 +65,7 @@ color_set_from_image_color_data(Color_t *color, u32 image_color_data);
  * @param blue Color blue channel.
  */
 void
-color_set_from_comp(Color_t *color, u8 alpha, u8 red, u8 green, u8 blue);
+Color_SetFromComp(Color *color, u8 alpha, u8 red, u8 green, u8 blue);
 
 /**
  * @brief Setting gray color determined by value (0 - 255).
@@ -75,7 +74,7 @@ color_set_from_comp(Color_t *color, u8 alpha, u8 red, u8 green, u8 blue);
  * @param value Value of the gray color gradation. 0 - black, 255 - white.
  */
 void
-color_set_gray(Color_t *color, u8 alpha, u8 value);
+Color_SetGray(Color *color, u8 alpha, u8 value);
 
 /**
  * @brief Making the blended color using linear interpolation algorithm.
@@ -85,7 +84,6 @@ color_set_gray(Color_t *color, u8 alpha, u8 value);
  * @param alpha Level of the foreground alpha (0.0 - 1.0). 0.0 - bkg color, 1.0 - frg color.
  */
 void
-color_make_alpha_blending(Color_t *color_res, Color_t *color_bkg, Color_t *color_frg, 
-    f32 alpha);
+Color_MakeAlphaBlending(Color *color_res, Color *color_bkg, Color *color_frg, f32 alpha);
 
-#endif /* COLOR_H_ */
+#endif  /* JGE_ENGINE_COLOR_H_ */

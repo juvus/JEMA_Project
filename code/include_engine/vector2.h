@@ -1,43 +1,49 @@
 /**
  * ================================================================================
- * @file vector2.h
+ * @file include_engine/vector2.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of structures and functions necessary for the work with 2D
  * column vectors with 2 coordinates of f32 (32 bits) floating point type.
- * @version 0.1
- * @date 2022-10-29
+ * @version 0.2
+ * @date 2022-12-21
  * ================================================================================ 
  */
 
-#ifndef VECTOR2_H_
-#define VECTOR2_H_
+#ifndef JGE_ENGINE_VECTOR2_H_
+#define JGE_ENGINE_VECTOR2_H_
 
-/* Game engine includes: */
-#include "utils.h"
+#include "include_engine/utils.h"
 
 /**
  * @brief Structure to store the 2D vector with 2 coordinates of f32 type.
  */
-struct Vec2
+struct Vec2_
 {
-    f32 x;  /**< Vector x coordinate. */
-    f32 y;  /**< Vector y coordinate. */
+    union
+    {
+        struct
+        {
+            f32 x;  /**< Vector x coordinate. */
+            f32 y;  /**< Vector y coordinate. */
+        };
+        f32 crd_arr[2];  /**< Array of the coordinates. */
+    };
 };
-typedef struct Vec2 Vec2_t;
+typedef struct Vec2_ Vec2;
 
 /**
- * @brief Class constructor.
- * @return Vec2_t* Pointer to the Vec2 structure.
+ * @brief Object constructor.
+ * @return Vec2* Pointer to the Vec2 structure.
  */
-Vec2_t*
-vec2_constructor(void);
+Vec2*
+Vec2_Constructor(void);
 
 /**
  * @brief Class descructor.
  * @param vec2 Pointer to the Vec2 structure.
  */
 void
-vec2_destructor(Vec2_t* vec2);
+Vec2_Destructor(Vec2* vec2);
 
 /**
  * @brief Initialization of the vector by coordinate values.
@@ -46,7 +52,7 @@ vec2_destructor(Vec2_t* vec2);
  * @param y Vector y coordinate.
  */
 void
-vec2_init_by_f32(Vec2_t* vec2, f32 x, f32 y);
+Vec2_InitByF32(Vec2* vec2, f32 x, f32 y);
 
 /**
  * @brief Initialization of the vector by data from the source vector.
@@ -54,7 +60,7 @@ vec2_init_by_f32(Vec2_t* vec2, f32 x, f32 y);
  * @param vec2_src Pointer to Vec2 structure (source).
  */
 void
-vec2_init_by_vec2(Vec2_t* vec2, const Vec2_t* vec2_src);
+Vec2_InitByVec2(Vec2* vec2, const Vec2* vec2_src);
 
 /**
  * @brief Determination if vector contain finite coordinates.
@@ -62,7 +68,7 @@ vec2_init_by_vec2(Vec2_t* vec2, const Vec2_t* vec2_src);
  * @return b32 True - valid vector. False - not valid vector.
  */
 b32
-vec2_is_valid(Vec2_t *vec2);
+Vec2_IsValid(Vec2 *vec2);
 
 /**
  * @brief Determination if vector is a nearly zero vector.
@@ -70,37 +76,37 @@ vec2_is_valid(Vec2_t *vec2);
  * @return b32 Result of the check.
  */
 b32
-vec2_is_nearly_zero(Vec2_t *vec2);
+Vec2_IsNearlyZero(Vec2 *vec2);
 
 /**
  * @brief Set vector coordinates to zero.
  * @param vec2 Pointer to the Vec2 structure.
  */
 void
-vec2_set_zero(Vec2_t* vec2);
+Vec2_SetZero(Vec2* vec2);
 
 /**
  * @brief Negate the vector coordinates.
  * @param vec2 Pointer to the Vec2 structure.
  */
 void
-vec2_negate(Vec2_t* vec2);
+Vec2_Negate(Vec2* vec2);
 
 /**
  * @brief Summation with another vector. 
- * @param vec2_a Pointer to the first vector (resulting vector).
- * @param vec2_b Pointer to the second vector.
+ * @param vec2 Pointer to the Vec2 structure (resulting vector).
+ * @param vec2_add Pointer to the adding vector.
  */
 void
-vec2_add_vec2(Vec2_t* vec2_a, const Vec2_t* vec2_b);
+Vec2_AddVec2(Vec2* vec2, const Vec2* vec2_add);
 
 /**
  * @brief Substraction of another vector. 
- * @param vec2_a Pointer to the first vector (resulting vector).
- * @param vec2_b Pointer to the second vector.
+ * @param vec2 Pointer to the Vec2 structure (resulting vector).
+ * @param vec2_sub Pointer to the substracting vector.
  */
 void
-vec2_substract_vec2(Vec2_t* vec2_a, const Vec2_t* vec2_b);
+Vec2_SubstractVec2(Vec2* vec2, const Vec2* vec2_sub);
 
 /**
  * @brief Multiply the vector by a scalar.
@@ -108,7 +114,7 @@ vec2_substract_vec2(Vec2_t* vec2_a, const Vec2_t* vec2_b);
  * @param scalar Arbitrary scalar.
  */
 void
-vec2_multiply_scalar(Vec2_t* vec2, f32 scalar);
+Vec2_MultiplyScalar(Vec2* vec2, f32 scalar);
 
 /**
  * @brief Get the vector squared length (for better performance).
@@ -116,7 +122,7 @@ vec2_multiply_scalar(Vec2_t* vec2, f32 scalar);
  * @return f32 Squared length of the vector.
  */
 f32
-vec2_get_length_squared(Vec2_t* vec2);
+Vec2_GetLengthSquared(Vec2* vec2);
 
 /**
  * @brief Get the vector length (the norm).
@@ -124,7 +130,7 @@ vec2_get_length_squared(Vec2_t* vec2);
  * @return f32 Length (the norm) of the vector. 
  */
 f32
-vec2_get_length(Vec2_t* vec2);
+Vec2_GetLength(Vec2* vec2);
 
 /**
  * @brief Convert the vector into a unit vector and returns its length.
@@ -132,6 +138,6 @@ vec2_get_length(Vec2_t* vec2);
  * @return b32 Flag showing if the normalization was successful or not. 
  */
 b32
-vec2_normalize(Vec2_t* vec2);
+Vec2_Normalize(Vec2* vec2);
 
-#endif // VECTOR2_H_
+#endif  /* JGE_ENGINE_VECTOR2_H_ */

@@ -1,6 +1,6 @@
 /**
  * ================================================================================
- * @file game.c
+ * @file src_game/game.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for the work with the game main logic.  
  * @version 0.2
@@ -10,66 +10,72 @@
 
 #define _USE_MATH_DEFINES
 
-/* Standard library includes. */
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "include_game/game.h"
+
 #include <math.h>
+#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include <windows.h>
 
-/* Game engine includes. */
-#include "render.h"
-#include "utils.h"
-#include "keyboard.h"
-#include "mouse.h"
-#include "file_io.h"
-#include "image.h"
-#include "color.h"
-#include "font.h"
-#include "dbg.h"
-#include "debug_console.h"
-#include "sound.h"
-#include "audio.h"
-#include "audio_worker.h"
-#include "engine_constants.h"
-#include "random.h"
+#include "include_engine/audio.h"
+#include "include_engine/audio_worker.h"
+#include "include_engine/color.h"
+#include "include_engine/dbg.h"
+#include "include_engine/debug_console.h"
+#include "include_engine/engine_constants.h"
+#include "include_engine/font.h"
+#include "include_engine/image.h"
+#include "include_engine/keyboard.h"
+#include "include_engine/memory_object.h"
+#include "include_engine/mouse.h"
+#include "include_engine/random.h"
+#include "include_engine/render.h"
+#include "include_engine/sound.h"
+#include "include_engine/utils.h"
+#include "include_engine/win32_platform.h"
 
-/* Game includes. */
-#include "game.h"
-#include "game_constants.h"
-#include "game_resourses.h"
+#include "include_game/game_constants.h"
+#include "include_game/game_resourses.h"
 
-/* Objects of the game system. */
-static Audio_t *audio;  /* Game audio. */
-static Font_t *font;  /* Font for the game. */
-static Audio_Worker_t *audio_worker;  /* Audio worker data. */
-static DConsole_t *dconsole;  /* Debug console for debugging messages. */
-static Game_Resourses_t *gres;  /* Game resourses. */
+/* Objects of the engine system. */
+static Audio *audio;
+static AudioWorker *audio_worker;
+static DConsole *dconsole;
+static GameResourses *gres;
+static Font *font;
+static Keyboard *keyboard;
+static Mouse *mouse;
+static Render *render;
 
 /* Define different game logic variables: */
-u32 box_x;
-u32 box_y;
+static u32 box_x;
+static u32 box_y;
 
-Game_t*
-game_constructor(void)
+Game*
+Game_Constructor(void)
 {
-    Game_t *game;  /* Pointer to the Game structure. */
-
-    /* Allocate the memory for the audio object. */
-    game = (Game_t *)malloc(1 * sizeof(Game_t));
+    Game *game = (Game *)malloc(1 * sizeof(Game));
+    if (game == NULL)
+    {
+        dbg_error("%s", "Memory allocation error!");
+    }
     return game;
 }
 
 void
-game_destructor(Game_t *game)
+Game_Destructor(Game *game)
 {
-    /* Release memory allocated for the Game object. */
+    if (game == NULL)
+    {
+        dbg_error("%s", "Attempt to delete an empty object!");
+    }
     free(game);
     game = NULL;
 }
 
 void
-game_init(Game_t *game, Game_State_t game_state, Game_Mode_t game_mode)
+Game_Init(Game *game, GameState game_state, GameMode game_mode)
 {
     game->cum_time = 0.0f;
     game->is_running = false;
@@ -78,25 +84,32 @@ game_init(Game_t *game, Game_State_t game_state, Game_Mode_t game_mode)
 }
 
 void 
-game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t *render)
+Game_SimulateTick(Game *game, Win32Platform *win32_platform)
 {   
-    UNUSED(mouse);
     //game.dtime = 0.001f;  // For testing purposes.
 
     /* Processing of the game states. */
     switch (game->game_state) 
     {
+    /* State for definition of engine objects. */
+    case GST_OBJECTS_DEF:
+    {
+        audio = win32_platform->audio;
+        audio_worker = win32_platform->audio_worker;
+        mouse = win32_platform->mouse;
+        keyboard = win32_platform->keyboard;
+        render = win32_platform->render;
+
+        /* Jump to the next game stage. */
+        game->game_state = GST_MEMORY_ALLOCATION;
+    } break;
+    
     /* State for dynamic memory allocation for different game objects. */
     case GST_MEMORY_ALLOCATION:
     {           
-        /* Object holding the resourses of the game. */
-        gres = game_resourses_constructor();
-
-        /* Objects for the game system. */
-        font = font_constructor();
-        dconsole = dconsole_constructor(DCONSOLE_MESSAGES, DCONSOLE_MAX_MSG_LENGTH);
-        audio = audio_constructor();
-        audio_worker = audio_worker_constructor();
+        gres = GameResourses_Constructor();
+        font = Font_Constructor();
+        dconsole = DConsole_Constructor(DCONSOLE_MESSAGES, DCONSOLE_MAX_MSG_LENGTH);
 
         /* Jump to the next game stage. */      
         game->game_state = GST_LOAD_RESOURCES;
@@ -106,18 +119,21 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
     case GST_LOAD_RESOURCES:
     {
         /* Loading different resource data for IMAGES. */
-        file_load_to_memory(gres->files[GF_FONT_PNG], "..\\data\\font_Win1251.png");
-        image_init(gres->images[GI_FONT], gres->files[GF_FONT_PNG]);
-        file_destructor(gres->files[GF_FONT_PNG]);
+        MemObject_InitByFile(gres->mem_objects[GO_FONT_PNG], 
+            "..\\data\\font_Win1251.png");
+        Image_Init(gres->images[GI_FONT], gres->mem_objects[GO_FONT_PNG]);
+        MemObject_Destructor(gres->mem_objects[GO_FONT_PNG]);
 
-        file_load_to_memory(gres->files[GF_SMILE_FACE_PNG], "..\\data\\smile_face.png");
-        image_init(gres->images[GI_SMILE_FACE], gres->files[GF_SMILE_FACE_PNG]);
-        file_destructor(gres->files[GF_SMILE_FACE_PNG]);
+        MemObject_InitByFile(gres->mem_objects[GO_SMILE_FACE_PNG], 
+            "..\\data\\smile_face.png");
+        Image_Init(gres->images[GI_SMILE_FACE], gres->mem_objects[GO_SMILE_FACE_PNG]);
+        MemObject_Destructor(gres->mem_objects[GO_SMILE_FACE_PNG]);
 
         /* Loading different resource data for SOUNDS. */        
-        file_load_to_memory(gres->files[GF_BACKGROUND_WAV], "..\\data\\background.wav");
-        sound_init(gres->sounds[GS_BACKGROUND], gres->files[GF_BACKGROUND_WAV]);
-        file_destructor(gres->files[GF_BACKGROUND_WAV]);
+        MemObject_InitByFile(gres->mem_objects[GO_BACKGROUND_WAV], 
+            "..\\data\\background.wav");
+        Sound_Init(gres->sounds[GS_BACKGROUND], gres->mem_objects[GO_BACKGROUND_WAV]);
+        MemObject_Destructor(gres->mem_objects[GO_BACKGROUND_WAV]);
  
         /* Jump to the next game stage. */
         game->game_state = GST_INITIALIZATION;
@@ -137,26 +153,26 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
         gres->colors[GC_BKG_COLOR]->color = BKG_COLOR;
         
         /* Prepare the font to use in the game. */
-        font_init(font, (s32)FONT_ROWS_NUM, (s32)FONT_COLS_NUM, (s32)FONT_SYM_WIDTH, 
+        Font_Init(font, (s32)FONT_ROWS_NUM, (s32)FONT_COLS_NUM, (s32)FONT_SYM_WIDTH, 
             (s32)FONT_SYM_HEIGHT, gres->images[GI_FONT]);
         
         /* Initialization of the debuf console. */
-        dconsole_init(dconsole, 100, 50, 200, gres->colors[GC_DCONSOLE_BKG], 
+        DConsole_Init(dconsole, 100, 50, 200, gres->colors[GC_DCONSOLE_BKG], 
             gres->colors[GC_DCONSOLE_BRD], DCONSOLE_MARGINS, gres->colors[GC_BKG_COLOR],
             font);
-        dconsole_clear_messages(dconsole);
+        DConsole_ClearMessages(dconsole);
 
         /* Initialization of the audio system. */
-        audio_init(audio, render->window);
-        audio_clean_buffer(audio);
-        audio_play_sounds(audio);
+        Audio_Init(audio, render->window);
+        Audio_CleanBuffer(audio);
+        Audio_PlaySounds(audio);
 
         /* Preparation of the empty sound. */
-        sound_prepare_empty_sound(gres->sounds[GS_EMPTY]);
+        Sound_PrepareEmptySound(gres->sounds[GS_EMPTY]);
 
         /* Initialization of the audio worker and starting the new thread. */
-        audio_worker_init(audio_worker, audio, gres->sounds, GS_SOUNDS_NUM);
-        CreateThread(0, 0, audio_worker_proc, audio_worker, 0, 0);
+        AudioWorker_Init(audio_worker, audio, gres->sounds, GS_SOUNDS_NUM);
+        CreateThread(0, 0, AudioWorker_ThreadProc, audio_worker, 0, 0);
 
         /* Preparation of the game timer. */
         QueryPerformanceCounter(&(game->begin_counter));
@@ -165,7 +181,7 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
         game->cum_time = 0.0f;  /* Initial cumulative time of the game. */
 
         /* Initialization of the game randomization. */
-        random_randomize(true, 0);
+        Random_Randomize(true, 0);
 
         /* Initialization of the game logic related variables. */
         box_x = 300;
@@ -179,13 +195,13 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
     case GST_INIT_RENDER:
     {
         /* Initial render of the game elements. */
-        render_clear_screen(render, gres->colors[GC_BKG_COLOR]);
-        render_draw_rect(render, box_x, box_y, 100, 100, gres->colors[GC_WHITE]);
-        render_draw_bitmap(render, 500, 500, gres->images[GI_SMILE_FACE], 3);
+        Render_ClearScreen(render, gres->colors[GC_BKG_COLOR]);
+        Render_DrawRect(render, box_x, box_y, 100, 100, gres->colors[GC_WHITE]);
+        Render_DrawBitmap(render, 500, 500, gres->images[GI_SMILE_FACE], 3);
         
         /* Start to play the gaem music music. */
-        sound_play_sound_continiously(gres->sounds[GS_EMPTY], S_PAN_BOTH, 1.0f);
-        sound_play_sound_continiously(gres->sounds[GS_BACKGROUND], S_PAN_BOTH, 1.0f);
+        Sound_PlaySoundContiniously(gres->sounds[GS_EMPTY], S_PAN_BOTH, 1.0f);
+        Sound_PlaySoundContiniously(gres->sounds[GS_BACKGROUND], S_PAN_BOTH, 1.0f);
 
         /* State for the initial render procedure. */
         game->game_state = GST_PROCESS_GAME_TICK;
@@ -195,21 +211,21 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
     case GST_PROCESS_GAME_TICK:
     {
         /* Clear all previous debug console messages. */
-        dconsole_clear_messages(dconsole);
+        DConsole_ClearMessages(dconsole);
         
-        if (keyboard_is_key_pressed_discretely(keyboard, KEY_RIGHT))
+        if (Keyboard_IsKeyPressedDiscretely(keyboard, KEY_RIGHT))
         {
-            render_draw_rect(render, box_x, box_y, 100, 100, gres->colors[GC_BKG_COLOR]);
+            Render_DrawRect(render, box_x, box_y, 100, 100, gres->colors[GC_BKG_COLOR]);
             box_x += 5;
-            render_draw_rect(render, box_x, box_y, 100, 100, gres->colors[GC_WHITE]);
+            Render_DrawRect(render, box_x, box_y, 100, 100, gres->colors[GC_WHITE]);
         }
         
-        dconsole_add_message(dconsole, "Test red string!", gres->colors[GC_RED]);
-        dconsole_add_message(dconsole, "Test blue string!", gres->colors[GC_BLUE]);
-        dconsole_render(dconsole, render);
+        DConsole_AddMessage(dconsole, "Test red string!", gres->colors[GC_RED]);
+        DConsole_AddMessage(dconsole, "Test blue string!", gres->colors[GC_BLUE]);
+        DConsole_Render(dconsole, render);
         
         /* Calculate the delta time. */
-        game_calculate_dtime(game);
+        Game_CalculateDTime(game);
 
         /* Jump to the next game stage. */
 	    game->game_state = GST_PROCESS_GAME_TICK;
@@ -224,12 +240,12 @@ game_simulate_tick(Game_t *game, Keyboard_t *keyboard, Mouse_t *mouse, Render_t 
     /* State for releasing the allocated memory. */
     case GST_RELEASE_MEMORY:
     {
-        dconsole_destructor(dconsole);
+        DConsole_Destructor(dconsole);
     }}
 }
 
 void
-game_calculate_dtime(Game_t *game)
+Game_CalculateDTime(Game *game)
 {
     LONGLONG begin;  /* Variable for dtime calculation. */
     LONGLONG end;  /* Variable for dtime calculation. */

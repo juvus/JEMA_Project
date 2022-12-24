@@ -18,21 +18,25 @@ pushd ..\build
 cl -FC -Zi -W4 -WX ^
     /Fe: Game ^
     /wd4201 /wd4189 ^
-    /I ..\code\include_engine ^
-    /I ..\code\include_game ^
+    /I ..\code ^
     ..\code\src_engine\audio_worker.c ^
     ..\code\src_engine\audio.c ^
     ..\code\src_engine\color.c ^
     ..\code\src_engine\debug_console.c ^
-    ..\code\src_engine\file_io.c ^
     ..\code\src_engine\font.c ^
     ..\code\src_engine\helper_functions.c ^
     ..\code\src_engine\image.c ^
     ..\code\src_engine\keyboard.c ^
+    ..\code\src_engine\math_functions.c ^
+    ..\code\src_engine\matrix22.c ^
+    ..\code\src_engine\matrix33.c ^
+    ..\code\src_engine\memory_object.c ^
     ..\code\src_engine\mouse.c ^
     ..\code\src_engine\random.c ^
     ..\code\src_engine\render.c ^
     ..\code\src_engine\sound.c ^
+    ..\code\src_engine\vector2.c ^
+    ..\code\src_engine\vector3.c ^
     ..\code\src_engine\wav_uncompressor.c ^
     ..\code\src_engine\win32_platform.c ^
     ..\code\src_game\game_resourses.c ^

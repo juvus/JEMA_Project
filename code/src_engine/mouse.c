@@ -1,40 +1,46 @@
 /**
  * ================================================================================
- * @file mouse.c
+ * @file src_engine/mouse.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for the work with mouse input to
  * the game.
  * @version 0.2
- * @date 2022-07-11
+ * @date 2022-12-04
  * ================================================================================
  */
 
-/* Game engine includes: */
-#include "mouse.h"
-#include "render.h"
-#include "utils.h"
+#include "include_engine/mouse.h"
 
-Mouse_t*
-mouse_constructor(void)
+#include "include_engine/dbg.h"
+#include "include_engine/render.h"
+#include "include_engine/utils.h"
+#include "include_engine/vector2.h"
+
+Mouse*
+Mouse_Constructor(void)
 {
-    Mouse_t *mouse;  /* Pointer to the Mouse structure. */
-
-    /* Allocation the memory for the Mouse structure. */
-    mouse = (Mouse_t*)malloc(1 * sizeof(Mouse_t));
+    Mouse *mouse = (Mouse *)malloc(1 * sizeof(Mouse));
+    if (mouse == NULL)
+    {
+        dbg_error("%s", "Memory allocation error!");
+    }
     return mouse;
 }
 
 void
-mouse_destructor(Mouse_t *mouse)
+Mouse_Destructor(Mouse *mouse)
 {
-    /* Free memory allocated for the Mouse structure. */
+    if (mouse == NULL)
+    {
+        dbg_error("%s", "Attempt to delete an empty object!");
+    }
     free(mouse);
     mouse = NULL;
 }
 
 void
-mouse_prepare_input(Mouse_t *mouse, Render_t *render)
+Mouse_PrepareInput(Mouse *mouse, Render *render)
 {
-    mouse->cursor.x = mouse->raw_cursor.x;
-    mouse->cursor.y = render->height - mouse->raw_cursor.y;
+    mouse->cur_x = (u32)mouse->raw_cursor.x;
+    mouse->cur_y = render->height - (u32)mouse->raw_cursor.y;
 }

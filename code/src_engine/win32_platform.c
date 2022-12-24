@@ -1,34 +1,32 @@
 /**
  * ================================================================================
- * @file win32_platform.c
+ * @file src_engine/win32_platform.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for the work with Win32 platform layer. 
  * @version 0.2
- * @date 2022-07-19
+ * @date 2022-12-22
  * ================================================================================
  */
 
-/* Standard library includes. */
 #undef UNICODE
 #include <windows.h>
 
-/* Game engine includes. */
-#include "utils.h"
-#include "game.h"
-#include "game_worker.h"
-#include "render.h"
-#include "keyboard.h"
-#include "mouse.h"
-#include "dbg.h"
+#include "include_engine/audio.h"
+#include "include_engine/audio_worker.h"
+#include "include_engine/dbg.h"
+#include "include_engine/keyboard.h"
+#include "include_engine/mouse.h"
+#include "include_engine/render.h"
+#include "include_engine/win32_platform.h"
+#include "include_engine/utils.h"
 
-/* Static variables: */
-static Game_t *game;  /* Pointer to the Game structure. */
-static Game_Worker_t *game_worker;  /* Game worker data. */
-static Render_t *render;  /* Pointer to the Render structure. */
-static Keyboard_t *keyboard;  /* Pointer to the Keyboard structure. */
-static Mouse_t *mouse;  /* Pointer to the Mouse structure. */
+#include "include_game/game.h"
+#include "include_game/game_worker.h"
 
-/* Static functions declaration */
+static Game *game;  /* Pointer to the Game structure. */
+static GameWorker *game_worker;  /* Pointer to the GameWorker structure. */
+static Win32Platform *win32_platform;  /* Win32Platform structure. */
+
 /**
  * @brief Window callback function for window messages processing.
  * @param window Handle to the window.
@@ -38,7 +36,7 @@ static Mouse_t *mouse;  /* Pointer to the Mouse structure. */
  * @return LRESULT Standard return from a callback function.
  */
 static LRESULT CALLBACK 
-window_callback(HWND window, UINT message, WPARAM w_param, LPARAM l_param);
+WindowCallback(HWND window, UINT message, WPARAM w_param, LPARAM l_param);
 
 /**
  * @brief Function for the entry point of the application. 
@@ -46,7 +44,7 @@ window_callback(HWND window, UINT message, WPARAM w_param, LPARAM l_param);
  * @param hPrevInstance A handle to the previous instance of the application (NULL).
  * @param lpCmdLine The command line for the application, excluding the program name. 
  * @param nCmdShow Controls how the window is to be shown.
- * @return int 
+ * @return int Standard return for Windows application.
  */
 int CALLBACK 
 WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -60,7 +58,7 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
     WNDCLASS window_class = {0};
     window_class.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
     window_class.hInstance = hInstance;
-    window_class.lpfnWndProc = window_callback;
+    window_class.lpfnWndProc = WindowCallback;
     window_class.lpszClassName = "Game";
 
     /* Register the window class. */
@@ -69,8 +67,13 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
         dbg_error("%s", "Windows class was not registered correctly!");
     }
 
-    game = game_constructor();
-    game_init(game, GST_MEMORY_ALLOCATION, GM_NORMAL);
+    /* Create Win32 platform and initialize. */
+    win32_platform = Win32Platform_Constructor();
+    Win32Platform_Init(win32_platform);
+
+    /* Create game and initialize. */
+    game = Game_Constructor();
+    Game_Init(game, GST_OBJECTS_DEF, GM_NORMAL);
     game->is_running = true;
 
     /* Create a window and return a window handle. */
@@ -78,17 +81,13 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
     DWORD dwStyle = WS_VISIBLE | WS_OVERLAPPEDWINDOW;
     window = CreateWindowEx(0, window_class.lpszClassName, "Game", dwStyle,
         CW_USEDEFAULT, CW_USEDEFAULT, WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0, hInstance, 0);
-    
-    /* Check if the window was successfully created. */
     if (window == NULL)
     {
         dbg_error("%s", "Window was not successfully created!");
     }
-
-    /* Preparations for a message processing loop. */
-    MSG message;
     
     /* Starting a message processing loop. */
+    MSG message;
     while (game->is_running)
     {
         /* Get and process messages. */
@@ -102,12 +101,15 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
         Sleep(1);
     }
     
-    /* TODO: Call destructors of the created objects. */
+    /* Calling destructors. */
+    Game_Destructor(game);
+    GameWorker_Destructor(game_worker);
+    Win32Platform_Destructor(win32_platform);
     return 0;
 }
 
 static LRESULT CALLBACK 
-window_callback(HWND window, UINT message, WPARAM w_param, LPARAM l_param)
+WindowCallback(HWND window, UINT message, WPARAM w_param, LPARAM l_param)
 {
     LRESULT result = 0;
 
@@ -124,22 +126,19 @@ window_callback(HWND window, UINT message, WPARAM w_param, LPARAM l_param)
     /* Creating the window message. */
     case WM_CREATE:
     {
-        /* Create different game objects and initialize it. */
-        keyboard = keyboard_constructor();
-        mouse = mouse_constructor();
-
-        render = render_constructor();
-        render_init(render, window);
-
-        game_worker = game_worker_constructor();
-        game_worker_init(game_worker, game, keyboard, mouse, render);  
-        CreateThread(0, 0, game_worker_proc, game_worker, 0, 0);
+        /* Initialize game render. */
+        Render_Init(win32_platform->render, window);
+        
+        /* Run the game in a separate thread. */
+        game_worker = GameWorker_Constructor();
+        GameWorker_Init(game_worker, game, win32_platform);  
+        CreateThread(0, 0, GameWorker_ThreadProc, game_worker, 0, 0);
     } break;
     
     /* Resizing of the window message. */
     case WM_SIZE:
     {
-        render_resize_window(render);
+        Render_ResizeWindow(win32_platform->render);
     } break;
 
     /* Processing messages when keys are pressed and released. */
@@ -148,16 +147,16 @@ window_callback(HWND window, UINT message, WPARAM w_param, LPARAM l_param)
     case WM_KEYDOWN:
     case WM_KEYUP:
     {   
-        keyboard_define_temp_key_data(keyboard, w_param, l_param);
-        keyboard_process_keys(keyboard);
+        Keyboard_DefineTempKeyData(win32_platform->keyboard, w_param, l_param);
+        Keyboard_ProcessKeys(win32_platform->keyboard);
     } break;
 
     /* Processing messages for mouse in the game window. */
     case WM_MOUSEMOVE:
     {
-        GetCursorPos(&(mouse->raw_cursor));
-        ScreenToClient(window, &(mouse->raw_cursor));
-        mouse_prepare_input(mouse, render);
+        GetCursorPos(&(win32_platform->mouse->raw_cursor));
+        ScreenToClient(window, &(win32_platform->mouse->raw_cursor));
+        Mouse_PrepareInput(win32_platform->mouse, win32_platform->render);
     } break;
 
     /* Default message and uncatched messages: */
@@ -166,4 +165,41 @@ window_callback(HWND window, UINT message, WPARAM w_param, LPARAM l_param)
         result = DefWindowProc(window, message, w_param, l_param);
     }}
     return result;
+}
+
+Win32Platform*
+Win32Platform_Constructor(void)
+{
+    Win32Platform *platform = (Win32Platform *)malloc(1 * sizeof(Win32Platform));
+    if (platform == NULL)
+    {
+        dbg_error("%s", "Memory allocation error!");
+    }
+    return platform;
+}
+
+void
+Win32Platform_Destructor(Win32Platform *platform)
+{
+    if (platform == NULL)
+    {
+        dbg_error("%s", "Attempt to delete an empty object!");
+    }
+    Audio_Destructor(platform->audio);
+    AudioWorker_Destructor(platform->audio_worker);
+    Keyboard_Destructor(platform->keyboard);
+    Mouse_Destructor(platform->mouse);
+    Render_Destructor(platform->render);
+    free(platform);
+    platform = NULL;
+}
+
+void
+Win32Platform_Init(Win32Platform *platform)
+{
+    platform->audio = Audio_Constructor();
+    platform->audio_worker = AudioWorker_Constructor();
+    platform->keyboard = Keyboard_Constructor();
+    platform->mouse = Mouse_Constructor();
+    platform->render = Render_Constructor();
 }

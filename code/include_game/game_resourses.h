@@ -1,63 +1,61 @@
 /**
  * ================================================================================
- * @file game_resourses.h
+ * @file include_game/game_resourses.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of different resourses used by the game.  
  * @version 0.1
- * @date 2022-07-22
+ * @date 2022-12-23
  * ================================================================================
  */
 
 #ifndef GAME_RESOURSES_H_
 #define GAME_RESOURSES_H_
 
-/* Game engine includes. */
-#include "utils.h"
+#include "include_engine/utils.h"
 
-/* Predefined structures. */
-typedef struct File File_t;
-typedef struct Image Image_t;
-typedef struct Sound Sound_t;
-typedef struct Color Color_t;
+typedef struct Color_ Color;
+typedef struct Image_ Image;
+typedef struct MemObject_ MemObject;
+typedef struct Sound_ Sound;
 
 /**
  * @brief Enumerator for the set of files used in the game.
  */
-enum Game_Resourse_File
+enum GameResourseMemObject_
 {
-    GF_FONT_PNG,  /**< PNG file with font symbol data. */
-    GF_SMILE_FACE_PNG,  /**< PNG file with smiley face image. */
-    GF_BACKGROUND_WAV,  /**< WAV file for the background music. */
-    GF_FILES_NUM  /**< Total amount of the files used in the game. */
+    GO_FONT_PNG,  /**< PNG file with font symbol data. */
+    GO_SMILE_FACE_PNG,  /**< PNG file with smiley face image. */
+    GO_BACKGROUND_WAV,  /**< WAV file for the background music. */
+    GO_OBJECTS_NUM  /**< Total amount of the files used in the game. */
 };
-typedef enum Game_Resourse_File Game_Resourse_File_t;
+typedef enum GameResourseMemObject_ GameResourseMemObject;
 
 /**
  * @brief Enumerator for the set of images used in the game.
  */
-enum Game_Resourse_Image
+enum GameResourseImage_
 {
     GI_FONT,  /**< Image with font symbols. */
     GI_SMILE_FACE,  /**< Temporary test image with smiley face. */
     GI_IMAGES_NUM  /**< Total amount of the images used in the game.  */
 };
-typedef enum Game_Resourse_Image Game_Resourse_Image_t;
+typedef enum GameResourseImage_ GameResourseImage;
 
 /**
  * @brief Enumerator for the set of sounds used in the game.
  */
-enum Game_Resourse_Sound
+enum GameResourseSound_
 {
     GS_EMPTY,  /**< Empty sound necessary for the mixing purposes. */
     GS_BACKGROUND,  /**< Sound for the background music. */
     GS_SOUNDS_NUM  /**< Total amount of the sounds used in the game. */
 };
-typedef enum Game_Resourse_Sound Game_Resourse_Sound_t;
+typedef enum GameResourseSound_ GameResourseSound;
 
 /**
  * @brief Enumerator for the game colors used in the game.
  */
-enum Game_Resourse_Color
+enum GameResourseColor_
 {
     GC_WHITE,  /**< White color (0x00ffffff). */
     GC_BLACK,  /**< Black color (0x00000000). */
@@ -69,32 +67,39 @@ enum Game_Resourse_Color
     GC_BKG_COLOR,  /**< Game background color. */
     GC_COLORS_NUM  /**< Total number of the colors used in the game. */
 };
-typedef enum Game_Resourse_Color Game_Resourse_Color_t;
+typedef enum GameResourseColor_ GameResourseColor;
 
 /**
  * @brief Structure for the game resourses.
  */
-struct Game_Resourses
+struct GameResourses_
 {
-    File_t *files[GF_FILES_NUM];  /* Array of pointers to the File structures. */
-    Image_t *images[GI_IMAGES_NUM];  /* Array of pointers to the Image structures.  */
-    Sound_t *sounds[GS_SOUNDS_NUM];  /* Array of pointers to the Sound structure. */
-    Color_t *colors[GC_COLORS_NUM];  /* Array of pointers to the Color structure. */ 
+    MemObject *mem_objects[GO_OBJECTS_NUM];  /* Array of pointers to the File structures. */
+    Image *images[GI_IMAGES_NUM];  /* Array of pointers to the Image structures.  */
+    Sound *sounds[GS_SOUNDS_NUM];  /* Array of pointers to the Sound structure. */
+    Color *colors[GC_COLORS_NUM];  /* Array of pointers to the Color structure. */ 
 };
-typedef struct Game_Resourses Game_Resourses_t; 
+typedef struct GameResourses_ GameResourses; 
 
 /**
- * @brief Constructor of the Game_Resourses class.
- * @return Game_Resourses_t* Pointer to the Game_Resourses structure. 
+ * @brief Object constructor.
+ * @return GameResourses* Pointer to the GameResourses structure. 
  */
-Game_Resourses_t*
-game_resourses_constructor(void);
+GameResourses*
+GameResourses_Constructor(void);
 
 /**
- * @brief Destructor of the Game_Resourses object.
- * @param game_resourses Pointer to the Game_Resourses structure.
+ * @brief Object destructor.
+ * @param game_resourses Pointer to the GameResourses structure.
  */
 void
-game_resourses_destructor(Game_Resourses_t *game_resourses);
+GameResourses_Destructor(GameResourses *game_resourses);
 
-#endif //GAME_RESOURSES_H_
+/**
+ * @brief Free all game resourses in one place.
+ * @param game_resourses Pointer to the GameResourses structure.
+ */
+void
+GameResources_FreeResources(GameResourses *game_resourses);
+
+#endif  /* GAME_RESOURSES_H_ */

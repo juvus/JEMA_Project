@@ -1,62 +1,60 @@
 /**
  * ================================================================================
- * @file font.h
+ * @file include_engine/font.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of objects and functions necessary for the work with font.
  * @version 0.2
- * @date 2022-07-08
+ * @date 2022-12-04
  * ================================================================================
  */
 
-#ifndef FONT_H_
-#define FONT_H_
+#ifndef JGE_ENGINE_FONT_H_
+#define JGE_ENGINE_FONT_H_
 
-/* Game engine includes: */
-#include "utils.h"
+#include "include_engine/utils.h"
 
-/* Predefined structures: */
-typedef struct Render Render_t;
-typedef struct Image Image_t;
-typedef struct Color Color_t;
+typedef struct Render_ Render;
+typedef struct Image_ Image;
+typedef struct Color_ Color;
 
 /**
  * @brief Structure to store the symbol information. 
  */
-struct Symbol_data 
+struct SymbolData_ 
 {
     u8 symbol;  /**< Representation of the symbol in Win1251 encoding. */
     u8 symbol_array[42];  /**< Array to storing the symbol pixel data. */
     u32 shift_left;  /**< How much to shift the next symbol to the left. */
     u32 shift_bottom;  /**< How much to thift the symbol to bottom. */
 };
-typedef struct Symbol_data Symbol_data_t;
+typedef struct SymbolData_ SymbolData;
 
 /**
  * @brief Structure for holding the font properties.
  */
-struct Font
+struct Font_
 {
     s32 rows_num;  /**< Number of rows of symbols in the font image file. */
     s32 cols_num;  /**< Number of columns of symbols in the font image file. */
     s32 sym_width;  /**< Symbol width in pixels (6).  */
     s32 sym_height;  /**< Symbol height in pixels (7). */
-    Symbol_data_t *symbols_data;  /**< Pointer to the font symbols data. */
+    SymbolData *symbols_data;  /**< Pointer to the font symbols data. */
 };
-typedef struct Font Font_t;
+typedef struct Font_ Font;
 
 /**
- * @brief Class constructor.
- * @return Font_t* Pointer to the Font structure.
+ * @brief Object constructor.
+ * @return Font* Pointer to the Font structure.
  */
-Font_t*
-font_constructor(void);
+Font*
+Font_Constructor(void);
 
 /**
- * @brief Class destructor.
+ * @brief Object destructor.
  * @param font Pointer to the Font structure.
  */
 void
-font_destructor(Font_t *font);
+Font_Destructor(Font *font);
 
 /**
  * @brief Object initialization. Extraction of the symbols data from the font image.
@@ -68,8 +66,8 @@ font_destructor(Font_t *font);
  * @param img_font Pointer to the image containing the font.
  */
 void 
-font_init(Font_t *font, s32 rows_num, s32 cols_num, s32 sym_width, s32 sym_height, 
-    Image_t *img_font);
+Font_Init(Font *font, s32 rows_num, s32 cols_num, s32 sym_width, s32 sym_height, 
+    Image *img_font);
 
 /**
  * @brief Drawing a string using the current font.
@@ -83,7 +81,7 @@ font_init(Font_t *font, s32 rows_num, s32 cols_num, s32 sym_width, s32 sym_heigh
  * @param render Pointer to the Render structure.
  */
 void 
-font_draw_string(Font_t *font, char *str, s32 str_max_width, u32 x, u32 y, 
-    u32 size, Color_t *color, Render_t *render);
+Font_DrawString(Font *font, char *str, s32 str_max_width, u32 x, u32 y, 
+    u32 size, Color *color, Render *render);
 
-#endif // FONT_H_
+#endif  /* JGE_ENGINE_FONT_H_ */

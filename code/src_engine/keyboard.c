@@ -1,23 +1,22 @@
 /**
  * ================================================================================
- * @file keyboard.c
+ * @file src_engine/keyboard.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for the work with keyboard input to
  * the game.
- * @version 0.1
- * @date 2022-07-11
+ * @version 0.2
+ * @date 2022-12-06
  * ================================================================================
  */
 
-/* Standard library includes: */
-#include <windows.h>
+#include "include_engine/keyboard.h"
+
 #include <stdio.h>
+#include <windows.h>
 
-/* Game engine includes: */
-#include "keyboard.h"
-#include "utils.h"
+#include "include_engine/dbg.h"
+#include "include_engine/utils.h"
 
-/* Static functions. */
 /**
  * @brief Make processing of a single keyboard key.
  * @param keyboard Pointer to the Keyboard structure.
@@ -25,28 +24,32 @@
  * @param key Checking key name.
  */
 static void
-keyboard_process_key(Keyboard_t *keyboard, u32 vk_code, Key_Type_t key);
+Keyboard_ProcessKey(Keyboard *keyboard, u32 vk_code, KeyType key);
 
-Keyboard_t*
-keyboard_constructor(void)
+Keyboard*
+Keyboard_Constructor(void)
 {
-    Keyboard_t *keyboard;  /* Pointer to the Keyboard structure. */
-
-    /* Allocation the memory for the Keyboard structure. */
-    keyboard = (Keyboard_t*)malloc(1 * sizeof(Keyboard_t));
+    Keyboard *keyboard = (Keyboard *)malloc(1 * sizeof(Keyboard));
+    if (keyboard == NULL)
+    {
+        dbg_error("%s", "Memory allocation error!");
+    }
     return keyboard;
 }
 
 void
-keyboard_destructor(Keyboard_t *keyboard)
+Keyboard_Destructor(Keyboard *keyboard)
 {
-    /* Free memory allocated for the Keyboard structure. */
+    if (keyboard == NULL)
+    {
+        dbg_error("%s", "Attempt to delete an empty object!");
+    }
     free(keyboard);
     keyboard = NULL;
 }
 
 void
-keyboard_define_temp_key_data(Keyboard_t *keyboard, WPARAM w_param, LPARAM l_param)
+Keyboard_DefineTempKeyData(Keyboard *keyboard, WPARAM w_param, LPARAM l_param)
 {
     keyboard->temp_key_vk_code = (u32)w_param;
     keyboard->temp_key_was_down = ((l_param & (1 << 30)) != 0);
@@ -54,18 +57,18 @@ keyboard_define_temp_key_data(Keyboard_t *keyboard, WPARAM w_param, LPARAM l_par
 }
 
 void 
-keyboard_process_keys(Keyboard_t *keyboard)
+Keyboard_ProcessKeys(Keyboard *keyboard)
 {
     /* Check every defined key one by one. */
-    keyboard_process_key(keyboard, VK_LEFT, KEY_LEFT);
-    keyboard_process_key(keyboard, VK_RIGHT, KEY_RIGHT);
-    keyboard_process_key(keyboard, VK_UP, KEY_UP);
-    keyboard_process_key(keyboard, VK_DOWN, KEY_DOWN);
-    keyboard_process_key(keyboard, VK_MENU, KEY_ALT);
+    Keyboard_ProcessKey(keyboard, VK_LEFT, KEY_LEFT);
+    Keyboard_ProcessKey(keyboard, VK_RIGHT, KEY_RIGHT);
+    Keyboard_ProcessKey(keyboard, VK_UP, KEY_UP);
+    Keyboard_ProcessKey(keyboard, VK_DOWN, KEY_DOWN);
+    Keyboard_ProcessKey(keyboard, VK_MENU, KEY_ALT);
 }
 
 static void
-keyboard_process_key(Keyboard_t *keyboard, u32 vk_code, Key_Type_t key)
+Keyboard_ProcessKey(Keyboard *keyboard, u32 vk_code, KeyType key)
 {   
     u32 temp_vk_code = keyboard->temp_key_vk_code;
     b32 was_down = keyboard->temp_key_was_down;
@@ -103,13 +106,13 @@ keyboard_process_key(Keyboard_t *keyboard, u32 vk_code, Key_Type_t key)
 }
 
 b32 
-keyboard_is_key_pressed_continuously(Keyboard_t *keyboard, Key_Type_t key)
+Keyboard_IsKeyPressedContinuously(Keyboard *keyboard, KeyType key)
 {
     return (keyboard->keys[key].is_pressed);
 }
 
 b32 
-keyboard_is_key_pressed_discretely(Keyboard_t *keyboard, Key_Type_t key)
+Keyboard_IsKeyPressedDiscretely(Keyboard *keyboard, KeyType key)
 {
     b32 result = false;  /* Result of the check. */
     

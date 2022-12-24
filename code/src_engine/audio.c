@@ -1,28 +1,26 @@
 /**
  * ================================================================================
- * @file audio.c
+ * @file src_engine/audio.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Definition of functions necessary for the work with audio system of
  * the game.
- * @version 0.5
- * @date 2022-07-17
+ * @version 0.6
+ * @date 2022-11-30
  * ================================================================================ 
  */
 
-/* Standard library includes: */
+#include "include_engine/audio.h"
+
 #include <dsound.h>
-#include <windows.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <windows.h>
 
-/* Game engine includes: */
-#include "audio.h"
-#include "utils.h"
-#include "sound.h"
-#include "dbg.h"
+#include "include_engine/dbg.h"
+#include "include_engine/sound.h"
+#include "include_engine/utils.h"
 
-/* Static functions. */
 /**
  * @brief Mixing sound data into audio mix array.
  * @param mix_array Pointer to the mix array.
@@ -30,7 +28,7 @@
  * @param sample_count Number of samples.
  */
 static void 
-mix_temp_array_to_mix_array(s16 *mix_array, s16 *sound, u32 sample_count);
+MixTempArrayToMixArray(s16 *mix_array, s16 *sound, u32 sample_count);
 
 /**
  * @brief Applying the pan for the sound.
@@ -39,7 +37,7 @@ mix_temp_array_to_mix_array(s16 *mix_array, s16 *sound, u32 sample_count);
  * @param pan Sound pan (left of right channel).
  */
 static void
-apply_sound_pan(s16 *sound, u32 sample_count, Sound_Pan_t pan);
+ApplySoundPan(s16 *sound, u32 sample_count, SoundPan pan);
 
 /**
  * @brief Applying the volume for the sound.
@@ -48,7 +46,7 @@ apply_sound_pan(s16 *sound, u32 sample_count, Sound_Pan_t pan);
  * @param volume Sound volume.
  */
 static void
-apply_sound_volume(s16 *sound, u32 sample_count, f32 volume);
+ApplySoundVolume(s16 *sound, u32 sample_count, f32 volume);
 
 /**
  * @brief Cleaning audio buffer - s16 array.  
@@ -56,62 +54,50 @@ apply_sound_volume(s16 *sound, u32 sample_count, f32 volume);
  * @param array Pointer to sound array.
  */
 static void
-clean_s16_array(Audio_t *audio, s16 *array);
+CleanS16Array(Audio *audio, s16 *array);
 
-Audio_t*
-audio_constructor(void)
+Audio*
+Audio_Constructor(void)
 {
-    Audio_t *audio;  /* Pointer to the Audio structure. */
-
-    /* Allocate the memory for the audio object. */
-    audio = (Audio_t *)malloc(1 * sizeof(Audio_t));
-    audio->primary_buffer = NULL;
-    audio->buffer = NULL;
-    audio->temp_array = NULL;
-    audio->mix_array = NULL;
-    
+    Audio *audio = (Audio*)malloc(1 * sizeof(Audio));
+    if (audio == NULL)
+    {
+        dbg_error("%s", "Memory allocation error!");
+    }
     return audio;
 }
 
 void
-audio_destructor(Audio_t *audio)
+Audio_Destructor(Audio *audio)
 {
-    /* Release memory allocated for the temporary array. */
+    if (audio == NULL)
+    {
+        dbg_error("%s", "Attempt to delete an empty object!");
+    }
+    
     free(audio->temp_array);
-
-    /* Release memory allocated for the mix array. */
     free(audio->mix_array);
-
-    /* Release memory allocated for the audio object. */
     free(audio);
+    audio = NULL;
 }
 
 void
-audio_init(Audio_t *audio, HWND window)
+Audio_Init(Audio *audio, HWND window)
 {
-    HMODULE dsound_dll;  /* Handle to the module. */
-    direct_sound_create_t *direct_sound_create;  /* Poiner to the procedure from dll. */
-    u32 channels_num;  /* Number of channels. */
-    u32 samples_per_second;  /* Number of samples per second. */
-    u32 bytes_per_sample;  /* Number of bytes per sample. */
-    u32 bits_per_sample_for_channel;  /* Number of bits per sample for the 1 channel. */
-    u32 size;  /* Buffer size in bytes. */
-    u32 buffer_time;  /* Duration of the audio buffer. */
-    f32 temp_array_time;  /* Duration of the temporary array. */
+    u32 channels_num = 2;
+    u32 samples_per_second = 44100;
+    u32 bytes_per_sample = channels_num * sizeof(s16);
+    u32 bits_per_sample_for_channel = 8 * bytes_per_sample / channels_num; /* 16 bits. */
+    u32 buffer_time = 1;  /* Duration of the audio buffer in seconds. */
+    f32 temp_array_time = 0.1f;  /* Seconds. */
+    u32 size = buffer_time * samples_per_second * bytes_per_sample;  /* Buffer size. */
 
-    channels_num = 2;
-    samples_per_second = 44100;
-    bytes_per_sample = channels_num * sizeof(s16);
-    bits_per_sample_for_channel = 8 * bytes_per_sample / channels_num; /* 16 bits. */
-    buffer_time = 1;  /* Seconds. */
-    temp_array_time = 0.1f;  /* Seconds. */
-    size = buffer_time * samples_per_second * bytes_per_sample;
-
-    /* Load dll library. */
-    dsound_dll = LoadLibraryA("dsound.dll");
+    /* Load dll and assign it to a hangle. */
+    HMODULE dsound_dll = LoadLibraryA("dsound.dll");
     if (!dsound_dll) dbg_error("%s", "File dsound.dll not found!");
 
-    /* Take only one procedure from the loaded dll. */
+    /* Get the procedure adress from the loaded dll. */
+    direct_sound_create_t *direct_sound_create;
     direct_sound_create = (direct_sound_create_t*)GetProcAddress(dsound_dll, "DirectSoundCreate");
     if (!direct_sound_create) dbg_error("%s", "Direct_sound_create failed!"); 
     
@@ -177,10 +163,8 @@ audio_init(Audio_t *audio, HWND window)
 }
 
 void
-audio_clean_buffer(Audio_t *audio)
+Audio_CleanBuffer(Audio *audio)
 {
-    DWORD i;  /* Temporary index. */
-    s16 *at;  /* Pointer to sample's channel value s16 (-32768...32767). */
     void *region_1;  /* Pointer to the region 1. */
     DWORD region_1_size;  /* Region 1 size. */
     void *region_2;  /* Pointer to the region 2. */
@@ -190,9 +174,11 @@ audio_clean_buffer(Audio_t *audio)
     if (SUCCEEDED(audio->buffer->lpVtbl->Lock(audio->buffer, 0, audio->size,
         &region_1, &region_1_size, &region_2, &region_2_size, 0))) 
     {
-        at = (s16 *)region_1;
+        /* Get pointer to sample's channel value s16 (-32768...32767). */
+        s16 *at = (s16 *)region_1;
+        
         DWORD region_1_sample_count = region_1_size / audio->bytes_per_sample;
-        for (i = 0; i < region_1_sample_count; ++i) 
+        for (DWORD i = 0; i < region_1_sample_count; ++i) 
         {            
             *at++ = 0;
             *at++ = 0;
@@ -205,7 +191,7 @@ audio_clean_buffer(Audio_t *audio)
 }
 
 void
-audio_play_sounds(Audio_t *audio)
+Audio_PlaySounds(Audio *audio)
 {
     audio->buffer->lpVtbl->SetCurrentPosition(audio->buffer, 0);
     
@@ -217,24 +203,15 @@ audio_play_sounds(Audio_t *audio)
 }
 
 void
-audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num)
+Audio_UpdateBuffer(Audio *audio, Sound *sounds[], u32 sound_num)
 {
-    Sound_t *sound;  /* Pointer to the treated sound. */
-    u32 i, j, k;  /* Temporary indexes. */
-    u32 rest_sample_num;  /* Amount of samples, remained from sample_index to the end of array. */
-    u32 s16_array_size = audio->s16_array_size;  /* Number of s16 elements in array. */
-    u32 s32_array_size = audio->s32_array_size;  /* Number of s32 elements in array. */
-    s16 *at_dest;  /* Pointer to sample's channel value s16 (-32768...32767) at destination. */
-    s16 *at_src;  /* Pointer to sample's channel value s16 (-32768...32767) at source. */
-    void *region_1;  /* Pointer to the region 1. */
-    DWORD region_1_size;  /* Region 1 size. */
-    void *region_2;  /* Pointer to the region 2. */
-    DWORD region_2_size;  /* Region 2 size. */
+    /* Get number of elements in array. */
+    u32 s16_array_size = audio->s16_array_size;
+    u32 s32_array_size = audio->s32_array_size;
 
     /* Get the cursors position for the analysis. */
     audio->buffer->lpVtbl->GetCurrentPosition(audio->buffer, &(audio->current_play_cursor), 
         &(audio->current_write_cursor));
- 
 
     if (audio->current_write_cursor >= audio->border_cursor)
     {       
@@ -247,29 +224,29 @@ audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num)
         }
         
         /* Clean the array mix_array of the buffer. */
-        clean_s16_array(audio, audio->mix_array);
+        CleanS16Array(audio, audio->mix_array);
 
         /* Prepare the mix of all sounds that than will be loaded to the buffer. */
-        for (i = 0; i < sound_num; i++)
+        for (u32 i = 0; i < sound_num; ++i)
         {
             /* Get pointer to the sound for the treatment. */
-            sound = sounds[i]; 
+            Sound *sound = sounds[i]; 
 
             if (sound->is_playing)
             {
                 /* Fill the temporary array for futher mixing. */
                 /* Calculate the rest amount of samples that need to be loaded. */
-                rest_sample_num = sound->sample_count - sound->sample_index; 
+                u32 rest_sample_num = sound->sample_count - sound->sample_index; 
                 
                 /* Clean the temp_array of the buffer. */
-                clean_s16_array(audio, audio->temp_array);
+                CleanS16Array(audio, audio->temp_array);
 
                 if (rest_sample_num >= s32_array_size)
                 {
                     /* A lot of available samples, just copy them into temp_array. */
-                    for (j = 0; j < s16_array_size; j++)
+                    for (u32 j = 0; j < s16_array_size; ++j)
                     {
-                        k = sound->sample_index * 2  + j;
+                        u32 k = sound->sample_index * 2  + j;
                         audio->temp_array[j] = sound->s16_array[k];
                     }
 
@@ -281,10 +258,10 @@ audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num)
                     /* Low amount of samples rest. Copy them to the buffer. Also sound 
                     should be stopped playing after that. */
 
-                    for (j = 0; j < (rest_sample_num * 2); j++)
+                    for (u32 j = 0; j < (rest_sample_num * 2); ++j)
                     {
                         /* Copy remaining samples to the temp_buffer. */
-                        k = sound->sample_index * 2 + j;
+                        u32 k = sound->sample_index * 2 + j;
                         audio->temp_array[j] = sound->s16_array[k];
                     }
 
@@ -297,18 +274,18 @@ audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num)
                     /* Low samples available, temp_array should be filled with samples in the 
                     beginning of sound smaples array. */
 
-                    for (j = 0; j < s16_array_size; j++)
+                    for (u32 j = 0; j < s16_array_size; ++j)
                     {
                         /* Copy remaining samples as usual. */
                         if (j < (rest_sample_num * 2))
                         {
-                            k = sound->sample_index * 2 + j;
+                            u32 k = sound->sample_index * 2 + j;
                             audio->temp_array[j] = sound->s16_array[k];
                         }
                         /* Copy remaining samples from the beginning of the samples array. */
                         else
                         {
-                            k = j - (rest_sample_num * 2);
+                            u32 k = j - (rest_sample_num * 2);
                             audio->temp_array[j] = sound->s16_array[k];
                         }
                     }
@@ -318,23 +295,29 @@ audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num)
                 }
 
                 /* Add additional treatment of the sound. */
-                apply_sound_pan(audio->temp_array, s32_array_size, sound->pan);
-                apply_sound_volume(audio->temp_array, s32_array_size, sound->volume);
+                ApplySoundPan(audio->temp_array, s32_array_size, sound->pan);
+                ApplySoundVolume(audio->temp_array, s32_array_size, sound->volume);
 
                 /* Mix sound from temp_array buffer into mix_array buffer. */
-                mix_temp_array_to_mix_array(audio->mix_array, audio->temp_array, s32_array_size);
+                MixTempArrayToMixArray(audio->mix_array, audio->temp_array, s32_array_size);
             }
         }
         
         /* Load the sounds mix to the buffer. */     
+        void *region_1;  /* Pointer to the region 1. */
+        DWORD region_1_size;  /* Region 1 size. */
+        void *region_2;  /* Pointer to the region 2. */
+        DWORD region_2_size;  /* Region 2 size. */
+        
         /* Lock the buffer starting from update_buffer offset for bytes_to_lock bytes. */  
         if (SUCCEEDED(audio->buffer->lpVtbl->Lock(audio->buffer, audio->update_cursor, 
             audio->write_size, &region_1, &region_1_size, &region_2, &region_2_size, 0))) 
         {
-            at_dest = (s16 *)region_1;
-            at_src = audio->mix_array;
+            /* Get pointers to sample's channel values s16 (-32768...32767). */
+            s16 *at_dest = (s16 *)region_1;
+            s16 *at_src = audio->mix_array;
         
-            for (i = 0; i < s16_array_size; ++i) 
+            for (u32 i = 0; i < s16_array_size; ++i) 
             {            
                 /* Copy from the destination to the source. */
                 *at_dest = *at_src;
@@ -355,103 +338,89 @@ audio_update_buffer(Audio_t *audio, Sound_t *sounds[], u32 sound_num)
 }
 
 static void
-clean_s16_array(Audio_t *audio, s16 *array)
+CleanS16Array(Audio *audio, s16 *array)
 {
-    size_t i;  /* Temporary counter. */
-    s16 *at = array;  /* Pointer to sample's channel value s16 (-32768...32767). */
-
-    for (i = 0; i < audio->s16_array_size; i++)
+    s16 *at = array;
+    for (u32 i = 0; i < audio->s16_array_size; ++i)
     {
         *at++ = 0x0000;
     }
 }
 
 static void 
-apply_sound_pan(s16 *sound, u32 sample_count, Sound_Pan_t pan)
+ApplySoundPan(s16 *sound, u32 sample_count, SoundPan pan)
 {
     /* Use both channels for the sound. Do nothing. */
-    if (pan == S_PAN_BOTH) return; 
-
-    u32 offset;  /* Offset of the word index in the array (0 for channel 1; 1 for channel 2). */
-    u32 i;  /* Sample index in the sound array. */
-    u32 j;  /* s16 element (16 bit) index in the sound array. */ 
+    if (pan == S_PAN_BOTH) return;
     
     /* Determine the offset (0 for the left channel, 1 for the right channel). */
-    offset = (pan == S_PAN_LEFT) ? 1 : 0;
+    u32 offset = (pan == S_PAN_LEFT) ? 1 : 0;
     
-    for (i = 0; i < sample_count; i++)
+    for (u32 i = 0; i < sample_count; ++i)
     {
         /* Calculation of the s16 element index in the array. */
-        j = i * 2 + offset;  /* s16 element index of the channel in array. */
+        u32 j = i * 2 + offset;  /* s16 element index of the channel in array. */
         sound[j] = 0x0000;
     }
 }
 
 static void 
-apply_sound_volume(s16 *sound, u32 sample_count, f32 volume)
+ApplySoundVolume(s16 *sound, u32 sample_count, f32 volume)
 {
-    u32 i;  /* Sample index in the sound array. */
-    u32 j;  /* s16 element (16 bit) index in the sound array. */
-    u32 offset;  /* Offset of the word index in the array (0 for channel 1; 1 for channel 2). */
-    s32 temp;  /* Temporary s32 variable to hold the sum of two s16 values. */
-
-    for (i = 0; i < sample_count; i++)
+    for (u32 i = 0; i < sample_count; ++i)
     {
-        for (offset = 0; offset < 2; offset++)
+        for (u32 offset = 0; offset < 2; ++offset)
         {    
-            /* Calculation of the s16 element index in the array. */
-            j = i * 2 + offset;  /* s16 element index of the channel in array. */        
-            temp = (s32)(round(sound[j] * volume));  
+            /* Calculation of the s16 element index in the array. Offset of the word
+            index in the array means: 0 for channel 1; 1 for channel 2. */
+            u32 elem_index = i * 2 + offset;       
+            s32 temp = (s32)(round(sound[elem_index] * volume));  
 
             if ((temp <= 32767) && (temp >= -32768))
             {
                 /* No overflow and underflow cases (most probable). */
-                sound[j] = (s16)temp;
+                sound[elem_index] = (s16)temp;
             }
             else if (temp > 32767)
             {
                 /* Overflow case. */
-                sound[j] = 32767;
+                sound[elem_index] = 32767;
             } 
             else
             {
                 /* Underflow case. */
-                sound[j] = -32768;
+                sound[elem_index] = -32768;
             }
         }
     }
 }
 
 static void
-mix_temp_array_to_mix_array(s16 *mix_array, s16 *sound, u32 sample_count)
+MixTempArrayToMixArray(s16 *mix_array, s16 *sound, u32 sample_count)
 {
-    u32 i;  /* Sample index in the sound array. */
-    u32 j;  /* s16 element (16 bit) index in the sound array. */ 
-    u32 offset;  /* Offset of the word index in the array (0 for channel 1; 1 for channel 2). */
-    s32 temp;  /* Temporary s32 variable to hold the sum of two s16 values. */
-
-    for (i = 0; i < sample_count; i++)
+    for (u32 i = 0; i < sample_count; ++i)
     {
-        for (offset = 0; offset < 2; offset++)
+        for (u32 offset = 0; offset < 2; ++offset)
         {    
-            /* Calculation of the s16 element index in the array. */
-            j = i * 2 + offset;  /* s16 element index of the channel in array. */        
-            temp = (s32)mix_array[j] + (s32)sound[j];
+            /* Calculation of the s16 element index in the array. Offset of the word
+            index in the array means: 0 for channel 1; 1 for channel 2. */
+            u32 elem_index = i * 2 + offset;  /* s16 element index of the channel in array. */        
+            s32 temp = (s32)mix_array[elem_index] + (s32)sound[elem_index];
 
             if ((temp <= 32767) && (temp >= -32768))
             {
                 /* No overflow and underflow cases (most probable). */
-                mix_array[j] = (s16)temp;
+                mix_array[elem_index] = (s16)temp;
             }
             else if (temp > 32767)
             {
                 /* Overflow case. */
-                mix_array[j] = 32767;
+                mix_array[elem_index] = 32767;
             }
             else
             {
                 /* Underflow case. */
-                mix_array[j] = -32768;
+                mix_array[elem_index] = -32768;
             }
         }
     }

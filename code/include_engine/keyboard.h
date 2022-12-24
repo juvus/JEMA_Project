@@ -1,25 +1,24 @@
 /**
  * ================================================================================
- * @file keyboard.h
+ * @file include_engine/keyboard.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of objects and functions necessary for the work with keyboard
  * input to the game.
- * @version 0.1
- * @date 2022-07-11
+ * @version 0.2
+ * @date 2022-11-06
  * ================================================================================ 
  */
 
-#ifndef KEYBOARD_H_
-#define KEYBOARD_H_
+#ifndef JGE_ENGINE_KEYBOARD_H_
+#define JGE_ENGINE_KEYBOARD_H_
 
-/* Game engine includes: */
-#include "utils.h"
+#include "include_engine/utils.h"
 
 /**
  * @brief Enumerator holding the keyboard button names. This enumerator lists the 
  * buttons to be used in the user keyboard input treatment.  
  */
-enum Key_Type
+enum KeyType_
 {
     KEY_LEFT,  /**< Left arrow key. */
     KEY_RIGHT,  /**< Right arrow key. */
@@ -28,45 +27,45 @@ enum Key_Type
     KEY_ALT,  /**< ALT key. */
     KEY_COUNT,  /**< Number of defined keys. */
 };
-typedef enum Key_Type Key_Type_t;
+typedef enum KeyType_ KeyType;
 
 /**
  * @brief Structure for storing key states. Holding the states of the keys is 
  * necessary for implementing different functionality of pressing and holding a key.
  */
-struct Key 
+struct Key_ 
 {
     u32 vk_code;  /**< Scan code of the keyboard physical key. */
     b32 is_pressed;  /**< Flag showing if key is pressed right now or not. */
     b32 process_flag;  /**< Flag showing if the imput from key requires processing. */
 };
-typedef struct Key Key_t;
+typedef struct Key_ Key;
 
 /**
  * @brief Structure for holding user keyboard input.
  */
-struct Keyboard
+struct Keyboard_
 {
     u32 temp_key_vk_code;  /**< Temporary key vk_vode. */
     b32 temp_key_was_down;  /**< Temporary key was_down bit flag. */
     b32 temp_key_is_down;  /**< Temporary key is_down bit flag. */
-    Key_t keys[KEY_COUNT];  /**< Array holding all defined keys states. */
+    Key keys[KEY_COUNT];  /**< Array holding all defined keys states. */
 };
-typedef struct Keyboard Keyboard_t;
+typedef struct Keyboard_ Keyboard;
 
 /**
- * @brief Class constructor.
- * @return Keyboard_t* Pointer to the Keyboard structure.
+ * @brief Object constructor.
+ * @return Keyboard* Pointer to the Keyboard structure.
  */
-Keyboard_t*
-keyboard_constructor(void);
+Keyboard*
+Keyboard_Constructor(void);
 
 /**
- * @brief Class destructor.
+ * @brief Object destructor.
  * @param keyboard Pointer to the Keyboard structure.
  */
 void
-keyboard_destructor(Keyboard_t *keyboard);
+Keyboard_Destructor(Keyboard *keyboard);
 
 /**
  * @brief Determination of the temp key data from the message parameters.
@@ -75,7 +74,7 @@ keyboard_destructor(Keyboard_t *keyboard);
  * @param l_param Additional windows message parameter.
  */
 void
-keyboard_define_temp_key_data(Keyboard_t *keyboard, WPARAM w_param, LPARAM l_param);
+Keyboard_DefineTempKeyData(Keyboard *keyboard, WPARAM w_param, LPARAM l_param);
 
 /**
  * @brief Set of preparations for a new user keyboard input. These preparations are 
@@ -83,7 +82,7 @@ keyboard_define_temp_key_data(Keyboard_t *keyboard, WPARAM w_param, LPARAM l_par
  * @param keyboard Pointer to the Keyboard structure.
  */
 void 
-keyboard_process_keys(Keyboard_t *keyboard);
+Keyboard_ProcessKeys(Keyboard *keyboard);
 
 /**
  * @brief Determination if the checked key was pressed and currently holding. 
@@ -92,7 +91,7 @@ keyboard_process_keys(Keyboard_t *keyboard);
  * @return b32 Flag showing if the key was pressed and holding.
  */
 b32 
-keyboard_is_key_pressed_continuously(Keyboard_t *keyboard, Key_Type_t key);
+Keyboard_IsKeyPressedContinuously(Keyboard *keyboard, KeyType key);
 
 /**
  * @brief Determination if the checked key was pressed and then released.
@@ -101,6 +100,6 @@ keyboard_is_key_pressed_continuously(Keyboard_t *keyboard, Key_Type_t key);
  * @return b32 Flag showing if the key was pressed and then released.
  */
 b32 
-keyboard_is_key_pressed_discretely(Keyboard_t *keyboard, Key_Type_t key);
+Keyboard_IsKeyPressedDiscretely(Keyboard *keyboard, KeyType key);
 
 #endif /* KEYBOARD_H_ */

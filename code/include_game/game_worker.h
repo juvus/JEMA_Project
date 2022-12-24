@@ -1,67 +1,58 @@
 /**
  * ================================================================================
- * @file game_worker.h
+ * @file include_game/game_worker.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
  * @brief Declaration of objects and functions necessary for the work with game
  *  worker. Worker procedure is executes in a separate thread.
- * @version 0.1
- * @date 2022-07-22
+ * @version 0.2
+ * @date 2022-12-23
  * ================================================================================
  */
 
 #ifndef GAME_WORKER_H_
 #define GAME_WORKER_H_
 
-/* Standard library includes. */
 #include <windows.h>
+#include "include_engine/utils.h"
 
-/* Game engine includes. */
-#include "utils.h"
-
-/* Predefined structures: */
-typedef struct Game Game_t;
-typedef struct Keyboard Keyboard_t;
-typedef struct Mouse Mouse_t;
-typedef struct Render Render_t;
+typedef struct Game_ Game;
+typedef struct Win32Platform_ Win32Platform;
 
 /**
  * @brief Structure with data, that need to be pased to the thread (multithreading).
  */
-struct Game_Worker
+struct GameWorker_
 {
-    Game_t *game;  /**< Pointer to the Game structure. */
-    Keyboard_t *keyboard;  /**< Pointer to the Keyboard structure. */
-    Mouse_t *mouse;  /**< Pointer to the Mouse structure. */
-    Render_t *render;  /**< Pointer to the Render structure. */
+    Game *game;  /**< Pointer to the Game structure. */
+    Win32Platform *win32_platform;  /**< Pointer to the Win32Platform structure. */
 };
-typedef struct Game_Worker Game_Worker_t;
+typedef struct GameWorker_ GameWorker;
 
 /**
- * @brief Constructor of the Game_Worker class.
- * @return Game_Worker_t* Pointer to the Game_Worker structure. 
+ * @brief Object constructor.
+ * @return GameWorker* Pointer to the GameWorker structure. 
  */
-Game_Worker_t*
-game_worker_constructor(void);
+GameWorker*
+GameWorker_Constructor(void);
 
 /**
- * @brief Destructor of the Game_Worker object.
- * @param game_worker Pointer to the Game_Worker structure.
- */
-void
-game_worker_destructor(Game_Worker_t *game_worker);
-
-/**
- * @brief Initialization of the Game_Worker object.
- * @param game_worker Pointer to the Game_Worker structure.
+ * @brief Object destructor.
+ * @param game_worker Pointer to the GameWorker structure.
  */
 void
-game_worker_init(Game_Worker_t *game_worker, Game_t *game, Keyboard_t *keyboard,
-    Mouse_t *mouse, Render_t *render);
+GameWorker_Destructor(GameWorker *game_worker);
+
+/**
+ * @brief Initialization of the GameWorker object.
+ * @param game_worker Pointer to the GameWorker structure.
+ */
+void
+GameWorker_Init(GameWorker *game_worker, Game *game, Win32Platform *win32_platform);
 
 /**
  * @brief Game worker procedure to be executed in the separate thread. 
  */
 DWORD WINAPI 
-game_worker_proc(void *game_worker);
+GameWorker_ThreadProc(void *game_worker);
 
-#endif //GAME_WORKER_H_
+#endif  /* GAME_WORKER_H_ */
