@@ -10,7 +10,7 @@ subst w: D:\Programming\C\Juvus_Game_Engine
 w:
 
 :: set additional paths.
-set PATH=%PATH%;D:\Programming\C\Juvus_Game_Engine\misc\;C:\msys64\mingw64\bin
+set PATH=%PATH%;D:\Programming\C\JEMA_Project\misc\;C:\msys64\mingw64\bin
 
 :: echo the message.
 echo Everything was set up successfully!
