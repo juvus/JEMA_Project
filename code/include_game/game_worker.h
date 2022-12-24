@@ -9,8 +9,8 @@
  * ================================================================================
  */
 
-#ifndef GAME_WORKER_H_
-#define GAME_WORKER_H_
+#ifndef JEMA_GAME_WORKER_H_
+#define JEMA_GAME_WORKER_H_
 
 #include <windows.h>
 #include "include_engine/utils.h"
@@ -55,4 +55,4 @@ GameWorker_Init(GameWorker *game_worker, Game *game, Win32Platform *win32_platfo
 DWORD WINAPI 
 GameWorker_ThreadProc(void *game_worker);
 
-#endif  /* GAME_WORKER_H_ */
+#endif  /* JEMA_GAME_WORKER_H_ */

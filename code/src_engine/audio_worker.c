@@ -2,9 +2,8 @@
  * ================================================================================
  * @file src_engine/audio_worker.c
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Juvus Engine for Multimedia Applications (JEMA) project. Definition of 
- * functions necessary for the work with audio worker. Worker procedure is 
- * executes in a separate thread.
+ * @brief Definition of functions necessary for the work with audio worker. Worker
+ * procedure is executes in a separate thread.
  * the game.
  * @version 0.2
  * @date 2022-11-27

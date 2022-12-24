@@ -9,8 +9,8 @@
  * ================================================================================
  */
 
-#ifndef DBG_H_
-#define DBG_H_
+#ifndef JEMA_ENGINE_DBG_H_
+#define JEMA_ENGINE_DBG_H_
 
 /* Standard library includes: */
 #include "stdio.h"
@@ -81,4 +81,4 @@ terminate(u32 exit_code)
     exit(exit_code);
 }
 
-#endif // DBG_H_
+#endif  /* JEMA_ENGINE_DBG_H_ */

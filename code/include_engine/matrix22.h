@@ -9,8 +9,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_MATRIX22_H_
-#define JGE_ENGINE_MATRIX22_H_
+#ifndef JEMA_ENGINE_MATRIX22_H_
+#define JEMA_ENGINE_MATRIX22_H_
 
 #include "include_engine/utils.h"
 
@@ -145,4 +145,4 @@ Mat22_MakeCofactor(Mat22 *mat22);
 b32
 Mat22_MakeInverse(Mat22 *mat22);
 
-#endif /* JGE_ENGINE_MATRIX22_H_ */
+#endif  /* JEMA_ENGINE_MATRIX22_H_ */

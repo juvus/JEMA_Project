@@ -9,8 +9,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_KEYBOARD_H_
-#define JGE_ENGINE_KEYBOARD_H_
+#ifndef JEMA_ENGINE_KEYBOARD_H_
+#define JEMA_ENGINE_KEYBOARD_H_
 
 #include "include_engine/utils.h"
 
@@ -102,4 +102,4 @@ Keyboard_IsKeyPressedContinuously(Keyboard *keyboard, KeyType key);
 b32 
 Keyboard_IsKeyPressedDiscretely(Keyboard *keyboard, KeyType key);
 
-#endif /* KEYBOARD_H_ */
+#endif  /* JEMA_ENGINE_KEYBOARD_H_ */

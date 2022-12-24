@@ -37,7 +37,7 @@ cl -FC -Zi -W4 -WX ^
     ..\code\src_engine\sound.c ^
     ..\code\src_engine\vector2.c ^
     ..\code\src_engine\vector3.c ^
-    ..\code\src_engine\wav_uncompressor.c ^
+    ..\code\src_engine\wav_decoder.c ^
     ..\code\src_engine\win32_platform.c ^
     ..\code\src_game\game_resourses.c ^
     ..\code\src_game\game_worker.c ^

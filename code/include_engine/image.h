@@ -8,8 +8,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_IMAGE_H_
-#define JGE_ENGINE_IMAGE_H_
+#ifndef JEMA_ENGINE_IMAGE_H_
+#define JEMA_ENGINE_IMAGE_H_
 
 #include "include_engine/utils.h"
 
@@ -49,4 +49,4 @@ Image_Destructor(Image *image);
 void
 Image_Init(Image *image, MemObject *mem_object);
 
-#endif /* JGE_ENGINE_IMAGE_H_ */
+#endif /* JEMA_ENGINE_IMAGE_H_ */

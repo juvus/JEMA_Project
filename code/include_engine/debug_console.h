@@ -9,12 +9,11 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_DEBUG_CONSOLE_H_
-#define JGE_ENGINE_DEBUG_CONSOLE_H_
+#ifndef JEMA_ENGINE_DEBUG_CONSOLE_H_
+#define JEMA_ENGINE_DEBUG_CONSOLE_H_
 
 #include "include_engine/utils.h"
 
-/* Predefined structures: */
 typedef struct Color_ Color;
 typedef struct Font_ Font;
 typedef struct Render_ Render;
@@ -124,4 +123,4 @@ DConsole_Hide(DConsole *dconsole, Render *render);
 void 
 DConsole_Render(DConsole *dconsole, Render *render);
 
-#endif  /* JGE_ENGINE_DEBUG_CONSOLE_H_ */
+#endif  /* JEMA_ENGINE_DEBUG_CONSOLE_H_ */

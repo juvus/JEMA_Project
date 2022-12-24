@@ -6,7 +6,7 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary
 
 :: create w: disk from directory for easy use.
 subst w: /D
-subst w: D:\Programming\C\Juvus_Game_Engine
+subst w: D:\Programming\C\JEMA_Project
 w:
 
 :: set additional paths.

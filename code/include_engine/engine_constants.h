@@ -8,8 +8,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_CONSTANTS_H_
-#define JGE_ENGINE_CONSTANTS_H_
+#ifndef JEMA_ENGINE_CONSTANTS_H_
+#define JEMA_ENGINE_CONSTANTS_H_
 
 #include "include_engine/utils.h"
 
@@ -26,5 +26,5 @@ const u32 DCONSOLE_BRD_COLOR = 0xffb4b4b4;  /* Console boarders color. */
 const u32 DCONSOLE_MARGINS = 10;  /* Top, left, bottom and right margins. */
 const u32 DCONSOLE_MAX_MSG_LENGTH = 200;  /* Maximum message length. */
 
-#endif  /* JGE_ENGINE_CONSTANTS_H_ */
+#endif  /* JEMA_ENGINE_CONSTANTS_H_ */
 

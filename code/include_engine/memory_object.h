@@ -9,8 +9,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_MEMORY_OBJECT_H_
-#define JGE_ENGINE_MEMORY_OBJECT_H_
+#ifndef JEMA_ENGINE_MEMORY_OBJECT_H_
+#define JEMA_ENGINE_MEMORY_OBJECT_H_
 
 #include "include_engine/utils.h"
 
@@ -55,4 +55,4 @@ MemObject_InitByFile(MemObject *mem_object, char *file_path);
 void
 MemObject_WriteToDisc(MemObject *mem_object, char *file_path);
 
-#endif  /* JGE_ENGINE_MEMORY_OBJECT_H_ */
+#endif  /* JEMA_ENGINE_MEMORY_OBJECT_H_ */

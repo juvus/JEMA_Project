@@ -8,8 +8,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_SOUND_H_
-#define JGE_ENGINE_SOUND_H_
+#ifndef JEMA_ENGINE_SOUND_H_
+#define JEMA_ENGINE_SOUND_H_
 
 #include "include_engine/utils.h"
 
@@ -106,4 +106,4 @@ void Sound_StopSound(Sound *sound);
  */
 void Sound_ContinueSound(Sound *sound, SoundPan pan, f32 volume);
 
-#endif  /* JGE_ENGINE_SOUND_H */
+#endif  /* JEMA_ENGINE_SOUND_H */

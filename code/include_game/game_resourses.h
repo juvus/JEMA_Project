@@ -8,8 +8,8 @@
  * ================================================================================
  */
 
-#ifndef GAME_RESOURSES_H_
-#define GAME_RESOURSES_H_
+#ifndef JEMA_GAME_RESOURSES_H_
+#define JEMA_GAME_RESOURSES_H_
 
 #include "include_engine/utils.h"
 
@@ -102,4 +102,4 @@ GameResourses_Destructor(GameResourses *game_resourses);
 void
 GameResources_FreeResources(GameResourses *game_resourses);
 
-#endif  /* GAME_RESOURSES_H_ */
+#endif  /* JEMA_GAME_RESOURSES_H_ */

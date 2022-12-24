@@ -8,8 +8,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_COLOR_H_
-#define JGE_ENGINE_COLOR_H_
+#ifndef JEMA_ENGINE_COLOR_H_
+#define JEMA_ENGINE_COLOR_H_
 
 #include "include_engine/utils.h"
 
@@ -86,4 +86,4 @@ Color_SetGray(Color *color, u8 alpha, u8 value);
 void
 Color_MakeAlphaBlending(Color *color_res, Color *color_bkg, Color *color_frg, f32 alpha);
 
-#endif  /* JGE_ENGINE_COLOR_H_ */
+#endif  /* JEMA_ENGINE_COLOR_H_ */

@@ -8,8 +8,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_RENDER_H_
-#define JGE_ENGINE_RENDER_H_
+#ifndef JEMA_ENGINE_RENDER_H_
+#define JEMA_ENGINE_RENDER_H_
 
 #include <windows.h>
 #include "include_engine/utils.h"
@@ -256,4 +256,4 @@ void
 Render_DrawBitmapByMask(Render *render, u32 x, u32 y, const Image *mask, const Color *color, 
     u32 scale);
 
-#endif  /* JGE_ENGINE_RENDER_H_ */
+#endif  /* JEMA_ENGINE_RENDER_H_ */

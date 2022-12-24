@@ -9,8 +9,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_MATH_FUNCTIONS_H_
-#define JGE_ENGINE_MATH_FUNCTIONS_H_
+#ifndef JEMA_ENGINE_MATH_FUNCTIONS_H_
+#define JEMA_ENGINE_MATH_FUNCTIONS_H_
 
 #include "include_engine/utils.h"
 
@@ -80,4 +80,4 @@ Math_Map(f32 value, f32 lower_bnd_1, f32 upper_bnd_1, f32 lower_bnd_2, f32 upper
 vector solve_equations_system(matrix, vector)
 */
 
-#endif  /* JGE_ENGINE_MATH_FUNCTIONS_H_ */
+#endif  /* JEMA_ENGINE_MATH_FUNCTIONS_H_ */

@@ -9,8 +9,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_RANDOM_H_
-#define JGE_ENGINE_RANDOM_H_
+#ifndef JEMA_ENGINE_RANDOM_H_
+#define JEMA_ENGINE_RANDOM_H_
 
 #include "include_engine/utils.h"
 
@@ -47,4 +47,4 @@ Random_RangeU32(u32 low_bnd, u32 high_bnd);
 f32 
 Random_RangeF32(f32 low_bnd, f32 high_bnd);
 
-#endif  /* JGE_ENGINE_RANDOM_H_ */
+#endif  /* JEMA_ENGINE_RANDOM_H_ */

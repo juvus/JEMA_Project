@@ -9,8 +9,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_MATRIX33_H_
-#define JGE_ENGINE_MATRIX33_H_
+#ifndef JEMA_ENGINE_MATRIX33_H_
+#define JEMA_ENGINE_MATRIX33_H_
 
 #include "include_engine/utils.h"
 
@@ -157,4 +157,4 @@ Mat33_MakeCofactor(Mat33 *mat33);
 b32
 Mat22_MakeInverse(Mat33 *mat33);
 
-#endif  /* JGE_ENGINE_MATRIX33_H_ */
+#endif  /* JEMA_ENGINE_MATRIX33_H_ */

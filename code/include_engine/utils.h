@@ -9,8 +9,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_UTILS_H_
-#define JGE_ENGINE_UTILS_H_
+#ifndef JEMA_ENGINE_UTILS_H_
+#define JEMA_ENGINE_UTILS_H_
 
 #include <float.h>
 #include <stdint.h>
@@ -43,4 +43,4 @@ typedef int b32;  /* Boolean type. True (other than 0) or false (0). */
 // Macro to suppress "unused function parameter".
 #define UNUSED(x) (void)(x)
 
-#endif  /* JGE_ENGINE_UTILS_H_ */
+#endif  /* JEMA_ENGINE_UTILS_H_ */

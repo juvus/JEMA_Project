@@ -9,8 +9,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_MOUSE_H_
-#define JGE_ENGINE_MOUSE_H_
+#ifndef JEMA_ENGINE_MOUSE_H_
+#define JEMA_ENGINE_MOUSE_H_
 
 #include "include_engine/utils.h"
 
@@ -50,4 +50,4 @@ Mouse_Destructor(Mouse *mouse);
 void 
 Mouse_PrepareInput(Mouse *mouse, Render *render);
 
-#endif  /* JGE_ENGINE_MOUSE_H_ */
+#endif  /* JEMA_ENGINE_MOUSE_H_ */

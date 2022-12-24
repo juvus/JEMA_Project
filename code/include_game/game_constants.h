@@ -8,12 +8,12 @@
  * ================================================================================
  */
 
-#ifndef GAME_CONSTANTS_H_
-#define GAME_CONSTANTS_H_
+#ifndef JEMA_GAME_CONSTANTS_H_
+#define JEMA_GAME_CONSTANTS_H_
 
 #include "include_engine/utils.h"
 
 /* Colors. */
 const u32 BKG_COLOR = 0xffadcfff;
 
-#endif  /* GANE_CONSTANTS_H_ */
+#endif  /* JEMA_GANE_CONSTANTS_H_ */

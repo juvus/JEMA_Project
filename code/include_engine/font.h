@@ -8,8 +8,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_FONT_H_
-#define JGE_ENGINE_FONT_H_
+#ifndef JEMA_ENGINE_FONT_H_
+#define JEMA_ENGINE_FONT_H_
 
 #include "include_engine/utils.h"
 
@@ -84,4 +84,4 @@ void
 Font_DrawString(Font *font, char *str, s32 str_max_width, u32 x, u32 y, 
     u32 size, Color *color, Render *render);
 
-#endif  /* JGE_ENGINE_FONT_H_ */
+#endif  /* JEMA_ENGINE_FONT_H_ */

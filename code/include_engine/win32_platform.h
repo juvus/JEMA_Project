@@ -9,8 +9,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_WIN32_PLATFORM_H_
-#define JGE_ENGINE_WIN32_PLATFORM_H_
+#ifndef JEMA_ENGINE_WIN32_PLATFORM_H_
+#define JEMA_ENGINE_WIN32_PLATFORM_H_
 
 #include <windows.h>
 
@@ -54,4 +54,4 @@ Win32Platform_Destructor(Win32Platform *win32_platform);
 void
 Win32Platform_Init(Win32Platform *win32_platform);
 
-#endif  /* JGE_ENGINE_WIN32_PLATFORM_H_ */
+#endif  /* JEMA_ENGINE_WIN32_PLATFORM_H_ */

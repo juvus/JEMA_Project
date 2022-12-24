@@ -2,9 +2,8 @@
  * ================================================================================
  * @file include_engine/audio_worker.h
  * @author Dmitry Safonov (juvusoft@gmail.com)
- * @brief Juvus Engine of Multimedia Applications (JEMA) project. Declaration of 
- * objects and functions necessary for the work with audio worker. Worker procedure
- * is executing in a separate thread.
+ * @brief Declaration of objects and functions necessary for the work with audio
+ * worker. Worker procedure is executing in a separate thread.
  * @version 0.2
  * @date 2022-11-27
  * ================================================================================

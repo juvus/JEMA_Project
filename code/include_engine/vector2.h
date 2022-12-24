@@ -9,8 +9,8 @@
  * ================================================================================ 
  */
 
-#ifndef JGE_ENGINE_VECTOR2_H_
-#define JGE_ENGINE_VECTOR2_H_
+#ifndef JEMA_ENGINE_VECTOR2_H_
+#define JEMA_ENGINE_VECTOR2_H_
 
 #include "include_engine/utils.h"
 
@@ -140,4 +140,4 @@ Vec2_GetLength(Vec2* vec2);
 b32
 Vec2_Normalize(Vec2* vec2);
 
-#endif  /* JGE_ENGINE_VECTOR2_H_ */
+#endif  /* JEMA_ENGINE_VECTOR2_H_ */

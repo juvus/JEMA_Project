@@ -9,8 +9,8 @@
  * ================================================================================
  */
 
-#ifndef JGE_ENGINE_AUDIO_H_
-#define JGE_ENGINE_AUDIO_H_
+#ifndef JEMA_ENGINE_AUDIO_H_
+#define JEMA_ENGINE_AUDIO_H_
 
 #include <windows.h>
 #include <dsound.h>
@@ -90,4 +90,4 @@ Audio_PlaySounds(Audio *audio);
 void
 Audio_UpdateBuffer(Audio *audio, Sound *sounds[], u32 sound_num);
 
-#endif  /* JGE_ENGINE_AUDIO_H_ */
+#endif  /* JEMA_ENGINE_AUDIO_H_ */

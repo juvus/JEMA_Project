@@ -17,7 +17,7 @@
 #include "include_engine/dbg.h"
 #include "include_engine/memory_object.h"
 #include "include_engine/utils.h"
-#include "include_engine/wav_uncompressor.h"
+#include "include_engine/wav_decoder.h"
 
 Sound*
 Sound_Constructor(void)
@@ -64,7 +64,7 @@ Sound_PrepareEmptySound(Sound *sound)
 void
 Sound_Init(Sound *sound, MemObject *wav_object)
 {
-    WavUncompressor_Uncompress(sound, wav_object);
+    WavDecoder_Decode(sound, wav_object);
 }
 
 void
