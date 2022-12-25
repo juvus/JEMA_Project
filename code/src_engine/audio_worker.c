@@ -23,7 +23,7 @@
 AudioWorker*
 AudioWorker_Constructor(void)
 {
-    u64 size = sizeof(AudioWorker);
+    size_t size = sizeof(AudioWorker);
     AudioWorker *audio_worker = (AudioWorker *)HelperFcn_MemAllocate(size);
     return audio_worker;
 }

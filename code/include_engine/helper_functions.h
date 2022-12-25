@@ -39,7 +39,7 @@ HelperFcn_CheckCollision(Vec2 *bl_mv, Vec2 *ur_mv, Vec2 *bl_st, Vec2 *ur_st,
  * @return void* Pointer to the allocated memory block.
  */
 void*
-HelperFcn_MemAllocate(u64 memory_size);
+HelperFcn_MemAllocate(size_t memory_size);
 
 /**
  * @brief Wrapper for the standard free function with additional examination of 
