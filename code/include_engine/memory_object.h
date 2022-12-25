@@ -34,8 +34,9 @@ MemObject_Constructor(void);
 /**
  * @brief Object destructor.
  * @param mem_object Pointer to the MemObject structure.
+ * @return MemObject* Pointer to the MemObject structure.
  */
-void
+MemObject*
 MemObject_Destructor(MemObject *mem_object);
 
 /**

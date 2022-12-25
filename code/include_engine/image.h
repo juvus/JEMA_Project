@@ -37,8 +37,9 @@ Image_Constructor(void);
 /**
  * @brief Object destructor.
  * @param image Pointer to the Image structure.
+ * @return Image* Pointer to the Image structure.
  */
-void
+Image*
 Image_Destructor(Image *image);
 
 /**

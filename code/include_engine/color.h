@@ -44,8 +44,9 @@ Color_Constructor(void);
 /**
  * @brief Object destructor.
  * @param color Pointer to the Color structure.
+ * @return Color* Pointer to the Color structure.
  */
-void
+Color*
 Color_Destructor(Color *color);
 
 /**

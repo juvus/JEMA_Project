@@ -83,7 +83,7 @@ typedef struct GameResourses_ GameResourses;
 
 /**
  * @brief Object constructor.
- * @return GameResourses* Pointer to the GameResourses structure. 
+ * @return GameResourses* Pointer to the GameResourses structure.
  */
 GameResourses*
 GameResourses_Constructor(void);
@@ -91,8 +91,9 @@ GameResourses_Constructor(void);
 /**
  * @brief Object destructor.
  * @param game_resourses Pointer to the GameResourses structure.
+ * @return GameResourses* Pointer to the GameResourses structure.
  */
-void
+GameResourses*
 GameResourses_Destructor(GameResourses *game_resourses);
 
 /**

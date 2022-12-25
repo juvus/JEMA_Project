@@ -15,6 +15,7 @@
 
 #include "include_engine/audio.h"
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/memory_object.h"
 #include "include_engine/utils.h"
 #include "include_engine/wav_decoder.h"
@@ -22,24 +23,17 @@
 Sound*
 Sound_Constructor(void)
 {
-    Sound *sound = (Sound *)malloc(1 * sizeof(Sound));
-    if (sound == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Sound);
+    Sound *sound = (Sound *)HelperFcn_MemAllocate(size);
     return sound;
 }
 
-void
+Sound*
 Sound_Destructor(Sound *sound)
 {
-    if (sound == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(sound->s16_array);
-    free(sound);
-    sound = NULL;
+    HelperFcn_MemFree(sound->s16_array);
+    HelperFcn_MemFree(sound);
+    return NULL;
 }
 
 void

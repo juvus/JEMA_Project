@@ -25,6 +25,7 @@
 #include "include_engine/debug_console.h"
 #include "include_engine/engine_constants.h"
 #include "include_engine/font.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/image.h"
 #include "include_engine/keyboard.h"
 #include "include_engine/memory_object.h"
@@ -55,23 +56,16 @@ static u32 box_y;
 Game*
 Game_Constructor(void)
 {
-    Game *game = (Game *)malloc(1 * sizeof(Game));
-    if (game == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Game);
+    Game *game = (Game *)HelperFcn_MemAllocate(size);
     return game;
 }
 
-void
+Game*
 Game_Destructor(Game *game)
 {
-    if (game == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(game);
-    game = NULL;
+    HelperFcn_MemFree(game);
+    return NULL;
 }
 
 void

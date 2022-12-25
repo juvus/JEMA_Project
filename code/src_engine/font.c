@@ -12,6 +12,7 @@
 
 #include "include_engine/color.h"
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/image.h"
 #include "include_engine/render.h"
 #include "include_engine/utils.h"
@@ -19,24 +20,17 @@
 Font*
 Font_Constructor(void)
 {
-    Font *font = (Font *)malloc(1 * sizeof(Font));
-    if (font == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Font);
+    Font *font = (Font *)HelperFcn_MemAllocate(size);
     return font;
 }
 
-void
+Font*
 Font_Destructor(Font *font)
 {
-    if (font == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    } 
-    free(font->symbols_data);
-    free(font);
-    font = NULL;
+    HelperFcn_MemFree(font->symbols_data);
+    HelperFcn_MemFree(font);
+    return NULL;
 }
 
 void

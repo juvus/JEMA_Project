@@ -18,6 +18,7 @@
 #include <windows.h>
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/sound.h"
 #include "include_engine/utils.h"
 
@@ -59,26 +60,18 @@ CleanS16Array(Audio *audio, s16 *array);
 Audio*
 Audio_Constructor(void)
 {
-    Audio *audio = (Audio*)malloc(1 * sizeof(Audio));
-    if (audio == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Audio);
+    Audio *audio = (Audio *)HelperFcn_MemAllocate(size);
     return audio;
 }
 
-void
+Audio*
 Audio_Destructor(Audio *audio)
 {
-    if (audio == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    
-    free(audio->temp_array);
-    free(audio->mix_array);
-    free(audio);
-    audio = NULL;
+    HelperFcn_MemFree(audio->temp_array);
+    HelperFcn_MemFree(audio->mix_array);
+    HelperFcn_MemFree(audio);    
+    return NULL;
 }
 
 void

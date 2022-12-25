@@ -75,33 +75,29 @@ DrawBitmapExtended(Render *render, u32 x, u32 y, const Image *image, u32 scale, 
 Render*
 Render_Constructor(void)
 {
-    RenderBuffer *buffer = (RenderBuffer *)malloc(1 * sizeof(RenderBuffer));
-    TriangleData *triangle_data = (TriangleData *)malloc(1 * sizeof(TriangleData));
-    Render *render = (Render *)malloc(1 * sizeof(Render));
+    size_t size = sizeof(RenderBuffer);
+    RenderBuffer *buffer = (RenderBuffer *)HelperFcn_MemAllocate(size);
     
-    if ((buffer == NULL) || (triangle_data == NULL) || (render == NULL))
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size = sizeof(TriangleData);
+    TriangleData *triangle_data = (TriangleData *)HelperFcn_MemAllocate(size);
+    
+    size = sizeof(Render);
+    Render *render = (Render *)HelperFcn_MemAllocate(size);
+    
     render->buffer = buffer;
     render->triangle_data = triangle_data;
     return render;
 }
 
-void
+Render*
 Render_Destructor(Render *render)
 {
-    if (render == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-
     VirtualFree(render->buffer->bitmap_memory, 0, MEM_RELEASE);
     ReleaseDC(render->window, render->hdc);
-    free(render->buffer);
-    free(render->triangle_data);
-    free(render);
-    render = NULL;
+    HelperFcn_MemFree(render->buffer);
+    HelperFcn_MemFree(render->triangle_data);
+    HelperFcn_MemFree(render);
+    return NULL;
 }
 
 void

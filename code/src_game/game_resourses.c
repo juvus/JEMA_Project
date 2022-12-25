@@ -14,6 +14,7 @@
 
 #include "include_engine/color.h"
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/image.h"
 #include "include_engine/memory_object.h"
 #include "include_engine/sound.h"
@@ -22,11 +23,8 @@
 GameResourses*
 GameResourses_Constructor(void)
 {
-    GameResourses *game_resourses = (GameResourses *)malloc(1 * sizeof(GameResourses));
-    if (game_resourses == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(GameResourses);
+    GameResourses *game_resourses = (GameResourses *)HelperFcn_MemAllocate(size);
 
     /* Allocate memory for the game objects in memory. */
     for (u32 i = 0; i < GO_OBJECTS_NUM; ++i)
@@ -54,15 +52,11 @@ GameResourses_Constructor(void)
     return game_resourses;
 }
 
-void
+GameResourses*
 GameResourses_Destructor(GameResourses *game_resourses)
 {
-    if (game_resourses == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(game_resourses);
-    game_resourses = NULL;
+    HelperFcn_MemFree(game_resourses);
+    return NULL;
 }
 
 void
@@ -73,7 +67,8 @@ GameResources_FreeResources(GameResourses *game_resourses)
     {
         if (game_resourses->mem_objects[i] != NULL)
         {
-            MemObject_Destructor(game_resourses->mem_objects[i]);
+            game_resourses->mem_objects[i] = 
+                MemObject_Destructor(game_resourses->mem_objects[i]);
         }
     }
 
@@ -82,7 +77,8 @@ GameResources_FreeResources(GameResourses *game_resourses)
     {
         if (game_resourses->images[i] != NULL)
         {
-            Image_Destructor(game_resourses->images[i]);
+            game_resourses->images[i] = 
+                Image_Destructor(game_resourses->images[i]);
         }
     }
 
@@ -91,7 +87,8 @@ GameResources_FreeResources(GameResourses *game_resourses)
     {
         if (game_resourses->sounds[i] != NULL)
         {
-            Sound_Destructor(game_resourses->sounds[i]);
+            game_resourses->sounds[i] = 
+                Sound_Destructor(game_resourses->sounds[i]);
         }
     }
 
@@ -100,7 +97,8 @@ GameResources_FreeResources(GameResourses *game_resourses)
     {
         if (game_resourses->colors[i] != NULL)
         {
-            Color_Destructor(game_resourses->colors[i]);
+            game_resourses->colors[i] = 
+                Color_Destructor(game_resourses->colors[i]);
         }
     }
 }

@@ -42,8 +42,9 @@ Vec3_Constructor(void);
 /**
  * @brief Object descructor.
  * @param vec3 Pointer to the Vec3 structure.
+ * @return Vec3* Pointer to the Vec3 structure.
  */
-void
+Vec3*
 Vec3_Destructor(Vec3 *vec3);
 
 /**

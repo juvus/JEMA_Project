@@ -15,6 +15,7 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "include_engine/dbg.h"
 #include "include_engine/vector2.h"
 #include "include_engine/utils.h"
 
@@ -89,4 +90,25 @@ HelperFcn_CheckCollision(Vec2 *bl_mv, Vec2 *ur_mv, Vec2 *bl_st, Vec2 *ur_st,
             *collision_side = 'b';
     }
     return is_collision;
+}
+
+void*
+HelperFcn_MemAllocate(size_t memory_size)
+{
+    void *object = malloc(memory_size);
+    if (object == NULL)
+    {
+        dbg_error("%s", "Memory allocation error!");
+    }
+    return object;
+}
+
+void
+HelperFcn_MemFree(void *object)
+{
+    if (object == NULL)
+    {
+        dbg_error("%s", "Attempt to delete already deleted object!");
+    }
+    free(object);
 }

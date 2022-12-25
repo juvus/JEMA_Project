@@ -41,9 +41,10 @@ Vec2_Constructor(void);
 /**
  * @brief Class descructor.
  * @param vec2 Pointer to the Vec2 structure.
+ * @return Vec2* Pointer to the Vec2 structure.
  */
-void
-Vec2_Destructor(Vec2* vec2);
+Vec2*
+Vec2_Destructor(Vec2 *vec2);
 
 /**
  * @brief Initialization of the vector by coordinate values.
@@ -52,7 +53,7 @@ Vec2_Destructor(Vec2* vec2);
  * @param y Vector y coordinate.
  */
 void
-Vec2_InitByF32(Vec2* vec2, f32 x, f32 y);
+Vec2_InitByF32(Vec2 *vec2, f32 x, f32 y);
 
 /**
  * @brief Initialization of the vector by data from the source vector.
@@ -60,7 +61,7 @@ Vec2_InitByF32(Vec2* vec2, f32 x, f32 y);
  * @param vec2_src Pointer to Vec2 structure (source).
  */
 void
-Vec2_InitByVec2(Vec2* vec2, const Vec2* vec2_src);
+Vec2_InitByVec2(Vec2 *vec2, const Vec2 *vec2_src);
 
 /**
  * @brief Determination if vector contain finite coordinates.
@@ -83,14 +84,14 @@ Vec2_IsNearlyZero(Vec2 *vec2);
  * @param vec2 Pointer to the Vec2 structure.
  */
 void
-Vec2_SetZero(Vec2* vec2);
+Vec2_SetZero(Vec2 *vec2);
 
 /**
  * @brief Negate the vector coordinates.
  * @param vec2 Pointer to the Vec2 structure.
  */
 void
-Vec2_Negate(Vec2* vec2);
+Vec2_Negate(Vec2 *vec2);
 
 /**
  * @brief Summation with another vector. 
@@ -98,7 +99,7 @@ Vec2_Negate(Vec2* vec2);
  * @param vec2_add Pointer to the adding vector.
  */
 void
-Vec2_AddVec2(Vec2* vec2, const Vec2* vec2_add);
+Vec2_AddVec2(Vec2 *vec2, const Vec2 *vec2_add);
 
 /**
  * @brief Substraction of another vector. 
@@ -106,7 +107,7 @@ Vec2_AddVec2(Vec2* vec2, const Vec2* vec2_add);
  * @param vec2_sub Pointer to the substracting vector.
  */
 void
-Vec2_SubstractVec2(Vec2* vec2, const Vec2* vec2_sub);
+Vec2_SubstractVec2(Vec2 *vec2, const Vec2 *vec2_sub);
 
 /**
  * @brief Multiply the vector by a scalar.
@@ -114,7 +115,7 @@ Vec2_SubstractVec2(Vec2* vec2, const Vec2* vec2_sub);
  * @param scalar Arbitrary scalar.
  */
 void
-Vec2_MultiplyScalar(Vec2* vec2, f32 scalar);
+Vec2_MultiplyScalar(Vec2 *vec2, f32 scalar);
 
 /**
  * @brief Get the vector squared length (for better performance).
@@ -122,7 +123,7 @@ Vec2_MultiplyScalar(Vec2* vec2, f32 scalar);
  * @return f32 Squared length of the vector.
  */
 f32
-Vec2_GetLengthSquared(Vec2* vec2);
+Vec2_GetLengthSquared(Vec2 *vec2);
 
 /**
  * @brief Get the vector length (the norm).
@@ -130,7 +131,7 @@ Vec2_GetLengthSquared(Vec2* vec2);
  * @return f32 Length (the norm) of the vector. 
  */
 f32
-Vec2_GetLength(Vec2* vec2);
+Vec2_GetLength(Vec2 *vec2);
 
 /**
  * @brief Convert the vector into a unit vector and returns its length.
@@ -138,6 +139,6 @@ Vec2_GetLength(Vec2* vec2);
  * @return b32 Flag showing if the normalization was successful or not. 
  */
 b32
-Vec2_Normalize(Vec2* vec2);
+Vec2_Normalize(Vec2 *vec2);
 
 #endif  /* JEMA_ENGINE_VECTOR2_H_ */

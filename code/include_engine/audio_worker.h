@@ -38,9 +38,10 @@ AudioWorker_Constructor(void);
 
 /**
  * @brief Object destructor.
- * @param audio_worker Pointer to the AudioWorker structure.
+ * @param audio_worker AudioWorker* Pointer to the AudioWorker structure.
+ * @return AudioWorker* Pointer to the AudioWorker structure.
  */
-void
+AudioWorker*
 AudioWorker_Destructor(AudioWorker *audio_worker);
 
 /**

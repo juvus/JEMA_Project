@@ -13,28 +13,22 @@
 #include "include_engine/color.h"
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/utils.h"
 
 Color*
 Color_Constructor(void)
 {
-    Color *color = (Color *)malloc(1 * sizeof(Color));
-    if (color == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Color);
+    Color *color = (Color *)HelperFcn_MemAllocate(size);
     return color;
 }
 
-void
+Color*
 Color_Destructor(Color *color)
 {
-    if (color == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(color);
-    color = NULL;
+    HelperFcn_MemFree(color);
+    return NULL;
 }
 
 void

@@ -13,29 +13,23 @@
 #include <windows.h>
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/utils.h"
 
 MemObject*
 MemObject_Constructor(void)
 {
-    MemObject *mem_object = (MemObject *)malloc(1 * sizeof(MemObject));
-    if (mem_object == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(MemObject);
+    MemObject *mem_object = (MemObject *)HelperFcn_MemAllocate(size);
     return mem_object;
 }
 
-void
+MemObject*
 MemObject_Destructor(MemObject *mem_object)
 {
-    if (mem_object == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
     VirtualFree(mem_object->data, 0, MEM_RELEASE);
-    free(mem_object);
-    mem_object = NULL;
+    HelperFcn_MemFree(mem_object);
+    return NULL;
 }
 
 void

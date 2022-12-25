@@ -35,7 +35,7 @@ typedef struct Win32Platform_ Win32Platform;
 
 /**
  * @brief Object constructor.
- * @return Win32Platform* Pointer to the Win32Platform structure. 
+ * @return Win32Platform* Pointer to the Win32Platform structure.
  */
 Win32Platform*
 Win32Platform_Constructor(void);
@@ -43,8 +43,9 @@ Win32Platform_Constructor(void);
 /**
  * @brief Object destructor.
  * @param win32_platform Pointer to the Win32Platform structure.
+ * @return Win32Platform* Pointer to the Win32Platform structure.
  */
-void
+Win32Platform*
 Win32Platform_Destructor(Win32Platform *win32_platform);
 
 /**

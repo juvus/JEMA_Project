@@ -61,7 +61,7 @@ typedef struct Game_ Game;
 
 /**
  * @brief Object constructor.
- * @return Game* Pointer to the Game structure. 
+ * @return Game* Pointer to the Game structure.
  */
 Game*
 Game_Constructor(void);
@@ -69,8 +69,9 @@ Game_Constructor(void);
 /**
  * @brief Object destructor.
  * @param game Pointer to the Game structure.
+ * @return Game* Pointer to the Game structure.
  */
-void
+Game*
 Game_Destructor(Game *game);
 
 /**

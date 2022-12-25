@@ -52,8 +52,9 @@ Font_Constructor(void);
 /**
  * @brief Object destructor.
  * @param font Pointer to the Font structure.
+ * @return Font* Pointer to the Font structure.
  */
-void
+Font*
 Font_Destructor(Font *font);
 
 /**

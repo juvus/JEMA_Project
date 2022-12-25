@@ -45,8 +45,9 @@ Mat22_Constructor(void);
 /**
  * @brief Object descructor.
  * @param mat22 Pointer to the Mat22 structure.
+ * @return Mat22* Pointer to the Mat22 structure.
  */
-void
+Mat22*
 Mat22_Destructor(Mat22 *mat22);
 
 /**

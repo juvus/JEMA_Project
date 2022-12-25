@@ -38,8 +38,9 @@ Mouse_Constructor(void);
 /**
  * @brief Object destructor.
  * @param mouse Pointer to the Mouse structure.
+ * @return Mouse* Pointer to the Mouse structure.
  */
-void
+Mouse*
 Mouse_Destructor(Mouse *mouse);
 
 /**

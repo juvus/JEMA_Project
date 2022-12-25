@@ -63,8 +63,9 @@ Keyboard_Constructor(void);
 /**
  * @brief Object destructor.
  * @param keyboard Pointer to the Keyboard structure.
+ * @return Keyboard* Pointer to the Keyboard structure.
  */
-void
+Keyboard*
 Keyboard_Destructor(Keyboard *keyboard);
 
 /**

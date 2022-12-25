@@ -14,6 +14,7 @@
 #include "include_engine/audio.h"
 #include "include_engine/audio_worker.h"
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/keyboard.h"
 #include "include_engine/mouse.h"
 #include "include_engine/render.h"
@@ -102,9 +103,9 @@ WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdS
     }
     
     /* Calling destructors. */
-    Game_Destructor(game);
-    GameWorker_Destructor(game_worker);
-    Win32Platform_Destructor(win32_platform);
+    game = Game_Destructor(game);
+    game_worker = GameWorker_Destructor(game_worker);
+    win32_platform = Win32Platform_Destructor(win32_platform);
     return 0;
 }
 
@@ -170,28 +171,21 @@ WindowCallback(HWND window, UINT message, WPARAM w_param, LPARAM l_param)
 Win32Platform*
 Win32Platform_Constructor(void)
 {
-    Win32Platform *platform = (Win32Platform *)malloc(1 * sizeof(Win32Platform));
-    if (platform == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Win32Platform);
+    Win32Platform *platform = (Win32Platform *)HelperFcn_MemAllocate(size);
     return platform;
 }
 
-void
+Win32Platform*
 Win32Platform_Destructor(Win32Platform *platform)
 {
-    if (platform == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    Audio_Destructor(platform->audio);
-    AudioWorker_Destructor(platform->audio_worker);
-    Keyboard_Destructor(platform->keyboard);
-    Mouse_Destructor(platform->mouse);
-    Render_Destructor(platform->render);
-    free(platform);
-    platform = NULL;
+    platform->audio = Audio_Destructor(platform->audio);
+    platform->audio_worker = AudioWorker_Destructor(platform->audio_worker);
+    platform->keyboard = Keyboard_Destructor(platform->keyboard);
+    platform->mouse = Mouse_Destructor(platform->mouse);
+    platform->render = Render_Destructor(platform->render);
+    HelperFcn_MemFree(platform);
+    return NULL;
 }
 
 void

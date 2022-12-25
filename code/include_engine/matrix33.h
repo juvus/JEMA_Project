@@ -50,8 +50,9 @@ Mat33_Constructor(void);
 /**
  * @brief Object descructor.
  * @param mat33 Pointer to the Mat33 structure.
+ * @return Mat33* Pointer to the Mat33 structure.
  */
-void
+Mat33*
 Mat33_Destructor(Mat33 *mat33);
 
 /**

@@ -15,6 +15,7 @@
 #include <windows.h>
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/render.h"
 #include "include_engine/utils.h"
 #include "include_engine/win32_platform.h"
@@ -23,23 +24,16 @@
 GameWorker*
 GameWorker_Constructor(void)
 {
-    GameWorker *game_worker = (GameWorker *)malloc(1 * sizeof(GameWorker));
-    if (game_worker == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(GameWorker);
+    GameWorker *game_worker = (GameWorker *)HelperFcn_MemAllocate(size);
     return game_worker;
 }
 
-void
+GameWorker*
 GameWorker_Destructor(GameWorker *game_worker)
 {
-    if (game_worker == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(game_worker);
-    game_worker = NULL;
+    HelperFcn_MemFree(game_worker);
+    return NULL;
 }
 
 void

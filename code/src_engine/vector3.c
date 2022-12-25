@@ -16,29 +16,23 @@
 #include <math.h>
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/math_functions.h"
 #include "include_engine/utils.h"
 
 Vec3*
 Vec3_Constructor(void)
 {
-    Vec3 *vec3 = (Vec3 *)malloc(1 * sizeof(Vec3));
-    if (vec3 == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Vec3);
+    Vec3 *vec3 = (Vec3 *)HelperFcn_MemAllocate(size);
     return vec3;
 }
 
-void
+Vec3*
 Vec3_Destructor(Vec3 *vec3)
 {
-    if (vec3 == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(vec3);
-    vec3 = NULL;
+    HelperFcn_MemFree(vec3);
+    return NULL;
 }
 
 void

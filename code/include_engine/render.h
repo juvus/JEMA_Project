@@ -69,7 +69,7 @@ typedef struct Render_ Render;
 
 /**
  * @brief Object constructor.
- * @return Render_t* Pointer to the Render structure. 
+ * @return Render* Pointer to the Render structure.
  */
 Render*
 Render_Constructor(void);
@@ -77,8 +77,9 @@ Render_Constructor(void);
 /**
  * @brief Object destructor.
  * @param render Pointer to the Render structure.
+ * @return Render* Pointer to the Render structure.
  */
-void
+Render*
 Render_Destructor(Render *render);
 
 /**

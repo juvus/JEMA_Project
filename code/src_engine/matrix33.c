@@ -16,6 +16,7 @@
 #include <math.h>
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/math_functions.h"
 #include "include_engine/utils.h"
 #include "include_engine/vector3.h"
@@ -23,23 +24,16 @@
 Mat33*
 Mat33_Constructor(void)
 {
-    Mat33 *mat33 = (Mat33 *)malloc(1 * sizeof(Mat33));
-    if (mat33 == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Mat33);
+    Mat33 *mat33 = (Mat33 *)HelperFcn_MemAllocate(size);
     return mat33;
 }
 
-void
+Mat33*
 Mat33_Destructor(Mat33 *mat33)
 {
-    if (mat33 == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(mat33);
-    mat33 = NULL;
+    HelperFcn_MemFree(mat33);
+    return NULL;
 }
 
 void

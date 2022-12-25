@@ -16,6 +16,7 @@
 #include "include_engine/color.h"
 #include "include_engine/dbg.h"
 #include "include_engine/font.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/render.h"
 #include "include_engine/utils.h"
 
@@ -23,54 +24,36 @@ DConsole*
 DConsole_Constructor(u32 messages_num, u32 max_msg_length)
 {    
     /* Allocate memory for the debug console object. */
-    DConsole *dconsole = (DConsole *)malloc(1 * sizeof(DConsole));
-    if (dconsole == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(DConsole);
+    DConsole *dconsole = (DConsole *)HelperFcn_MemAllocate(size);
 
     /* Allocate the memory for the array of messages. */
+    size = messages_num * sizeof(Message);
     dconsole->messages_num = messages_num;
-    dconsole->messages = (Message *)calloc(messages_num, sizeof(Message));
-    if (dconsole->messages == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
-
+    dconsole->messages = (Message *)HelperFcn_MemAllocate(size);
+    
     /* Allocate the memory for message strings. */
     dconsole->max_msg_length = max_msg_length;
     for (u32 i = 0; i < messages_num; ++i)
     {
-        char *tmp_msg_str = (char *)calloc(max_msg_length, sizeof(char));
-        if (tmp_msg_str == NULL)
-        {
-            dbg_error("%s", "Memory allocation error!");
-        }    
+        size = max_msg_length * sizeof(char);
+        char *tmp_msg_str = (char *)HelperFcn_MemAllocate(size);
         dconsole->messages[i].msg_str = tmp_msg_str;
         dconsole->messages[i].msg_str[0] = '\0';
     }
     return dconsole;
 }
 
-void
+DConsole*
 DConsole_Destructor(DConsole *dconsole)
 {
-    if ((dconsole == NULL) || (dconsole->messages == NULL))
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    
     for (u32 i = 0; i < dconsole->messages_num; ++i)
     {
-        if (dconsole->messages[i].msg_str == NULL)
-        {
-            dbg_error("%s", "Attempt to delete an empty object!");
-        }
-        free(dconsole->messages[i].msg_str);
+        HelperFcn_MemFree(dconsole->messages[i].msg_str);
     }
-    free(dconsole->messages);
-    free(dconsole);
-    dconsole = NULL;
+    HelperFcn_MemFree(dconsole->messages);
+    HelperFcn_MemFree(dconsole);
+    return NULL;
 }
 
 void

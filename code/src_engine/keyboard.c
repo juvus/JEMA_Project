@@ -15,6 +15,7 @@
 #include <windows.h>
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/utils.h"
 
 /**
@@ -29,23 +30,16 @@ Keyboard_ProcessKey(Keyboard *keyboard, u32 vk_code, KeyType key);
 Keyboard*
 Keyboard_Constructor(void)
 {
-    Keyboard *keyboard = (Keyboard *)malloc(1 * sizeof(Keyboard));
-    if (keyboard == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Keyboard);
+    Keyboard *keyboard = (Keyboard *)HelperFcn_MemAllocate(size);
     return keyboard;
 }
 
-void
+Keyboard*
 Keyboard_Destructor(Keyboard *keyboard)
 {
-    if (keyboard == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(keyboard);
-    keyboard = NULL;
+    HelperFcn_MemFree(keyboard);
+    return NULL;
 }
 
 void

@@ -30,7 +30,7 @@ typedef struct GameWorker_ GameWorker;
 
 /**
  * @brief Object constructor.
- * @return GameWorker* Pointer to the GameWorker structure. 
+ * @return GameWorker* Pointer to the GameWorker structure.
  */
 GameWorker*
 GameWorker_Constructor(void);
@@ -38,8 +38,9 @@ GameWorker_Constructor(void);
 /**
  * @brief Object destructor.
  * @param game_worker Pointer to the GameWorker structure.
+ * @return GameWorker* Pointer to the GameWorker structure.
  */
-void
+GameWorker*
 GameWorker_Destructor(GameWorker *game_worker);
 
 /**

@@ -16,29 +16,23 @@
 
 #include "include_engine/audio.h"
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/sound.h"
 #include "include_engine/utils.h"
 
 AudioWorker*
 AudioWorker_Constructor(void)
 {
-    AudioWorker *audio_worker = (AudioWorker *)malloc(1 * sizeof(AudioWorker));
-    if (audio_worker == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    u64 size = sizeof(AudioWorker);
+    AudioWorker *audio_worker = (AudioWorker *)HelperFcn_MemAllocate(size);
     return audio_worker;
 }
 
-void
+AudioWorker*
 AudioWorker_Destructor(AudioWorker *audio_worker)
 {
-    if (audio_worker == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(audio_worker);
-    audio_worker = NULL;
+    HelperFcn_MemFree(audio_worker);
+    return NULL;
 }
 
 void

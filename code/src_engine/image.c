@@ -11,6 +11,7 @@
 #include "include_engine/image.h"
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #define STB_IMAGE_IMPLEMENTATION  /* Necessary definition for the stb_image.h. */
 #define STBI_ONLY_PNG  /* Use only PNG images. */
 #define STBI_NO_STDIO  /* Don't use stdio.h. */
@@ -22,24 +23,17 @@
 Image*
 Image_Constructor(void)
 {
-    Image *image = (Image *)malloc(1 * sizeof(Image));
-    if (image == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Image);
+    Image *image = (Image *)HelperFcn_MemAllocate(size);
     return image;
 }
 
-void
+Image*
 Image_Destructor(Image *image)
 {
-    if (image == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(image->data);  /* NOTE: Test this, because mem allocated in stbi module. */
-    free(image);
-    image = NULL;
+    HelperFcn_MemFree(image->data);  /* NOTE: Test this, because mem allocated in stbi module. */
+    HelperFcn_MemFree(image);
+    return NULL;
 }
 
 void

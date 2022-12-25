@@ -55,8 +55,9 @@ Audio_Constructor(void);
 /**
  * @brief Object destructor.
  * @param audio Pointer to the Audio structure.
+ * @return Audio* Pointer to the Audio structure. 
  */
-void
+Audio*
 Audio_Destructor(Audio *audio);
 
 /**

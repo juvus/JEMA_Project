@@ -31,3 +31,21 @@ HelperFcn_CheckCollision(Vec2 *bl_mv, Vec2 *ur_mv, Vec2 *bl_st, Vec2 *ur_st,
    char *collision_side);
 
 #endif  /* JEMA_ENGINE_HELPER_FUNCTIONS_H_ */
+
+/**
+ * @brief Wrapper for the standard malloc function with additional examination of the
+ * memory allocation success.
+ * @param memory_size Size of the memory block to be allocated.
+ * @return void* Pointer to the allocated memory block.
+ */
+void*
+HelperFcn_MemAllocate(u64 memory_size);
+
+/**
+ * @brief Wrapper for the standard free function with additional examination of 
+ * presense of and object in memory.
+ * @param object Pointer to the object allocated in memory. 
+ */
+void
+HelperFcn_MemFree(void *object);
+

@@ -12,6 +12,7 @@
 #include "include_engine/mouse.h"
 
 #include "include_engine/dbg.h"
+#include "include_engine/helper_functions.h"
 #include "include_engine/render.h"
 #include "include_engine/utils.h"
 #include "include_engine/vector2.h"
@@ -19,23 +20,16 @@
 Mouse*
 Mouse_Constructor(void)
 {
-    Mouse *mouse = (Mouse *)malloc(1 * sizeof(Mouse));
-    if (mouse == NULL)
-    {
-        dbg_error("%s", "Memory allocation error!");
-    }
+    size_t size = sizeof(Mouse);
+    Mouse *mouse = (Mouse *)HelperFcn_MemAllocate(size);
     return mouse;
 }
 
-void
+Mouse*
 Mouse_Destructor(Mouse *mouse)
 {
-    if (mouse == NULL)
-    {
-        dbg_error("%s", "Attempt to delete an empty object!");
-    }
-    free(mouse);
-    mouse = NULL;
+    HelperFcn_MemFree(mouse);
+    return NULL;
 }
 
 void
