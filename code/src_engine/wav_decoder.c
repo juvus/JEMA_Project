@@ -62,7 +62,8 @@ GetChunkDataSize(RiffIterator iterator)
 }
 
 void
-WavDecoder_Decode(Sound *sound, MemObject* wav_mem_object)
+WavDecoder_Decode(s16 *s16_array, u32 *channels_num, u32 *samples_data_size,
+    u32 *samples_per_second, const MemObject* wav_mem_object)
 {       
     WavHeader *header = (WavHeader *)wav_mem_object->data;
     WavFormat *format = NULL;
@@ -84,28 +85,17 @@ WavDecoder_Decode(Sound *sound, MemObject* wav_mem_object)
                 dbg_check(format->samples_per_second == 44100, "");
                 dbg_check(format->bits_per_sample == 16, "");
                 dbg_check(format->num_channels == 1 || format->num_channels == 2, "");
-                sound->channels_num = format->num_channels;
+                *channels_num = format->num_channels;
+                *samples_per_second = format->samples_per_second;
             } break;
             
             case Wav_chunk_id_data: 
             {
                 sample_data = (s16 *)GetChunkData(iterator);
-                sound->samples_data_size = GetChunkDataSize(iterator);
+                *samples_data_size = GetChunkDataSize(iterator);
             } break;
         }
     }
-    dbg_check(sound->channels_num && sample_data && sound->samples_data_size, "");
-    sound->bytes_per_sample = sound->channels_num * sizeof(s16);
-    sound->sample_count = sound->samples_data_size / sound->bytes_per_sample;
-    
-    /* Allocate memory for s16_array and fill with data. */
-    sound->s16_array = (s16 *)calloc(wav_mem_object->size, sizeof(s8));
-    memcpy(sound->s16_array, sample_data, (wav_mem_object->size * sizeof(s8)));
-    
-    sound->s16_array_size = sound->sample_count * sound->channels_num;
-    sound->samples_per_second = format->samples_per_second;  /* 44100 */
-    sound->duration = (f32)sound->sample_count / sound->samples_per_second;
-    sound->sample_index = 0;
-    sound->is_playing = false;  /* Default */
-    sound->is_looping = false;  /* Default */
+    dbg_check(*channels_num && sample_data && *samples_data_size, "");
+    memcpy(s16_array, sample_data, (wav_mem_object->size * sizeof(s8)));
 }

@@ -89,10 +89,16 @@ struct RiffIterator_
 typedef struct RiffIterator_ RiffIterator;
 
 /**
- * @brief Uncompressing the data from wav file into sound data for processing.
- * @param sound Pointer to the Sound structure.
- * @param file Pointer to the File structure.
+ * @brief Decode data raw data from WAV file into the allocated buffer for 
+ * further processing.
+ * @param s16_array Buffer for decoded audio data.
+ * @param channels_num Pointer to channels number.
+ * @param samples_data_size Pointer to aound size in bytes (number of 0xAA elements).
+ * @param samples_per_second Pointer to number of samples per second play.
+ * @param wav_mem_object Pointer to the memory object with raw WAV file data.
  */
-void WavDecoder_Decode(Sound *sound, MemObject *wav_mem_object);
+void
+WavDecoder_Decode(s16 *s16_array, u32 *channels_num, u32 *samples_data_size,
+    u32 *samples_per_second, const MemObject* wav_mem_object);
 
 #endif  /* JEMA_ENGINE_WAV_DECODER_H_ */
