@@ -37,6 +37,36 @@ Sound_Destructor(Sound *sound)
 }
 
 void
+Sound_InitByMemObject(Sound *sound, const MemObject *wav_mem_object)
+{
+    /* Allocate memory for the buffer (s16_array). */
+    size_t size = wav_mem_object->size * sizeof(s8);
+    sound->s16_array = (s16 *)HelperFcn_MemAllocate(size);
+
+    /* Decode data form memory object into the buffer. */
+    WavDecoder_Decode(sound->s16_array, &(sound->channels_num), &(sound->samples_data_size), 
+        &(sound->samples_per_second), wav_mem_object);
+
+    /* Define sound parameters. */
+    sound->bytes_per_sample = sound->channels_num * sizeof(s16);
+    sound->sample_count = sound->samples_data_size / sound->bytes_per_sample;
+    sound->s16_array_size = sound->sample_count * sound->channels_num; 
+    sound->duration = (f32)sound->sample_count / sound->samples_per_second;
+    sound->sample_index = 0;
+    sound->is_playing = false;  /* Default */
+    sound->is_looping = false;  /* Default */
+}
+
+void
+Sound_LoadFromFile(Sound *sound, const char *file_path)
+{
+    MemObject *mem_object = MemObject_Constructor();
+    MemObject_InitByFile(mem_object, file_path);
+    Sound_InitByMemObject(sound, mem_object);
+    MemObject_Destructor(mem_object);
+}
+
+void
 Sound_PrepareEmptySound(Sound *sound)
 {
     /* Parameters of empty sound [0.1 sec - 4410 samples]. */
@@ -52,13 +82,8 @@ Sound_PrepareEmptySound(Sound *sound)
     sound->s16_array_size = 8820;  /* Number of s16 (0xAABB) elements in s16_array. */
 
     /* Create empty array with s16 elements. */
-    sound->s16_array = (s16 *)calloc(sound->s16_array_size, sizeof(s16));
-}
-
-void
-Sound_Init(Sound *sound, MemObject *wav_object)
-{
-    WavDecoder_Decode(sound, wav_object);
+    size_t size = sound->s16_array_size * sizeof(s16);
+    sound->s16_array = (s16 *)HelperFcn_MemAllocate(size);
 }
 
 void

@@ -48,6 +48,15 @@ Image_Destructor(Image *image);
  * @param mem_object Pointer to the memory object with raw png file data.
  */
 void
-Image_Init(Image *image, MemObject *mem_object);
+Image_InitByMemObject(Image *image, MemObject *mem_object);
+
+/**
+ * @brief Loading the desired image to the application. This is a frontend 
+ * function wrapping the set of more specific functions.
+ * @param image Pointer to the Image structure.
+ * @param file_path Path to the file on the computer disc.
+ */
+void 
+Image_LoadFromFile(Image *image, char *file_path);
 
 #endif /* JEMA_ENGINE_IMAGE_H_ */

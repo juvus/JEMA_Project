@@ -37,7 +37,7 @@ Image_Destructor(Image *image)
 }
 
 void
-Image_Init(Image *image, MemObject *mem_object)
+Image_InitByMemObject(Image *image, MemObject *mem_object)
 {
     char *mem_obj_data = (char *)mem_object->data;
     int mem_obj_size = (int)mem_object->size;
@@ -55,4 +55,13 @@ Image_Init(Image *image, MemObject *mem_object)
     image->width = img_width;
     image->height = img_height;
     image->channels = img_channels;
+}
+
+void 
+Image_LoadFromFile(Image *image, char *file_path)
+{
+    MemObject *mem_object = MemObject_Constructor();
+    MemObject_InitByFile(mem_object, file_path);
+    Image_InitByMemObject(image, mem_object);
+    MemObject_Destructor(mem_object);
 }

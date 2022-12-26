@@ -69,7 +69,15 @@ Sound_Destructor(Sound *sound);
  * @param file Pointer to the File structure of loaded wav file.
  */
 void
-Sound_Init(Sound *sound, MemObject *wav_object);
+Sound_InitByMemObject(Sound *sound, const MemObject *wav_mem_object);
+
+/**
+ * @brief Loading the desired sound to the application. 
+ * @param sound Pointer to the Sound structure.
+ * @param file_path Path to the file on the computer disc.
+ */
+void
+Sound_LoadFromFile(Sound *sound, const char *file_path);
 
 /**
  * @brief Preparation of the empty sound.
