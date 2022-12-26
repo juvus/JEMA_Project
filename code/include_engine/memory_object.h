@@ -46,7 +46,7 @@ MemObject_Destructor(MemObject *mem_object);
  * @param file_path Path to the file on the computer disc.
  */
 void
-MemObject_InitByFile(MemObject *mem_object, char *file_path);
+MemObject_InitByFile(MemObject *mem_object, const char *file_path);
 
 /**
  * @brief Writing the entire data of the memory object to disc.

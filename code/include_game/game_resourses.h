@@ -15,20 +15,7 @@
 
 typedef struct Color_ Color;
 typedef struct Image_ Image;
-typedef struct MemObject_ MemObject;
 typedef struct Sound_ Sound;
-
-/**
- * @brief Enumerator for the set of files used in the game.
- */
-enum GameResourseMemObject_
-{
-    GO_FONT_PNG,  /**< PNG file with font symbol data. */
-    GO_SMILE_FACE_PNG,  /**< PNG file with smiley face image. */
-    GO_BACKGROUND_WAV,  /**< WAV file for the background music. */
-    GO_OBJECTS_NUM  /**< Total amount of the files used in the game. */
-};
-typedef enum GameResourseMemObject_ GameResourseMemObject;
 
 /**
  * @brief Enumerator for the set of images used in the game.
@@ -74,7 +61,6 @@ typedef enum GameResourseColor_ GameResourseColor;
  */
 struct GameResourses_
 {
-    MemObject *mem_objects[GO_OBJECTS_NUM];  /* Array of pointers to the File structures. */
     Image *images[GI_IMAGES_NUM];  /* Array of pointers to the Image structures.  */
     Sound *sounds[GS_SOUNDS_NUM];  /* Array of pointers to the Sound structure. */
     Color *colors[GC_COLORS_NUM];  /* Array of pointers to the Color structure. */ 

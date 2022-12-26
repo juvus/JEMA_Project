@@ -33,7 +33,7 @@ MemObject_Destructor(MemObject *mem_object)
 }
 
 void
-MemObject_InitByFile(MemObject *mem_object, char *file_path)
+MemObject_InitByFile(MemObject *mem_object, const char *file_path)
 {
     HANDLE file_handle = CreateFileA(file_path, GENERIC_READ, FILE_SHARE_READ, 0, 
         OPEN_EXISTING, 0, 0);

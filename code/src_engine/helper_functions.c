@@ -95,7 +95,7 @@ HelperFcn_CheckCollision(Vec2 *bl_mv, Vec2 *ur_mv, Vec2 *bl_st, Vec2 *ur_st,
 void*
 HelperFcn_MemAllocate(size_t memory_size)
 {
-    void *object = malloc(memory_size);
+    void *object = calloc(1, memory_size);
     if (object == NULL)
     {
         dbg_error("%s", "Memory allocation error!");

@@ -28,7 +28,6 @@
 #include "include_engine/helper_functions.h"
 #include "include_engine/image.h"
 #include "include_engine/keyboard.h"
-#include "include_engine/memory_object.h"
 #include "include_engine/mouse.h"
 #include "include_engine/random.h"
 #include "include_engine/render.h"
@@ -113,21 +112,15 @@ Game_SimulateTick(Game *game, Win32Platform *win32_platform)
     case GST_LOAD_RESOURCES:
     {
         /* Loading different resource data for IMAGES. */
-        MemObject_InitByFile(gres->mem_objects[GO_FONT_PNG], 
-            "..\\data\\font_Win1251.png");
-        Image_Init(gres->images[GI_FONT], gres->mem_objects[GO_FONT_PNG]);
-        MemObject_Destructor(gres->mem_objects[GO_FONT_PNG]);
+        char *file_path = "..\\data\\font_Win1251.png";
+        Image_LoadFromFile(gres->images[GI_FONT], file_path);
+        
+        file_path = "..\\data\\smile_face.png";
+        Image_LoadFromFile(gres->images[GI_SMILE_FACE], file_path);
 
-        MemObject_InitByFile(gres->mem_objects[GO_SMILE_FACE_PNG], 
-            "..\\data\\smile_face.png");
-        Image_Init(gres->images[GI_SMILE_FACE], gres->mem_objects[GO_SMILE_FACE_PNG]);
-        MemObject_Destructor(gres->mem_objects[GO_SMILE_FACE_PNG]);
-
-        /* Loading different resource data for SOUNDS. */        
-        MemObject_InitByFile(gres->mem_objects[GO_BACKGROUND_WAV], 
-            "..\\data\\background.wav");
-        Sound_Init(gres->sounds[GS_BACKGROUND], gres->mem_objects[GO_BACKGROUND_WAV]);
-        MemObject_Destructor(gres->mem_objects[GO_BACKGROUND_WAV]);
+        /* Loading different resource data for SOUNDS. */ 
+        file_path = "..\\data\\background.wav";
+        Sound_LoadFromFile(gres->sounds[GS_BACKGROUND], file_path);
  
         /* Jump to the next game stage. */
         game->game_state = GST_INITIALIZATION;

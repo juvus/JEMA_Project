@@ -16,7 +16,6 @@
 #include "include_engine/dbg.h"
 #include "include_engine/helper_functions.h"
 #include "include_engine/image.h"
-#include "include_engine/memory_object.h"
 #include "include_engine/sound.h"
 #include "include_engine/utils.h"
 
@@ -25,12 +24,6 @@ GameResourses_Constructor(void)
 {
     size_t size = sizeof(GameResourses);
     GameResourses *game_resourses = (GameResourses *)HelperFcn_MemAllocate(size);
-
-    /* Allocate memory for the game objects in memory. */
-    for (u32 i = 0; i < GO_OBJECTS_NUM; ++i)
-    {
-        game_resourses->mem_objects[i] = MemObject_Constructor();
-    }
 
     /* Allocate memory for the game images. */
     for (u32 i = 0; i < GI_IMAGES_NUM; ++i)
@@ -62,16 +55,6 @@ GameResourses_Destructor(GameResourses *game_resourses)
 void
 GameResources_FreeResources(GameResourses *game_resourses)
 {
-    /* Free memory allocated for the game objects. */
-    for (u32 i = 0; i < GO_OBJECTS_NUM; ++i)
-    {
-        if (game_resourses->mem_objects[i] != NULL)
-        {
-            game_resourses->mem_objects[i] = 
-                MemObject_Destructor(game_resourses->mem_objects[i]);
-        }
-    }
-
     /* Free memory allocated for the game images. */
     for (u32 i = 0; i < GI_IMAGES_NUM; ++i)
     {
